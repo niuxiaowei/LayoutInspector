@@ -1,0 +1,3 @@
+include ':layoutinspector'
+include ':app'
+rootProject.name = "LayoutInspector"

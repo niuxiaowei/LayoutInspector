@@ -1,0 +1,115 @@
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+}
+
+apply plugin: 'ReplaceMethodPlugin'
+
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.example.layoutinspector"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    println("rootdir:${rootDir}")
+}
+
+dependencies {
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'org.jetbrains:annotations:15.0'
+    implementation project(path: ':layoutinspector')
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
+    implementation 'com.android.support:support-annotations:+'
+    //noinspection GradleCompatible
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+
+}
+
+replaceMethod {
+    open = true //这里如果设置为false,则会关闭插桩
+    openLog true
+    replaceByMethods {
+        register {
+            replace {
+                invokeType "ins"
+                className "android.view.LayoutInflater"
+                methodName "inflate"
+                desc "(int,android.view.ViewGroup)android.view.View"
+            }
+            by {
+                className = "com.mi.layoutinspector.LayoutInflaterProxy"
+                methodName = "inflate"
+                addExtraParams = true
+            }
+        }
+
+        register {
+            replace {
+                invokeType "static"
+                className "android.view.View"
+                methodName "inflate"
+                desc "(android.content.Context,int,android.view.ViewGroup)android.view.View"
+                ignoreOverideStaticMethod true
+            }
+            by {
+                className = "com.mi.layoutinspector.LayoutInflaterProxy"
+                methodName = "inflate"
+                addExtraParams  true
+            }
+        }
+
+        register {
+            replace {
+                invokeType "ins"
+                className "android.view.LayoutInflater"
+                methodName "inflate"
+                desc "(int,android.view.ViewGroup,boolean)android.view.View"
+            }
+            by {
+                className = "com.mi.layoutinspector.LayoutInflaterProxy"
+                methodName = "inflate"
+                addExtraParams =  true
+            }
+        }
+        register {
+            replace {
+                invokeType "ins"
+                className "android.app.Activity"
+                methodName "setContentView"
+                desc "(int)"
+            }
+            by {
+                className = "com.mi.layoutinspector.LayoutInflaterProxy"
+                methodName = "setContentView"
+            }
+        }
+
+    }
+}

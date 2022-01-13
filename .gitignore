@@ -1,0 +1,64 @@
+guard-res-apk/
+freeline/
+freeline*
+build/
+.DS_Store
+.gradle
+.idea/*
+#gradle/*
+#gradlew*
+.git/*
+*.iml
+local.properties
+app/ship/*
+app/.DS_Store
+app/.idea
+app/gradle/
+captures
+mivideo/
+projectFilesBackup/
+freeline*
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Android Studio
+.idea
+.gradle
+.gradletasknamecache
+/*/local.properties
+/*/out
+/*/*/build
+build
+/*/*/production
+*.iml
+*.iws
+*.ipr
+*~
+*.swp
+*.log
+*/.project
+.project
+.classpath
+*/.classpath
+*/.settings/
