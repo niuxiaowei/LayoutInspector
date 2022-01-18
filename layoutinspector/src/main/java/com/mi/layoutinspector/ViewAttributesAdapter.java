@@ -40,7 +40,7 @@ class ViewAttributesAdapter extends RecyclerView.Adapter<ViewAttributesAdapter.V
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_detail_view_item, parent, false);//加载view布局文件
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layoutinspector_adapter_detail_view_item, parent, false);//加载view布局文件
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

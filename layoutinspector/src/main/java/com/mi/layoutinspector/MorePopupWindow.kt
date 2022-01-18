@@ -10,7 +10,7 @@ import android.widget.PopupWindow
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.mi.layoutinspector.LayoutInspector.Companion.isViewGroupShowViewAttributes
-import kotlinx.android.synthetic.main.popupwindow_more_view.view.*
+import kotlinx.android.synthetic.main.layoutinspector_popupwindow_more_view.view.*
 
 /**
  * create by niuxiaowei
@@ -30,7 +30,7 @@ class MorePopupWindow {
     @SuppressLint("SetTextI18n")
     fun showPopupWindow(layoutInspector: LayoutInspector, context: Context, anchor: View) {
         if (realPopupWindow == null) {
-            contentView = LayoutInflater.from(context).inflate(R.layout.popupwindow_more_view, null)
+            contentView = LayoutInflater.from(context).inflate(R.layout.layoutinspector_popupwindow_more_view, null)
             realPopupWindow = object : PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT) {}
             (realPopupWindow as PopupWindow).apply {
                 isOutsideTouchable = true

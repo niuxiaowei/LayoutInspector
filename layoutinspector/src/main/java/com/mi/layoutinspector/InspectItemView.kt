@@ -29,10 +29,10 @@ class InspectItemView constructor(
     }
 
     private var mPaint: Paint = Paint()
-    private val COLOR_BORDER: Int by lazy { ContextCompat.getColor(context, R.color.color_fc2f68) }
-    private val COLOR_CORNER: Int by lazy { ContextCompat.getColor(context, R.color.color_34b1f3) }
-    private val COLOR_PADDING: Int by lazy { ContextCompat.getColor(context, R.color.color_03A9F4) }
-    private val COLOR_BORDER_SELECT: Int by lazy { ContextCompat.getColor(context, R.color.gift_number_second) }
+    private val COLOR_BORDER: Int by lazy { ContextCompat.getColor(context, R.color.li_color_fc2f68) }
+    private val COLOR_CORNER: Int by lazy { ContextCompat.getColor(context, R.color.li_color_34b1f3) }
+    private val COLOR_PADDING: Int by lazy { ContextCompat.getColor(context, R.color.li_color_03A9F4) }
+    private val COLOR_BORDER_SELECT: Int by lazy { ContextCompat.getColor(context, R.color.li_gift_number_second) }
 
     private val STROKE_WIDTH: Float = 3.0f
     private val STROKE_WIDTH_SELECT = 15.0f

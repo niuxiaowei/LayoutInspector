@@ -4,12 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
@@ -46,7 +43,7 @@ public class ViewAttributesPopupWindow {
 
 
     private void initRealPopupWindow(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.popupwindow_detail_view, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.layoutinspector_popupwindow_detail_view, null);
         RecyclerView recyslerview = view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutmanager = new LinearLayoutManager(context);
         recyslerview.setLayoutManager(layoutmanager);

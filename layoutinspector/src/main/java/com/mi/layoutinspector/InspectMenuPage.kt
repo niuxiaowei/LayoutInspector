@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.view_inspector_ui_menu.view.*
+import kotlinx.android.synthetic.main.layoutinspector_view_inspector_ui_menu.view.*
 import kotlin.math.sqrt
 
 
@@ -105,7 +105,7 @@ class InspectMenuPage(context: Context,
 
     @SuppressLint("ClickableViewAccessibility")
     private fun createMenuView(): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.view_inspector_ui_menu, null)
+        val view = LayoutInflater.from(context).inflate(R.layout.layoutinspector_view_inspector_ui_menu, null)
         view.setOnTouchListener { v, event ->
             return@setOnTouchListener startDrag(v, null, event)
         }

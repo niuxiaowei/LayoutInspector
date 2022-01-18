@@ -22,8 +22,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            useProguard true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -46,3 +45,40 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:recyclerview-v7:27.1.0'
 }
+
+apply plugin: 'maven-publish'
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+//            release(MavenPublication) {
+//                // Applies the component for the release build variant.
+//                from components.release
+//
+//                // You can then customize attributes of the publication as shown below.
+//                groupId = 'com.example.MyLibrary'
+//                artifactId = 'final'
+//                version = '1.0'
+//            }
+            // Creates a Maven publication called “debug”.
+            maven(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.release
+
+            groupId "com.mi.tools"
+            artifactId "layoutinspector"
+            version "1.0.1"
+            }
+        }
+    }
+}
+//publishing {
+//    publications {
+//        maven(MavenPublication) {
+//            artifact "/home/niuxiaowie/mi/work/workspace/LayoutInspector/layoutinspector/build/outputs/aar/layoutinspector-debug.aar"
+//            groupId "com.mi.tools"
+//            artifactId "layoutinspector"
+//            version "1.0.0"
+//        }
+//    }
+//}

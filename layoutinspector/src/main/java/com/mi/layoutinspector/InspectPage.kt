@@ -33,7 +33,7 @@ class InspectPage constructor(
     private var mPaint: Paint = Paint()
 
     init {
-        mPaint.color = ContextCompat.getColor(context, R.color.color_34b1f3)
+        mPaint.color = ContextCompat.getColor(context, R.color.li_color_34b1f3)
         mPaint.strokeWidth = 2.0f
         //InspectPage的点击事件拦截掉
         setOnClickListener{

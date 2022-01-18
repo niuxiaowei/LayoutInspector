@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.ViewGroup
@@ -32,7 +33,8 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
         var unitsIsDP = false
         private var screenWidth: Int = 0
         private var screenHeight: Int = 0
-        private val childViewCollector  = ChildViewCollector()
+        private val childViewCollector = ChildViewCollector()
+        private val layoutInspectors = mutableListOf<LayoutInspector>()
 
         init {
             viewAttributesCollectors.add(ViewIdClassCollector())
@@ -45,18 +47,57 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
         }
 
         /**
-         * 进行初始化
-         * @param application Application
-         * @param collectors Array<out IViewDetailCollector> viewDetail收集器
+         * 注册IViewAttributeCollector事件
+         * @param viewAttributeCollector
          */
-        fun install(application: Application, vararg collectors: IViewAttributeCollector) {
-            this.application = application
-            if (collectors != null && collectors.isNotEmpty()) {
-                this.viewAttributesCollectors.addAll(collectors)
-            }
+        fun regist(viewAttributeCollector: IViewAttributeCollector) {
+            this.viewAttributesCollectors.add(viewAttributeCollector)
             //吧childViewCollector放在最后
             viewAttributesCollectors.remove(childViewCollector)
             viewAttributesCollectors.add(childViewCollector)
+        }
+
+        private fun findLayoutInspector(activity: Activity): LayoutInspector? {
+            layoutInspectors.forEach {
+                if (it.activity.equals(activity)) {
+                    return it
+                }
+            }
+            return null
+        }
+
+        fun init(application: Application) {
+            this.application = application
+            this.application?.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+                override fun onActivityPaused(activity: Activity) {
+                }
+
+                override fun onActivityStarted(activity: Activity) {
+                }
+
+                override fun onActivityDestroyed(activity: Activity) {
+                    findLayoutInspector(activity)?.let {
+                        it.destoryEnd()
+                        layoutInspectors.remove(it)
+                    }
+
+                }
+
+                override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+                }
+
+                override fun onActivityStopped(activity: Activity) {
+                }
+
+                override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                    layoutInspectors.add(LayoutInspector(activity))
+                }
+
+                override fun onActivityResumed(activity: Activity) {
+                    findLayoutInspector(activity)?.createEnd()
+                }
+
+            })
         }
 
         fun getContext(): Context {
@@ -70,7 +111,7 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
             return getContext().resources.displayMetrics
         }
 
-        fun getScreenWidth():Int{
+        fun getScreenWidth(): Int {
             if (screenWidth > 0) {
                 return screenWidth
             }
@@ -78,7 +119,7 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
             return screenWidth
         }
 
-        fun getScreenHeight():Int{
+        fun getScreenHeight(): Int {
             if (screenHeight > 0) {
                 return screenHeight
             }
@@ -94,6 +135,9 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
 
     @SuppressLint("ClickableViewAccessibility")
     fun createEnd() {
+        if (contentView != null) {
+            return
+        }
         contentView = activity.window.decorView.findViewById(android.R.id.content)
         inspectPageManager = InspectPageManager(activity, this, contentView as ViewGroup)
         createActivityInfo()

@@ -34,7 +34,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        LayoutInspector.Companion.install(this, new IViewAttributeCollector() {
+        LayoutInspector.Companion.regist(new IViewAttributeCollector() {
             @Nullable
             @Override
             public List<ViewAttribute> collectViewAttributes(@NotNull View inspectView, @NotNull InspectItemView inspectItemView) {
