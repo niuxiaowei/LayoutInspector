@@ -57,9 +57,4 @@ public class LayoutInflaterProxy {
         return view;
     }
 
-    public static void setContentView(Activity activity, int layoutId) {
-        activity.setContentView(layoutId);
-//        new LayoutInspector(activity, layoutId).createEnd();
-    }
-
 }

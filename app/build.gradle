@@ -109,18 +109,7 @@ replaceMethod {
                 addExtraParams =  true
             }
         }
-        register {
-            replace {
-                invokeType "ins"
-                className "android.app.Activity"
-                methodName "setContentView"
-                desc "(int)"
-            }
-            by {
-                className = "com.mi.layoutinspector.LayoutInflaterProxy"
-                methodName = "setContentView"
-            }
-        }
+
 
     }
 }
