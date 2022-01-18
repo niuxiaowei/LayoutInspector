@@ -1,10 +1,13 @@
-package com.mi.layoutinspector;
+package com.mi.layoutinspector.viewinfos;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.mi.layoutinspector.R;
+import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute;
 
 import org.jetbrains.annotations.NotNull;
 

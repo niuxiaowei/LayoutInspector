@@ -1,4 +1,4 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.view.View
 

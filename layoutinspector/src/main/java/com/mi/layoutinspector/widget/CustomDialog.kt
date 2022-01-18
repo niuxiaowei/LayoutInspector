@@ -1,8 +1,9 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.widget
 
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import com.mi.layoutinspector.R
 import kotlinx.android.synthetic.main.layoutinspector_dialog_custom.*
 
 

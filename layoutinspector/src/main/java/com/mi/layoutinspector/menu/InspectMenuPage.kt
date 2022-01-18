@@ -1,4 +1,4 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.menu
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
+import com.mi.layoutinspector.inspect.InspectPageManager
+import com.mi.layoutinspector.LayoutInspector
+import com.mi.layoutinspector.R
 import kotlinx.android.synthetic.main.layoutinspector_view_inspector_ui_menu.view.*
 import kotlin.math.sqrt
 
@@ -118,10 +121,10 @@ class InspectMenuPage(context: Context,
             setOnTouchListener { v, event -> return@setOnTouchListener startDrag(view, v, event) }
             setOnClickListener {
                 if (inspectPageManager.inspectorViewShowed) {
-                    inspectPageManager.hideInspectorView()
+                    inspectPageManager.hideInspectorViews()
                     text = "显示"
                 } else {
-                    inspectPageManager.showInspectorView()
+                    inspectPageManager.showInspectorViews()
                     text = "隐藏"
                 }
             }
@@ -130,7 +133,7 @@ class InspectMenuPage(context: Context,
             setOnTouchListener { v, event -> return@setOnTouchListener startDrag(view, v, event) }
 
             setOnClickListener {
-                inspectPageManager.hideInspectorView()
+                inspectPageManager.hideInspectorViews()
                 inspectPageManager.hideShowedView()
                 view.show.text = "显示"
                 morePopupWindow.showPopupWindow(

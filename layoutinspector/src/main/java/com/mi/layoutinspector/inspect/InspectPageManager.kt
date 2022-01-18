@@ -1,15 +1,18 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.inspect
 
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.mi.layoutinspector.LayoutInspector
+import com.mi.layoutinspector.menu.InspectMenuPage
 
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.
  * <p>
  * @author niuxiaowei
  * @date 2022/1/8.
+ * 管理InspectPage, InspectMenuPage. 一个R.id.content view 的子view会对应一个InspectPage，InspectMenuPage处于 R.id.content view的最顶层
  *
  */
 class InspectPageManager(context: Context,
@@ -117,23 +120,23 @@ class InspectPageManager(context: Context,
         }
     }
 
-    fun hideInspectorView() {
+    fun hideInspectorViews() {
         inspectPages.forEach {
-            it.hideInspectorView()
+            it.hideInspectorViews()
         }
         inspectorViewShowed = false
     }
 
-    fun showInspectorView() {
+    fun showInspectorViews() {
         inspectPages.forEach {
-            it.showInspectorView()
+            it.showInspectorViews()
         }
         inspectorViewShowed = true
     }
 
     fun hideShowedView() {
         inspectPages.forEach {
-            it.hideViewAttributes()
+            it.hideViewInfosPopupWindow()
         }
     }
 }

@@ -10,7 +10,7 @@ import android.net.Uri
  * create by niuxiaowei
  * date : 22-1-17
  **/
-class LayoutInspectorProvider: ContentProvider() {
+class LayoutInspectorInstaller: ContentProvider() {
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         return null
     }

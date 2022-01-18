@@ -4,7 +4,7 @@
 
     <application>
         <provider
-            android:name=".LayoutInspectorProvider"
+            android:name=".LayoutInspectorInstaller"
             android:authorities="${applicationId}.liProvider"
             android:exported="false"
             android:grantUriPermissions="true">

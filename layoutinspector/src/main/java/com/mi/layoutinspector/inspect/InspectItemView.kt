@@ -1,4 +1,4 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.inspect
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,10 +7,13 @@ import android.graphics.Paint
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
+import com.mi.layoutinspector.R
 
 /**
  * create by niuxiaowei
  * date : 2021/7/29
+ * 它会对应一个inspectedView（被检查的view）
+ * 用来绘制 inspectedView 的宽高，位置，padding  margin信息的view，自定义了绘制流程
  **/
 
 @SuppressLint("ViewConstructor")
@@ -45,11 +48,11 @@ class InspectItemView constructor(
         mPaint.strokeWidth = STROKE_WIDTH  //画笔粗细
         if (isSetClick4View) {
             setOnClickListener {
-                if (inspectPage.curShowedView() == inspectedView) {
-                    inspectPage.hideViewAttributes()
+                if (inspectPage.curInspectedView() == inspectedView) {
+                    inspectPage.hideViewInfosPopupWindow()
                     setSelecte(false)
                 } else {
-                    showViewAttributes()
+                    showViewInfosPopupWindow()
                 }
             }
         }
@@ -66,13 +69,13 @@ class InspectItemView constructor(
         return childs
     }
 
-    override fun hideViewAttributes() {
-        inspectPage.hideViewAttributes()
+    override fun hideViewInfosPopupWindown() {
+        inspectPage.hideViewInfosPopupWindow()
         setSelecte(false)
     }
 
-    override fun showViewAttributes() {
-        inspectPage.showViewAttributes(inspectedView, this)
+    override fun showViewInfosPopupWindow() {
+        inspectPage.showViewInfosPopupWindow(inspectedView, this)
         setSelecte(true)
 
     }

@@ -1,4 +1,4 @@
-package com.mi.layoutinspector;
+package com.mi.layoutinspector.viewinfos;
 
 import android.content.Context;
 import android.os.Handler;
@@ -10,6 +10,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import com.mi.layoutinspector.inspect.InspectItemView;
+import com.mi.layoutinspector.LayoutInspector;
+import com.mi.layoutinspector.R;
+import com.mi.layoutinspector.viewinfos.viewattributes.IViewAttributeCollector;
+import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +23,9 @@ import java.util.List;
 /**
  * create by niuxiaowei
  * date : 21-7-22
- * 显示view信息的popupwindow， view信息有 宽，高， id， parent，child等信息
+ * 显示view信息的popupwindow， view信息有 宽，高， id， parent，child,  view层级
  **/
-public class ViewAttributesPopupWindow {
+public class ViewInfosPopupWindow {
 
 
     private PopupWindow realPopupWindow;
@@ -30,11 +36,14 @@ public class ViewAttributesPopupWindow {
     private final Handler handler = new Handler();
     private static int sPopupWindowHeight = LayoutInspector.Companion.getScreenHeight() / 2;
 
-    public ViewAttributesPopupWindow(PopupWindow.OnDismissListener onDismissListener) {
+    public ViewInfosPopupWindow(PopupWindow.OnDismissListener onDismissListener) {
         this.onDismissListener = onDismissListener;
     }
 
-    void hidePopupWindow() {
+    /**
+     * 因此viewinfos
+     */
+    public void hideViewInfos() {
         if (realPopupWindow == null) {
             return;
         }
@@ -60,17 +69,18 @@ public class ViewAttributesPopupWindow {
     }
 
     /**
+     * 显示view信息
      * @param context
-     * @param inspectView     需要被展示信息的view
+     * @param inspectedView   被检测器检测的view
      * @param inspectItemView
      */
-    void showPopupWindow(Context context, View inspectView, InspectItemView inspectItemView) {
+    public void showViewInfos(Context context, View inspectedView, InspectItemView inspectItemView) {
         if (realPopupWindow == null) {
             initRealPopupWindow(context);
         }
 
         //设置数据
-        adapter.setDatas(createViewAttributes(inspectView, inspectItemView));
+        adapter.setDatas(createViewAttributes(inspectedView, inspectItemView));
 
         handler.postDelayed(() -> {
             int[] size = getPopupWindowSize();
@@ -78,15 +88,15 @@ public class ViewAttributesPopupWindow {
             isNotifyDismissEvent = false;
             realPopupWindow.dismiss();
             isNotifyDismissEvent = true;
-            int[] popupWindowPos = calculatePopWindowPos(inspectView, size[1], size[0]);
-            realPopupWindow.showAtLocation(inspectView, Gravity.TOP, popupWindowPos[0], popupWindowPos[1]);
+            int[] popupWindowPos = calculatePopWindowPos(inspectedView, size[1], size[0]);
+            realPopupWindow.showAtLocation(inspectedView, Gravity.TOP, popupWindowPos[0], popupWindowPos[1]);
             realPopupWindow.getContentView().setVisibility(View.VISIBLE);
         }, 100);
 
         //以下代码主要是解决popupwindow显示在anchorView位置不对的问题，主要原因是set了数据后，这时候直接获取popupwindow的高度获取不到正确值导致的，因此先把正确值获取到后，在延迟显示
         realPopupWindow.getContentView().setVisibility(View.INVISIBLE);
         //先随便给一个0 0 的坐标主要为了获取正确的高度
-        realPopupWindow.showAtLocation(inspectView, Gravity.TOP | Gravity.START, 0, 0);
+        realPopupWindow.showAtLocation(inspectedView, Gravity.TOP | Gravity.START, 0, 0);
     }
 
     /**

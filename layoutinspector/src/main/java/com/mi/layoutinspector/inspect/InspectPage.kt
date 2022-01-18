@@ -1,5 +1,6 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.inspect
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -8,12 +9,17 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.mi.layoutinspector.LayoutInspector
+import com.mi.layoutinspector.R
+import com.mi.layoutinspector.viewinfos.ViewInfosPopupWindow
 
 /**
  * create by niuxiaowei
  * date : 2021/7/30
+ * R.id.content view下的子view会对应一个InspectPage（它负责收集这个view下的所有的view信息），它的子view是 InspectItemView
  **/
 
+@SuppressLint("ViewConstructor")
 class InspectPage constructor(
         context: Context,
         private var childOfContentView: View
@@ -21,13 +27,13 @@ class InspectPage constructor(
 
 
     private var viewInfos = mutableListOf<InspectViewInfo>()
-    private val viewAttributesPopupWindowHelper =
-            ViewAttributesPopupWindow {
-                curShowedView = null
+    private val viewInfosPopupWindow =
+            ViewInfosPopupWindow {
+                curInspectedView = null
                 curInspectItemView?.setSelecte(false)
                 curInspectItemView = null
             }
-    private var curShowedView: View? = null
+    private var curInspectedView: View? = null
     private var curInspectItemView: InspectItemView? = null
     private var yOfContentView = -1
     private var mPaint: Paint = Paint()
@@ -68,33 +74,30 @@ class InspectPage constructor(
         }
     }
 
-    fun showInspectorView() {
+    fun showInspectorViews() {
         visibility = View.VISIBLE
         calYOfContentView()
         removeAllViews()
         collectInspectItemViews()
     }
 
-    fun hideInspectorView() {
+    fun hideInspectorViews() {
         visibility = View.GONE
         removeAllViews()
         viewInfos.clear()
     }
 
-    fun collectInspectItemViews() {
+    private fun collectInspectItemViews() {
         if (childOfContentView is ViewGroup) {
-            val innerParent = add(InspectViewInfo(childOfContentView), null)
-            collectInspectItemViewsForViewGroup(childOfContentView as ViewGroup, innerParent)
+            val parent = add(InspectViewInfo(childOfContentView), null)
+            collectInspectItemViewsForViewGroup(childOfContentView as ViewGroup, parent)
         } else {
             add(InspectViewInfo(childOfContentView), null)
         }
     }
 
 
-    private fun collectInspectItemViewsForViewGroup(
-            view: ViewGroup,
-            parentInspectItemView: InspectItemView? = null
-    ) {
+    private fun collectInspectItemViewsForViewGroup(view: ViewGroup, parent: InspectItemView? = null) {
         view.let {
             var childCount = 0
             childCount = it.childCount
@@ -102,16 +105,17 @@ class InspectPage constructor(
                 val child = it.getChildAt(index)
                 if (child != null && child.visibility == View.VISIBLE) {
                     if (child is ViewGroup) {
-                        val innerParent = add(InspectViewInfo(child), parentInspectItemView)
+                        val innerParent = add(InspectViewInfo(child), parent)
                         collectInspectItemViewsForViewGroup(child, innerParent)
                     } else {
-                        add(InspectViewInfo(child), parentInspectItemView)
+                        add(InspectViewInfo(child), parent)
                     }
                 }
             }
         }
     }
 
+    @SuppressLint("DrawAllocation")
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         for (i in 0 until childCount) {
             val inspectItemView = getChildAt(i)
@@ -135,19 +139,19 @@ class InspectPage constructor(
     }
 
 
-    fun showViewAttributes(view: View, inspectItemView: InspectItemView) {
-        curShowedView = view
+    fun showViewInfosPopupWindow(view: View, inspectItemView: InspectItemView) {
+        curInspectedView = view
         curInspectItemView = inspectItemView
-        viewAttributesPopupWindowHelper.showPopupWindow(context, view, inspectItemView)
+        viewInfosPopupWindow.showViewInfos(context, view, inspectItemView)
     }
 
-    fun hideViewAttributes() {
-        curShowedView = null
-        viewAttributesPopupWindowHelper.hidePopupWindow()
+    fun hideViewInfosPopupWindow() {
+        curInspectedView = null
+        viewInfosPopupWindow.hideViewInfos()
     }
 
-    fun curShowedView(): View? {
-        return curShowedView
+    fun curInspectedView(): View? {
+        return curInspectedView
     }
 
     data class InspectViewInfo(val view: View)

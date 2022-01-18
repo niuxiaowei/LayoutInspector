@@ -2,17 +2,15 @@ package com.example.layoutinspector;
 
 import android.app.AlertDialog;
 import android.app.Application;
-import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.mi.layoutinspector.IViewAttributeCollector;
-import com.mi.layoutinspector.InspectItemView;
 import com.mi.layoutinspector.LayoutInspector;
-import com.mi.layoutinspector.ViewAttribute;
-import com.mi.layoutinspector.ViewInspector;
+import com.mi.layoutinspector.viewinfos.viewattributes.IViewAttributeCollector;
+import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute;
+import com.mi.layoutinspector.inspect.ViewInspector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,7 +45,7 @@ public class App extends Application {
             public ViewAttribute collectViewAttribute(@NotNull View inspectView, @NotNull ViewInspector viewInspector) {
                 if (inspectView instanceof TextView) {
                     ViewAttribute viewAttribute = new ViewAttribute("修改TextView内容", "点击进行修改", v -> {
-                        viewInspector.hideViewAttributes();
+                        viewInspector.hideViewInfosPopupWindown();
                         TextView textView = (TextView) inspectView;
                         final EditText editText = new EditText(inspectView.getContext());
                         AlertDialog.Builder inputDialog =

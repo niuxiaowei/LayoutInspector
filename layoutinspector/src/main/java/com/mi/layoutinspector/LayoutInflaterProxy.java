@@ -18,8 +18,8 @@ import com.mi.layoutinspector.R;
  **/
 public class LayoutInflaterProxy {
 
-    static final int TAG_KEY_LAYOUT_NAME = R.id.tag_key_layout_name;
-    static final int TAG_KEY_INFLATE_METHOD_NAME = R.id.tag_key_inflate_method;
+    public static final int TAG_KEY_LAYOUT_NAME = R.id.tag_key_layout_name;
+    public static final int TAG_KEY_INFLATE_METHOD_NAME = R.id.tag_key_inflate_method;
 
     public static View inflate(LayoutInflater layoutInflater, int resource, ViewGroup root, Object[] objects) {
         View view = layoutInflater.inflate(resource, root);

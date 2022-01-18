@@ -1,4 +1,4 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.menu
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,7 +9,9 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import com.mi.layoutinspector.LayoutInspector
 import com.mi.layoutinspector.LayoutInspector.Companion.isViewGroupShowViewAttributes
+import com.mi.layoutinspector.R
 import kotlinx.android.synthetic.main.layoutinspector_popupwindow_more_view.view.*
 
 /**

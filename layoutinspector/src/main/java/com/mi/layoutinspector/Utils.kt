@@ -32,4 +32,10 @@ fun px2dip(value: Float): Float {
     return value / LayoutInspector.getDisplayMetrics().density + 0.5f;
 }
 
+fun getSuperClass(child: Class<*>, superClass: Class<*>): Class<*>? {
+    return if (child == superClass) {
+        child
+    } else getSuperClass(child.superclass, superClass)
+}
+
 

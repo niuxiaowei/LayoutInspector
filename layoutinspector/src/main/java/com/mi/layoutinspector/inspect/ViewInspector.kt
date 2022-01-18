@@ -1,4 +1,4 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.inspect
 
 import android.view.View
 
@@ -11,12 +11,12 @@ interface ViewInspector {
     /**
      * 隐藏 展示view属性的界面
      */
-    fun hideViewAttributes()
+    fun hideViewInfosPopupWindown()
 
     /**
      * 显示 展示view属性的界面
      */
-    fun showViewAttributes()
+    fun showViewInfosPopupWindow()
 
     /**
      * 设置当前的检查器 是否可以单机

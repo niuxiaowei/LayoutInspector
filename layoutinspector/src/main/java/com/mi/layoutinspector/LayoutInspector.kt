@@ -6,8 +6,9 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.ViewGroup
+import com.mi.layoutinspector.inspect.InspectPageManager
+import com.mi.layoutinspector.viewinfos.viewattributes.*
 import java.lang.IllegalArgumentException
 
 
