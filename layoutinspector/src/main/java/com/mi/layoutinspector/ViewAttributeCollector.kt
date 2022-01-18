@@ -1,7 +1,6 @@
 package com.mi.layoutinspector
 
 import android.util.Log
-import android.util.TypedValue.*
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -14,21 +13,21 @@ import android.widget.TextView
 interface IViewAttributeCollector {
     /**
      * 收集一个 viewDetail
-     * @param inspectView View 界面上真正显示的view
-     * @param inspectItemView 主要用来绘制inspectView的宽高布局的view
+     * @param inspectedView View 被收集属性的view
+     * @param viewInspector 具体的view检测器
      * @return ViewAttribute
      */
-    fun collectViewAttribute(inspectView: View, inspectItemView: InspectItemView): ViewAttribute? {
+    fun collectViewAttribute(inspectedView: View, viewInspector: ViewInspector): ViewAttribute? {
         return null
     }
 
     /**
      * 收集多个ViewDetails
-     * @param inspectView View  界面上真正显示的view
-     * @param inspectItemView 主要用来绘制inspectView的宽高布局的view
+     * @param inspectedView View 被收集属性的view
+     * @param viewInspector 具体的view检测器
      * @return MutableList<ViewAttribute>?
      */
-    fun collectViewAttributes(inspectView: View, inspectItemView: InspectItemView): List<ViewAttribute>? {
+    fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
         return null
     }
 }
@@ -43,17 +42,17 @@ private fun getUnitStr(): String {
 class ViewSizeCollector : IViewAttributeCollector {
 
 
-    override fun collectViewAttributes(inspectView: View, inspectItemView: InspectItemView): List<ViewAttribute>? {
+    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
-        result.add(ViewAttribute("大小", "宽：${getDimensionWithUnitName(inspectView.width.toFloat())} 高：${getDimensionWithUnitName(inspectView.height.toFloat())}"))
+        result.add(ViewAttribute("大小", "宽：${getDimensionWithUnitName(inspectedView.width.toFloat())} 高：${getDimensionWithUnitName(inspectedView.height.toFloat())}"))
 
-        result.add(ViewAttribute("坐标", "x: ${getDimensionWithUnitName(inspectView.x)} y:${getDimensionWithUnitName(inspectView.y)}"))
+        result.add(ViewAttribute("坐标", "x: ${getDimensionWithUnitName(inspectedView.x)} y:${getDimensionWithUnitName(inspectedView.y)}"))
 
-        result.add(ViewAttribute("padding", "left: ${getDimensionWithUnitName(inspectView.paddingLeft.toFloat())} right:${getDimensionWithUnitName(inspectView.paddingRight.toFloat())} " +
-                "top: ${getDimensionWithUnitName(inspectView.paddingTop.toFloat())} bottom:${getDimensionWithUnitName(inspectView.paddingBottom.toFloat())}"))
+        result.add(ViewAttribute("padding", "left: ${getDimensionWithUnitName(inspectedView.paddingLeft.toFloat())} right:${getDimensionWithUnitName(inspectedView.paddingRight.toFloat())} " +
+                "top: ${getDimensionWithUnitName(inspectedView.paddingTop.toFloat())} bottom:${getDimensionWithUnitName(inspectedView.paddingBottom.toFloat())}"))
 
-        if (inspectView.layoutParams is ViewGroup.MarginLayoutParams) {
-            val marginLP = inspectView.layoutParams as ViewGroup.MarginLayoutParams
+        if (inspectedView.layoutParams is ViewGroup.MarginLayoutParams) {
+            val marginLP = inspectedView.layoutParams as ViewGroup.MarginLayoutParams
             result.add(ViewAttribute("margin", "left: ${getDimensionWithUnitName(marginLP.leftMargin.toFloat())} right:${getDimensionWithUnitName(marginLP.rightMargin.toFloat())} " +
                     "top: ${getDimensionWithUnitName(marginLP.topMargin.toFloat())} bottom:${getDimensionWithUnitName(marginLP.bottomMargin.toFloat())}"))
         }
@@ -66,38 +65,37 @@ class ViewSizeCollector : IViewAttributeCollector {
  * view的id name和class信息收集器
  */
 class ViewIdClassCollector : IViewAttributeCollector {
-    override fun collectViewAttributes(inspectView: View, inspectItemView: InspectItemView): List<ViewAttribute>? {
+    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
         try {
-            val entryname: String = inspectView.resources.getResourceEntryName(inspectView.id)
+            val entryname: String = inspectedView.resources.getResourceEntryName(inspectedView.id)
             result.add(ViewAttribute("id名字", "R.id.$entryname"))
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-        result.add(ViewAttribute("类名", inspectView.javaClass.simpleName + ""))
+        result.add(ViewAttribute("类名", inspectedView.javaClass.simpleName + ""))
         return result
     }
 }
-
 
 
 /**
  * view点击事件信息收集器
  */
 class ViewClickInfoCollector : IViewAttributeCollector {
-    override fun collectViewAttributes(inspectView: View, inspectItemView: InspectItemView): List<ViewAttribute>? {
+    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
         result.add(ViewAttribute("view属性", "点击不显示view属性界面", View.OnClickListener {
-            inspectItemView.isClickable = false
-            inspectItemView.hideViewAttributes()
+            viewInspector.setClickable(false)
+            viewInspector.hideViewAttributes()
         }))
-        if (inspectView.parent != null) {
+        if (inspectedView.parent != null) {
             var entryname: String? = ""
-            if (inspectView.parent is ViewGroup) {
+            if (inspectedView.parent is ViewGroup) {
                 try {
-                    val parent = inspectView.parent as ViewGroup
-                    entryname = " (R.id." + inspectView.resources.getResourceEntryName(parent.id) + ")"
+                    val parent = inspectedView.parent as ViewGroup
+                    entryname = " (R.id." + inspectedView.resources.getResourceEntryName(parent.id) + ")"
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -105,12 +103,12 @@ class ViewClickInfoCollector : IViewAttributeCollector {
 
 
 
-            result.add(ViewAttribute("父控件", "${inspectView.parent.javaClass.simpleName}${entryname}", View.OnClickListener {
-                inspectItemView.hideViewAttributes()
-                inspectItemView.parentInspectItemView?.showViewAttributes()
+            result.add(ViewAttribute("父控件", "${inspectedView.parent.javaClass.simpleName}${entryname}", View.OnClickListener {
+                viewInspector.hideViewAttributes()
+                viewInspector.parent()?.showViewAttributes()
             }))
         }
-        result.add(ViewAttribute("是否设置点击事件", if (inspectView.hasOnClickListeners()) "是" else "否"))
+        result.add(ViewAttribute("是否设置点击事件", if (inspectedView.hasOnClickListeners()) "是" else "否"))
         return result
     }
 }
@@ -119,9 +117,9 @@ class ViewClickInfoCollector : IViewAttributeCollector {
  * view所属的layout文件已经被inflate出来的位置信息收集器
  */
 class ViewLayoutInfoCollector : IViewAttributeCollector {
-    override fun collectViewAttributes(inspectView: View, inspectItemView: InspectItemView): List<ViewAttribute>? {
+    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
-        val parentView = findParentWithLayoutName(inspectView)
+        val parentView = findParentWithLayoutName(inspectedView)
         if (parentView != null) {
             result.add(ViewAttribute("所属布局名称", "R.layout." + parentView.getTag(LayoutInflaterProxy.TAG_KEY_LAYOUT_NAME).toString()))
             val inflateMethodInfo = parentView.getTag(LayoutInflaterProxy.TAG_KEY_INFLATE_METHOD_NAME).toString()
@@ -154,15 +152,15 @@ class ViewLayoutInfoCollector : IViewAttributeCollector {
 }
 
 class ViewBackgroundCollector : IViewAttributeCollector {
-    override fun collectViewAttribute(inspectView: View, inspectItemView: InspectItemView): ViewAttribute? {
-        val viewClass: Class<*> = inspectView.javaClass
+    override fun collectViewAttribute(inspectedView: View, viewInspector: ViewInspector): ViewAttribute? {
+        val viewClass: Class<*> = inspectedView.javaClass
         try {
             val superClass = getSuperClass(viewClass, View::class.java)
             val field = superClass?.getDeclaredField("mBackgroundResource")
             field?.isAccessible = true
-            val id = field?.get(inspectView) as Int
+            val id = field?.get(inspectedView) as Int
             if (id > 0) {
-                val entryname: String = inspectView.resources.getResourceEntryName(id)
+                val entryname: String = inspectedView.resources.getResourceEntryName(id)
                 return ViewAttribute("背景", entryname + "")
             }
         } catch (e: NoSuchFieldException) {
@@ -181,38 +179,38 @@ fun getSuperClass(child: Class<*>, superClass: Class<*>): Class<*>? {
 }
 
 class ViewTextInfoCollector : IViewAttributeCollector {
-    override fun collectViewAttributes(inspectView: View, inspectItemView: InspectItemView): List<ViewAttribute>? {
-        if (inspectView is TextView) {
+    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
+        if (inspectedView is TextView) {
             val result = arrayListOf<ViewAttribute>()
-            val textResource = getTextResource(inspectView)
+            val textResource = getTextResource(inspectedView)
             if (textResource != null) {
                 result.add(textResource)
             }
 
             //文本
-            result.add(ViewAttribute("文本", inspectView.text.toString(), View.OnClickListener {
-                inspectItemView.hideViewAttributes()
-                val dialog = CustomDialog(inspectView.context, object : CustomDialog.IOkClickListener {
+            result.add(ViewAttribute("文本", inspectedView.text.toString(), View.OnClickListener {
+                viewInspector.hideViewAttributes()
+                val dialog = CustomDialog(inspectedView.context, object : CustomDialog.IOkClickListener {
                     override fun onOkClick(editMsg: String) {
                         if (editMsg.isNotEmpty()) {
-                            inspectView.text = editMsg
+                            inspectedView.text = editMsg
                         }
                     }
-                }, "请输入替换的文本", "${inspectView.text}")
+                }, "请输入替换的文本", "${inspectedView.text}")
                 dialog.show()
             }))
 
             //textcolor属性
             var textColor = ""
             try {
-                val color = inspectView.textColors.getColorForState(inspectView.drawableState, 0)
+                val color = inspectedView.textColors.getColorForState(inspectedView.drawableState, 0)
                 textColor = String.format("%x", color)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
             result.add(ViewAttribute("textcolor", textColor, View.OnClickListener {
-                inspectItemView.hideViewAttributes()
-                val dialog = CustomDialog(inspectView.context, object : CustomDialog.IOkClickListener {
+                viewInspector.hideViewAttributes()
+                val dialog = CustomDialog(inspectedView.context, object : CustomDialog.IOkClickListener {
                     override fun onOkClick(editMsg: String) {
                         if (editMsg.isNotEmpty()) {
                         }
@@ -222,7 +220,7 @@ class ViewTextInfoCollector : IViewAttributeCollector {
             }))
 
             //textsize
-            var textsizeStr = getDimensionWithUnitName(inspectView.textSize)
+            var textsizeStr = getDimensionWithUnitName(inspectedView.textSize)
             result.add(ViewAttribute("textsize", textsizeStr))
             return result
         }
@@ -250,7 +248,7 @@ class ViewTextInfoCollector : IViewAttributeCollector {
 }
 
 class ChildViewCollector : IViewAttributeCollector {
-    override fun collectViewAttributes(inspectView: View, inspectItemView: InspectItemView): List<ViewAttribute>? {
+    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
         fun getEntryName(view: View): String {
             var entryname: String = ""
@@ -262,14 +260,14 @@ class ChildViewCollector : IViewAttributeCollector {
             return entryname
         }
 
-        inspectItemView.getChilds()?.apply {
-            result.add(ViewAttribute("子控件个数",size.toString()))
+        viewInspector.childs()?.apply {
+            result.add(ViewAttribute("子控件个数", size.toString()))
         }
         var i = 0
-        inspectItemView.getChilds()?.forEach { child ->
+        viewInspector.childs()?.forEach { child ->
 
-            result.add(ViewAttribute("子控件${i++}", "${child.inspectView.javaClass.simpleName}${getEntryName(child.inspectView)}", View.OnClickListener {
-                inspectItemView.hideViewAttributes()
+            result.add(ViewAttribute("子控件${i++}", "${child.inspectedView().javaClass.simpleName}${getEntryName(child.inspectedView())}", View.OnClickListener {
+                viewInspector.hideViewAttributes()
                 child.showViewAttributes()
             }))
         }

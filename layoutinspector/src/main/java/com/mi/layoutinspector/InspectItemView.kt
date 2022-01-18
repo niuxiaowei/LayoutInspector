@@ -16,16 +16,16 @@ import android.view.ViewGroup
 @SuppressLint("ViewConstructor")
 class InspectItemView constructor(
         context: Context,
-        val inspectView: View,
+        private val inspectedView: View,
         val inspectPage: InspectPage,
         var isSetClick4View: Boolean,
-        var parentInspectItemView: InspectItemView?
-) : android.support.v7.widget.AppCompatTextView(context) {
+        private val parent: ViewInspector?
+) : android.support.v7.widget.AppCompatTextView(context), ViewInspector {
 
-    private var childs: MutableList<InspectItemView>? = null
+    private var childs: MutableList<ViewInspector>? = null
 
     init {
-        parentInspectItemView?.addChild(this)
+        parent?.addChild(this)
     }
 
     private var mPaint: Paint = Paint()
@@ -45,7 +45,7 @@ class InspectItemView constructor(
         mPaint.strokeWidth = STROKE_WIDTH  //画笔粗细
         if (isSetClick4View) {
             setOnClickListener {
-                if (inspectPage.curShowedView() == inspectView) {
+                if (inspectPage.curShowedView() == inspectedView) {
                     inspectPage.hideViewAttributes()
                     setSelecte(false)
                 } else {
@@ -55,26 +55,38 @@ class InspectItemView constructor(
         }
     }
 
-    fun addChild(child: InspectItemView) {
+    override fun addChild(child: ViewInspector) {
         if (childs == null) {
             childs = mutableListOf()
         }
         childs?.add(child)
     }
 
-    fun getChilds(): MutableList<InspectItemView>? {
+    override fun childs(): MutableList<ViewInspector>? {
         return childs
     }
 
-    fun hideViewAttributes() {
+    override fun hideViewAttributes() {
         inspectPage.hideViewAttributes()
         setSelecte(false)
     }
 
-    fun showViewAttributes() {
-        inspectPage.showViewAttributes(inspectView, this)
+    override fun showViewAttributes() {
+        inspectPage.showViewAttributes(inspectedView, this)
         setSelecte(true)
 
+    }
+
+    override fun setClickable(clickable: Boolean) {
+        super.setClickable(clickable)
+    }
+
+    override fun parent(): ViewInspector? {
+        return parent
+    }
+
+    override fun inspectedView(): View {
+        return inspectedView
     }
 
     fun setSelecte(select: Boolean) {
@@ -87,15 +99,15 @@ class InspectItemView constructor(
      * @param canvas Canvas?
      * @param paint Paint
      */
-    fun drawMargin(canvas: Canvas?, paint: Paint) {
-        if (inspectView.layoutParams is ViewGroup.MarginLayoutParams) {
+    internal fun drawMargin(canvas: Canvas?, paint: Paint) {
+        if (inspectedView.layoutParams is ViewGroup.MarginLayoutParams) {
             //横线长度
             val horLlineLen = 30.0
             val arrowOffsetX = 5.0
             val arrowOffsetY = 8.0
 
 
-            val marginLP = inspectView.layoutParams as ViewGroup.MarginLayoutParams
+            val marginLP = inspectedView.layoutParams as ViewGroup.MarginLayoutParams
             /**
              * 画top margin, 画出的样子如下
              *
@@ -231,17 +243,17 @@ class InspectItemView constructor(
 
         //画padding
         mPaint.color = COLOR_PADDING
-        if (inspectView.paddingTop > 0) {
-            canvas.drawRect(LEFT, TOP, width.toFloat(), inspectView.paddingTop.toFloat(), mPaint)
+        if (inspectedView.paddingTop > 0) {
+            canvas.drawRect(LEFT, TOP, width.toFloat(), inspectedView.paddingTop.toFloat(), mPaint)
         }
-        if (inspectView.paddingBottom > 0) {
-            canvas.drawRect(LEFT, height.toFloat() - inspectView.paddingBottom.toFloat(), width.toFloat(), height.toFloat(), mPaint)
+        if (inspectedView.paddingBottom > 0) {
+            canvas.drawRect(LEFT, height.toFloat() - inspectedView.paddingBottom.toFloat(), width.toFloat(), height.toFloat(), mPaint)
         }
-        if (inspectView.paddingLeft > 0) {
-            canvas.drawRect(LEFT, TOP, inspectView.paddingLeft.toFloat(), height.toFloat(), mPaint)
+        if (inspectedView.paddingLeft > 0) {
+            canvas.drawRect(LEFT, TOP, inspectedView.paddingLeft.toFloat(), height.toFloat(), mPaint)
         }
-        if (inspectView.paddingRight > 0) {
-            canvas.drawRect(width.toFloat() - inspectView.paddingRight, TOP, width.toFloat(), height.toFloat(), mPaint)
+        if (inspectedView.paddingRight > 0) {
+            canvas.drawRect(width.toFloat() - inspectedView.paddingRight, TOP, width.toFloat(), height.toFloat(), mPaint)
         }
 
         super.draw(canvas)

@@ -36,15 +36,15 @@ class InspectPage constructor(
         mPaint.color = ContextCompat.getColor(context, R.color.li_color_34b1f3)
         mPaint.strokeWidth = 2.0f
         //InspectPage的点击事件拦截掉
-        setOnClickListener{
-            Log.i("InspectPage","InspectPage  click")
+        setOnClickListener {
+            Log.i("InspectPage", "InspectPage  click")
         }
         visibility = View.GONE
     }
 
     private fun add(
             viewInfo: InspectViewInfo,
-            parentInspectItemView: InspectItemView?
+            parent: InspectItemView?
     ): InspectItemView {
         viewInfos.add(viewInfo)
         val isSetClick4View = !(viewInfo.view is ViewGroup && !LayoutInspector.isViewGroupShowViewAttributes)
@@ -53,9 +53,9 @@ class InspectPage constructor(
                 viewInfo.view,
                 this,
                 isSetClick4View,
-                parentInspectItemView
+                parent
         )
-        var lp = LayoutParams(viewInfo.view.width, viewInfo.view.height)
+        val lp = LayoutParams(viewInfo.view.width, viewInfo.view.height)
         addView(view, lp)
         return view
     }
@@ -83,7 +83,7 @@ class InspectPage constructor(
 
     fun collectInspectItemViews() {
         if (childOfContentView is ViewGroup) {
-            val innerParent =  add(InspectViewInfo(childOfContentView), null)
+            val innerParent = add(InspectViewInfo(childOfContentView), null)
             collectInspectItemViewsForViewGroup(childOfContentView as ViewGroup, innerParent)
         } else {
             add(InspectViewInfo(childOfContentView), null)
@@ -102,7 +102,7 @@ class InspectPage constructor(
                 val child = it.getChildAt(index)
                 if (child != null && child.visibility == View.VISIBLE) {
                     if (child is ViewGroup) {
-                        val innerParent =  add(InspectViewInfo(child), parentInspectItemView)
+                        val innerParent = add(InspectViewInfo(child), parentInspectItemView)
                         collectInspectItemViewsForViewGroup(child, innerParent)
                     } else {
                         add(InspectViewInfo(child), parentInspectItemView)
@@ -133,7 +133,7 @@ class InspectPage constructor(
         }
         super.dispatchDraw(canvas)
     }
-    
+
 
     fun showViewAttributes(view: View, inspectItemView: InspectItemView) {
         curShowedView = view

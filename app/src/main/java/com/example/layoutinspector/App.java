@@ -12,6 +12,7 @@ import com.mi.layoutinspector.IViewAttributeCollector;
 import com.mi.layoutinspector.InspectItemView;
 import com.mi.layoutinspector.LayoutInspector;
 import com.mi.layoutinspector.ViewAttribute;
+import com.mi.layoutinspector.ViewInspector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,16 +38,16 @@ public class App extends Application {
         LayoutInspector.Companion.regist(new IViewAttributeCollector() {
             @Nullable
             @Override
-            public List<ViewAttribute> collectViewAttributes(@NotNull View inspectView, @NotNull InspectItemView inspectItemView) {
+            public List<ViewAttribute> collectViewAttributes(@NotNull View inspectView, @NotNull ViewInspector viewInspector) {
                 return null;
             }
 
             @Nullable
             @Override
-            public ViewAttribute collectViewAttribute(@NotNull View inspectView, @NotNull InspectItemView inspectItemView) {
+            public ViewAttribute collectViewAttribute(@NotNull View inspectView, @NotNull ViewInspector viewInspector) {
                 if (inspectView instanceof TextView) {
                     ViewAttribute viewAttribute = new ViewAttribute("修改TextView内容", "点击进行修改", v -> {
-                        inspectItemView.hideViewAttributes();
+                        viewInspector.hideViewAttributes();
                         TextView textView = (TextView) inspectView;
                         final EditText editText = new EditText(inspectView.getContext());
                         AlertDialog.Builder inputDialog =
