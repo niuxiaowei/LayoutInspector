@@ -34,7 +34,6 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
         var unitsIsDP = false
         private var screenWidth: Int = 0
         private var screenHeight: Int = 0
-        private val childViewCollector = ChildViewCollector()
         private val layoutInspectors = mutableListOf<LayoutInspector>()
 
         init {
@@ -44,7 +43,6 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
             viewAttributesCollectors.add(ViewLayoutInfoCollector())
             viewAttributesCollectors.add(ViewBackgroundCollector())
             viewAttributesCollectors.add(ViewTextInfoCollector())
-            viewAttributesCollectors.add(childViewCollector)
         }
 
         /**
@@ -53,9 +51,6 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
          */
         fun regist(viewAttributeCollector: IViewAttributeCollector) {
             this.viewAttributesCollectors.add(viewAttributeCollector)
-            //吧childViewCollector放在最后
-            viewAttributesCollectors.remove(childViewCollector)
-            viewAttributesCollectors.add(childViewCollector)
         }
 
         private fun findLayoutInspector(activity: Activity): LayoutInspector? {

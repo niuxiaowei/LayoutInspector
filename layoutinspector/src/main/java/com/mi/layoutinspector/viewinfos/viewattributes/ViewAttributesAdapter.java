@@ -1,4 +1,4 @@
-package com.mi.layoutinspector.viewinfos;
+package com.mi.layoutinspector.viewinfos.viewattributes;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mi.layoutinspector.R;
-import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * create by niuxiaowei
  * date : 2021/7/30
  **/
-class ViewAttributesAdapter extends RecyclerView.Adapter<ViewAttributesAdapter.ViewHolder> {
+public class ViewAttributesAdapter extends RecyclerView.Adapter<ViewAttributesAdapter.ViewHolder> {
     private final String TAG = "FileListAdapter";
     private List<ViewAttribute> mDatas = null;
 
@@ -35,7 +34,7 @@ class ViewAttributesAdapter extends RecyclerView.Adapter<ViewAttributesAdapter.V
         }
     }
 
-    void setDatas(List<ViewAttribute> datas) {
+    public void setDatas(List<ViewAttribute> datas) {
         mDatas = datas;
         notifyDataSetChanged();
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_rec_15_radius_blue"
+    android:background="@drawable/layoutinspector_shape_rec_15_radius_blue"
     android:elevation="10dp"
     android:orientation="vertical"
     android:padding="10dp">
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
-        android:textColor="@color/black"
+        android:textColor="@color/li_black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_info"
         tools:text="ff" />
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
-        android:textColor="@color/black"
+        android:textColor="@color/li_black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_name"
         tools:text="ff" />
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="请选择单位:"
-            android:textColor="@color/black"
+            android:textColor="@color/li_black"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_id" />
 
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="ViewGroup显示View属性界面:"
-            android:textColor="@color/black"
+            android:textColor="@color/li_black"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_id" />
 

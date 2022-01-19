@@ -16,24 +16,6 @@ class ViewClickInfoCollector : IViewAttributeCollector {
             viewInspector.setClickable(false)
             viewInspector.hideViewInfosPopupWindown()
         }))
-        if (inspectedView.parent != null) {
-            var entryname: String? = ""
-            if (inspectedView.parent is ViewGroup) {
-                try {
-                    val parent = inspectedView.parent as ViewGroup
-                    entryname = " (R.id." + inspectedView.resources.getResourceEntryName(parent.id) + ")"
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-
-
-
-            result.add(ViewAttribute("父控件", "${inspectedView.parent.javaClass.simpleName}${entryname}", View.OnClickListener {
-                viewInspector.hideViewInfosPopupWindown()
-                viewInspector.parent()?.showViewInfosPopupWindow()
-            }))
-        }
         result.add(ViewAttribute("是否设置点击事件", if (inspectedView.hasOnClickListeners()) "是" else "否"))
         return result
     }

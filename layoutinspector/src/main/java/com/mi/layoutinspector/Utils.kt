@@ -2,6 +2,8 @@ package com.mi.layoutinspector
 
 import android.content.Context
 import android.util.DisplayMetrics
+import android.view.View
+import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute
 
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.
@@ -36,6 +38,16 @@ fun getSuperClass(child: Class<*>, superClass: Class<*>): Class<*>? {
     return if (child == superClass) {
         child
     } else getSuperClass(child.superclass, superClass)
+}
+
+fun getId(view: View): String? {
+    try {
+        val entryname: String = view.resources.getResourceEntryName(view.id)
+        return "R.id.$entryname"
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return null
 }
 
 
