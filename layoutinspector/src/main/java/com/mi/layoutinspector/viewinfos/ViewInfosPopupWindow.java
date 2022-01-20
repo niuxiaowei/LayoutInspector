@@ -42,9 +42,6 @@ public class ViewInfosPopupWindow {
     private RecyclerView viewHierarchyRecyclerView;
 
     private final PopupWindow.OnDismissListener onDismissListener;
-    private boolean isNotifyDismissEvent = true;
-
-    private final Handler handler = new Handler();
     private static int sPopupWindowHeight = LayoutInspector.Companion.getScreenHeight() / 2;
 
     public ViewInfosPopupWindow(PopupWindow.OnDismissListener onDismissListener) {
@@ -71,7 +68,7 @@ public class ViewInfosPopupWindow {
         realPopupWindow.setOutsideTouchable(true);
         realPopupWindow.setFocusable(true);
         realPopupWindow.setOnDismissListener(() -> {
-            if (onDismissListener != null && isNotifyDismissEvent) {
+            if (onDismissListener != null ) {
                 onDismissListener.onDismiss();
             }
         });
@@ -128,21 +125,9 @@ public class ViewInfosPopupWindow {
         viewHierarchyAdapter.setDatas(collectHierarchyItems(inspectItemView));
         viewHierarchyAdapter.setInspectItemView(inspectItemView);
 
-        handler.postDelayed(() -> {
-            int[] size = getPopupWindowSize();
-            //隐藏再显示
-            isNotifyDismissEvent = false;
-            realPopupWindow.dismiss();
-            isNotifyDismissEvent = true;
-            int[] popupWindowPos = calculatePopWindowPos(inspectedView, size[1], size[0]);
-            realPopupWindow.showAtLocation(inspectedView, Gravity.TOP, popupWindowPos[0], popupWindowPos[1]);
-            realPopupWindow.getContentView().setVisibility(View.VISIBLE);
-        }, 100);
-
-        //以下代码主要是解决popupwindow显示在anchorView位置不对的问题，主要原因是set了数据后，这时候直接获取popupwindow的高度获取不到正确值导致的，因此先把正确值获取到后，在延迟显示
-        realPopupWindow.getContentView().setVisibility(View.INVISIBLE);
-        //先随便给一个0 0 的坐标主要为了获取正确的高度
-        realPopupWindow.showAtLocation(inspectedView, Gravity.TOP | Gravity.START, 0, 0);
+        int[] size = getPopupWindowSize();
+        int[] popupWindowPos = calculatePopWindowPos(inspectedView, size[1], size[0]);
+        realPopupWindow.showAtLocation(inspectedView, Gravity.TOP, popupWindowPos[0], popupWindowPos[1]);
     }
 
     /**
@@ -258,7 +243,7 @@ public class ViewInfosPopupWindow {
         for (int i = 0; i < result.size(); i++) {
             HierarchyItem hierarchyItem = result.get(i);
             if (hierarchyItem.getParent() != null) {
-                hierarchyItem.setBlankCount(hierarchyItem.getParent().getBlankCount() + addBlankCount );
+                hierarchyItem.setBlankCount(hierarchyItem.getParent().getBlankCount() + addBlankCount);
             }
         }
         return result;

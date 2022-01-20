@@ -1,6 +1,7 @@
 package com.mi.layoutinspector.viewinfos.viewhierarchy;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +33,14 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView viewDesc;
-        View cliclableView;
+        TextView cliclableView;
+        View layout;
 
         public ViewHolder(View view) {
             super(view);
             viewDesc = view.findViewById(R.id.view_desc);
-            cliclableView = view.findViewById(R.id.clickable);
+            cliclableView = view.findViewById(R.id.label);
+            layout = view.findViewById(R.id.layout);
         }
     }
 
@@ -66,11 +69,22 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
             blankStr.append(" ");
         }
         holder.viewDesc.setText(blankStr + "-" + hierarchyItem.getViewDesc());
-        if (hierarchyItem.getInspectItemView() != null) {
+        if (hierarchyItem.getInspectItemView() != null && !hierarchyItem.isSelected()) {
             holder.itemView.setOnClickListener(v -> {
                 inspectItemView.hideViewInfosPopupWindown();
                 hierarchyItem.getInspectItemView().showViewInfosPopupWindow();
             });
+        } else {
+            holder.itemView.setOnClickListener(null);
+        }
+        if (hierarchyItem.isSelected()) {
+            holder.viewDesc.setTextColor( holder.layout.getResources().getColor(R.color.li_gift_number_second));
+            holder.viewDesc.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            holder.cliclableView.setText(R.string.li_cur_view_text);
+        }else{
+            holder.viewDesc.setTextColor( holder.layout.getResources().getColor(R.color.li_black));
+            holder.viewDesc.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            holder.cliclableView.setText(R.string.li_clickable_text);
         }
     }
 

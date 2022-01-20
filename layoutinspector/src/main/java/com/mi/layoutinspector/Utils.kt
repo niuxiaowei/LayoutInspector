@@ -1,9 +1,7 @@
 package com.mi.layoutinspector
 
-import android.content.Context
-import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
-import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute
 
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.
@@ -12,21 +10,34 @@ import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute
  * @date 2022/1/9.
  */
 
-fun getDimension(value: Float): Float {
+fun getDimension(value: Float): Int {
     return if (!LayoutInspector.unitsIsDP) {
-        value
+        value.toInt()
     } else {
-        px2dip(value)
+        px2dip(value).toInt()
     }
 }
 
 fun getDimensionWithUnitName(value: Float): String {
     val dimension = getDimension(value)
     return if (LayoutInspector.unitsIsDP) {
-        "${dimension.toInt()}dp"
+        "${dimension}dp"
     } else {
-        "${dimension.toInt()}px"
+        "${dimension}px"
     }
+}
+
+fun getUnitStr(): String {
+    return if (LayoutInspector.unitsIsDP) {
+        "dp"
+    } else {
+        "px"
+    }
+}
+
+
+fun dp2px(value: Float): Float {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, LayoutInspector.getDisplayMetrics());
 }
 
 fun px2dip(value: Float): Float {

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="li_clickable_text">可点击</string>
+    <string name="li_cur_view_text">当前view</string>
+</resources>

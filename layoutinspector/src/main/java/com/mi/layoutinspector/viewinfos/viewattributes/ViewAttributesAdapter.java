@@ -30,7 +30,7 @@ public class ViewAttributesAdapter extends RecyclerView.Adapter<ViewAttributesAd
         public ViewHolder(View view) {
             super(view);
             viewInfo = view.findViewById(R.id.item);
-            cliclableView = view.findViewById(R.id.clickable);
+            cliclableView = view.findViewById(R.id.label);
         }
     }
 

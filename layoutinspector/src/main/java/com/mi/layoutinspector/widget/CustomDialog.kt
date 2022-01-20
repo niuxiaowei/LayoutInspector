@@ -22,7 +22,7 @@ class CustomDialog(context: Context, private val okClickListener: IOkClickListen
             dismiss()
         }
         edit.apply {
-            hint = editHint
+            setText(editHint)
         }
     }
 

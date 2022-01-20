@@ -1,10 +1,11 @@
 package com.mi.layoutinspector.viewinfos.viewattributes
 
+import android.graphics.Color
+import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
+import com.mi.layoutinspector.*
 import com.mi.layoutinspector.inspect.ViewInspector
-import com.mi.layoutinspector.getDimensionWithUnitName
-import com.mi.layoutinspector.getSuperClass
 import com.mi.layoutinspector.widget.CustomDialog
 
 /**
@@ -46,15 +47,38 @@ class ViewTextInfoCollector : IViewAttributeCollector {
                 val dialog = CustomDialog(inspectedView.context, object : CustomDialog.IOkClickListener {
                     override fun onOkClick(editMsg: String) {
                         if (editMsg.isNotEmpty()) {
+                            try {
+                                inspectedView.setTextColor(Color.parseColor("#${editMsg.trim()}"))
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
                     }
-                }, "请输入颜色值", "$textColor")
+                }, "修改TextView颜色（16进制）", "$textColor")
                 dialog.show()
             }))
 
             //textsize
             var textsizeStr = getDimensionWithUnitName(inspectedView.textSize)
-            result.add(ViewAttribute("textsize", textsizeStr))
+            result.add(ViewAttribute("textsize", textsizeStr, View.OnClickListener {
+                viewInspector.hideViewInfosPopupWindown()
+                val dialog = CustomDialog(inspectedView.context, object : CustomDialog.IOkClickListener {
+                    override fun onOkClick(editMsg: String) {
+                        if (editMsg.isNotEmpty()) {
+                            try {
+                                var value = editMsg.toFloat()
+                                if (LayoutInspector.unitsIsDP) {
+                                    value = dp2px(value)
+                                }
+                                inspectedView.setTextSize(TypedValue.COMPLEX_UNIT_PX, value)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                }, "修改textView字体大小(单位${getUnitStr()})", getDimension(inspectedView.textSize).toString())
+                dialog.show()
+            }))
             return result
         }
         return null
