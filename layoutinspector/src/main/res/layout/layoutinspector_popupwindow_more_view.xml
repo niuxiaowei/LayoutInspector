@@ -16,9 +16,17 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
         android:textColor="@color/li_black"
+        android:textSize="@dimen/li_more_view_text_size"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_info"
         tools:text="ff" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/li_divider_height"
+        android:background="@color/li_color_B2B2B2"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
 
     <TextView
         android:id="@+id/layout_id"
@@ -27,9 +35,36 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
         android:textColor="@color/li_black"
+        android:textSize="@dimen/li_more_view_text_size"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_name"
         tools:text="ff" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/li_divider_height"
+        android:background="@color/li_color_B2B2B2"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
+
+    <TextView
+        android:id="@+id/fragments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/li_black"
+        android:textSize="9dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_name"
+        tools:text="ff" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/li_divider_height"
+        android:background="@color/li_color_B2B2B2"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,6 +80,7 @@
             android:layout_marginLeft="10dp"
             android:text="请选择单位:"
             android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_id" />
 
@@ -63,16 +99,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="dp" />
+                android:text="dp"
+                android:textSize="@dimen/li_more_view_text_size" />
 
             <RadioButton
                 android:id="@+id/px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="px" />
+                android:text="px"
+                android:textSize="@dimen/li_more_view_text_size" />
         </RadioGroup>
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/li_divider_height"
+        android:background="@color/li_color_B2B2B2"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,6 +132,7 @@
             android:layout_marginLeft="10dp"
             android:text="ViewGroup显示View属性界面:"
             android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_id" />
 
@@ -106,13 +151,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="是" />
+                android:text="是"
+
+                android:textSize="@dimen/li_more_view_text_size" />
 
             <RadioButton
                 android:id="@+id/no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="否" />
+                android:text="否"
+
+                android:textSize="@dimen/li_more_view_text_size" />
         </RadioGroup>
     </LinearLayout>
 

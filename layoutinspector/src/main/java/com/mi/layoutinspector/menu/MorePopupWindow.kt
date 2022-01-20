@@ -21,16 +21,11 @@ import kotlinx.android.synthetic.main.layoutinspector_popupwindow_more_view.view
 class MorePopupWindow {
     private var realPopupWindow: PopupWindow? = null
     private var contentView: View? = null
-    private var dpPxGroup: RadioGroup? = null
-    private var dpRadio: RadioButton? = null
-    private var pxRadio: RadioButton? = null
-
-    private var viewGroupShowViewAttributesGroup: RadioGroup? = null
-    private var viewGroupShowViewAttributesYesRadio: RadioButton? = null
-    private var viewGroupShowViewAttributesNoRadio: RadioButton? = null
+    private var layoutInspector:LayoutInspector? = null
 
     @SuppressLint("SetTextI18n")
     fun showPopupWindow(layoutInspector: LayoutInspector, context: Context, anchor: View) {
+        this.layoutInspector = layoutInspector
         if (realPopupWindow == null) {
             contentView = LayoutInflater.from(context).inflate(R.layout.layoutinspector_popupwindow_more_view, null)
             realPopupWindow = object : PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT) {}
@@ -47,14 +42,12 @@ class MorePopupWindow {
         }
         setDpPxRadioState()
         setResponseCLickState()
+        initFragmentsView()
         realPopupWindow!!.showAsDropDown(anchor, 2, 10, Gravity.START)
     }
 
     private fun initUnitsView() {
-        dpPxGroup = contentView?.findViewById(R.id.dp_px_group)
-        dpRadio = contentView?.findViewById(R.id.dp)
-        pxRadio = contentView?.findViewById(R.id.px)
-        dpPxGroup?.setOnCheckedChangeListener { radioGroup, id ->
+        contentView?.dp_px_group?.setOnCheckedChangeListener { radioGroup, id ->
             when (id) {
                 R.id.dp -> LayoutInspector.unitsIsDP = true
                 R.id.px -> LayoutInspector.unitsIsDP = false
@@ -62,11 +55,21 @@ class MorePopupWindow {
         }
     }
 
+    private fun initFragmentsView() {
+        var fragmentsStr = ""
+        var index = 0
+        layoutInspector?.fragments?.getFragmentClassNames()?.forEach {
+            if (index++ == 0) {
+                fragmentsStr += "当前fragment  $it \n"
+            } else {
+                fragmentsStr += "              $it \n"
+            }
+        }
+        contentView?.fragments?.text = fragmentsStr
+    }
+
     private fun initViewGroupShowViews() {
-        viewGroupShowViewAttributesGroup = contentView?.findViewById(R.id.viewgroup_show_group)
-        viewGroupShowViewAttributesYesRadio = contentView?.findViewById(R.id.yes)
-        viewGroupShowViewAttributesNoRadio = contentView?.findViewById(R.id.no)
-        viewGroupShowViewAttributesGroup?.setOnCheckedChangeListener { radioGroup, id ->
+        contentView?.viewgroup_show_group?.setOnCheckedChangeListener { radioGroup, id ->
             when (id) {
                 R.id.yes -> isViewGroupShowViewAttributes = true
                 R.id.no -> isViewGroupShowViewAttributes = false
@@ -75,22 +78,27 @@ class MorePopupWindow {
     }
 
     private fun setDpPxRadioState() {
-        if (LayoutInspector.unitsIsDP) {
-            dpRadio?.isChecked = true
-            pxRadio?.isChecked = false
-        } else {
-            dpRadio?.isChecked = false
-            pxRadio?.isChecked = true
+        contentView?.apply {
+            if (LayoutInspector.unitsIsDP) {
+                dp.isChecked = true
+                px.isChecked = false
+            } else {
+                dp.isChecked = false
+                px.isChecked = true
+            }
         }
+
     }
 
     private fun setResponseCLickState() {
-        if (isViewGroupShowViewAttributes) {
-            viewGroupShowViewAttributesYesRadio?.isChecked = true
-            viewGroupShowViewAttributesNoRadio?.isChecked = false
-        } else {
-            viewGroupShowViewAttributesYesRadio?.isChecked = false
-            viewGroupShowViewAttributesNoRadio?.isChecked = true
+        contentView?.apply {
+            if (isViewGroupShowViewAttributes) {
+                yes.isChecked = true
+                no?.isChecked = false
+            } else {
+                yes.isChecked = false
+                no.isChecked = true
+            }
         }
     }
 }

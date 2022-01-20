@@ -4,7 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
+import android.support.v4.app.FragmentManager
 import android.util.DisplayMetrics
 import android.view.ViewGroup
 import com.mi.layoutinspector.inspect.InspectPageManager
@@ -15,6 +19,7 @@ import java.lang.IllegalArgumentException
 /**
  * create by niuxiaowei
  * date : 21-7-16
+ * 一个Activity对应一个LayoutInspector
  **/
 class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
 
@@ -22,11 +27,16 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
     var contentViewIdName: String? = null
     var activityName: String? = null
     private var inspectPageManager: InspectPageManager? = null
+    val fragments = Fragments(activity)
+
+
+    init {
+        onActivityCreate()
+    }
 
     companion object {
         //ViewGroup是否显示 view的属性界面
         var isViewGroupShowViewAttributes = true
-        private val TAG = "LayoutInspector"
         private var viewAttributesCollectors = arrayListOf<IViewAttributeCollector>()
         private var application: Application? = null
 
@@ -36,6 +46,7 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
         private var screenHeight: Int = 0
         private val layoutInspectors = mutableListOf<LayoutInspector>()
 
+
         init {
             viewAttributesCollectors.add(ViewIdClassCollector())
             viewAttributesCollectors.add(ViewSizeCollector())
@@ -44,6 +55,7 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
             viewAttributesCollectors.add(ViewBackgroundCollector())
             viewAttributesCollectors.add(ViewTextInfoCollector())
         }
+
 
         /**
          * 注册IViewAttributeCollector事件
@@ -73,7 +85,7 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
 
                 override fun onActivityDestroyed(activity: Activity) {
                     findLayoutInspector(activity)?.let {
-                        it.destoryEnd()
+                        it.onActivityDestory()
                         layoutInspectors.remove(it)
                     }
 
@@ -90,7 +102,7 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
                 }
 
                 override fun onActivityResumed(activity: Activity) {
-                    findLayoutInspector(activity)?.createEnd()
+                    findLayoutInspector(activity)?.init()
                 }
 
             })
@@ -128,9 +140,13 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
         }
     }
 
+    private fun onActivityCreate() {
+        fragments.registerFragmentLifecycle()
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
-    fun createEnd() {
+    fun init() {
         if (contentView != null) {
             return
         }
@@ -140,7 +156,6 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
     }
 
     private fun createActivityInfo() {
-        //初始化一些数据
         try {
             contentViewIdName = contentViewId?.let { activity.resources.getResourceEntryName(it) }
         } catch (e: Exception) {
@@ -150,8 +165,8 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
     }
 
 
-    fun destoryEnd() {
-
+    private fun onActivityDestory() {
+        fragments.unRegisterFragmentLifecycle()
     }
 
 }
