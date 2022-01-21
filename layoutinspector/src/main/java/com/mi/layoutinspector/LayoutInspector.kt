@@ -21,7 +21,7 @@ import java.lang.IllegalArgumentException
  * date : 21-7-16
  * 一个Activity对应一个LayoutInspector
  **/
-class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
+class LayoutInspector(val activity: Activity) {
 
     private var contentView: ViewGroup? = null
     var contentViewIdName: String? = null
@@ -148,10 +148,17 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
     }
 
     private fun createActivityInfo() {
-        try {
-            contentViewIdName = contentViewId?.let { activity.resources.getResourceEntryName(it) }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            try {
+                val layoutId = contentView?.getChildAt(0)?.sourceLayoutResId
+                if (layoutId != null) {
+                    if (layoutId > 0) {
+                        contentViewIdName = activity.resources.getResourceEntryName(layoutId)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
         activityName = activity.javaClass.simpleName
     }
