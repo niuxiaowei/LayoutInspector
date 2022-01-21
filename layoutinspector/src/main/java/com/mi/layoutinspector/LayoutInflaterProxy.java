@@ -2,6 +2,7 @@ package com.mi.layoutinspector;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
@@ -55,6 +56,11 @@ public class LayoutInflaterProxy {
         View view = layoutInflater.inflate(resource, root, attachToRoot);
         setTagInfoForView(view, resource, objects, LayoutInspector.Companion.getContext().getResources());
         return view;
+    }
+
+    public static void show(Dialog dialog) {
+        Log.i("LayoutInflaterImpl", "Dialog show:" + dialog);
+        dialog.show();
     }
 
 }

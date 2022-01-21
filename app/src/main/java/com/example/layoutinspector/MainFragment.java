@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.mi.layoutinspector.widget.CustomDialog;
+
+import org.jetbrains.annotations.NotNull;
+
 
 /**
  * create by niuxiaowei
@@ -29,6 +33,7 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -42,12 +47,24 @@ public class MainFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.bottom).setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "hello bottom", Toast.LENGTH_LONG).show();
-            }
+        view.findViewById(R.id.show_toast).setOnClickListener(v -> Toast.makeText(getContext(), "hello bottom", Toast.LENGTH_LONG).show());
+
+        view.findViewById(R.id.show_dialog).setOnClickListener(v -> {
+            new CustomDialog(getContext(), new CustomDialog.IOkClickListener() {
+                @Override
+                public void onOkClick(@NotNull String editMsg) {
+                    Toast.makeText(getContext(), "ok click", Toast.LENGTH_LONG).show();
+                }
+            }, "我是一个对话框", "没有点击事件").show();
+        });
+
+        view.findViewById(R.id.show_pupupwindow).setOnClickListener(v -> {
+            new CustomDialog(getContext(), new CustomDialog.IOkClickListener() {
+                @Override
+                public void onOkClick(@NotNull String editMsg) {
+                    Toast.makeText(getContext(), "ok click", Toast.LENGTH_LONG).show();
+                }
+            }, "我是一个对话框", "没有点击事件").show();
         });
     }
 

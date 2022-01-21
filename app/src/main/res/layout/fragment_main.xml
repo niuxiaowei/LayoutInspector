@@ -29,14 +29,14 @@
 
 
     <TextView
-        android:id="@+id/click2"
+        android:id="@+id/show_dialog"
         android:layout_marginTop="20dp"
         android:padding="5dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:text="第三行" />
+        android:text="弹一个dialog" />
 
 
     <TextView
@@ -65,13 +65,14 @@
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:padding="5dp"
+            android:id="@+id/show_pupupwindow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:text="第五行" />
+            android:text="谈一个popupwindow" />
 
         <TextView
-            android:id="@+id/bottom"
+            android:id="@+id/show_toast"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:padding="5dp"
@@ -80,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:text="第六行" />
+            android:text="弹一个toast" />
     </LinearLayout>
 
 

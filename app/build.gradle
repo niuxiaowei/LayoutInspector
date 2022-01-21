@@ -110,6 +110,17 @@ replaceMethod {
             }
         }
 
+        register {
+            replace {
+                invokeType "ins"
+                className "android.app.Dialog"
+                methodName "show"
+            }
+            by {
+                className = "com.mi.layoutinspector.LayoutInflaterProxy"
+                methodName = "show"
+            }
+        }
 
     }
 }

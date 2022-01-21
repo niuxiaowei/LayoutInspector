@@ -30,7 +30,7 @@
 
 
     <TextView
-        android:id="@+id/click2"
+        android:id="@+id/show_dialog"
         android:layout_marginTop="20dp"
         android:padding="5dp"
         android:layout_gravity="center_horizontal"
