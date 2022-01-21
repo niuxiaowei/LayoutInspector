@@ -1,7 +1,8 @@
-package com.mi.layoutinspector
+package com.mi.layoutinspector.utils
 
 import android.util.TypedValue
 import android.view.View
+import com.mi.layoutinspector.LayoutInspector
 
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.

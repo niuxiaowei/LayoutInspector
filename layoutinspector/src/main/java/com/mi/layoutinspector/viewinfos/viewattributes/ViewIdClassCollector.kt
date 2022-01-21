@@ -1,7 +1,7 @@
 package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.view.View
-import com.mi.layoutinspector.getId
+import com.mi.layoutinspector.utils.getId
 import com.mi.layoutinspector.inspect.ViewInspector
 
 /**

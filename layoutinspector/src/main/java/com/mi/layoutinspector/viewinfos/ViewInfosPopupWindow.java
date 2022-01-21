@@ -22,6 +22,8 @@ import com.mi.layoutinspector.viewinfos.viewhierarchy.ViewHierarchyAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mi.layoutinspector.utils.ScreenKt.screenIsPortrait;
+
 
 /**
  * create by niuxiaowei
@@ -42,7 +44,7 @@ public class ViewInfosPopupWindow {
     private RecyclerView viewHierarchyRecyclerView;
 
     private final PopupWindow.OnDismissListener onDismissListener;
-    private static int sPopupWindowHeight = LayoutInspector.Companion.getScreenHeight() / 2;
+
 
     public ViewInfosPopupWindow(PopupWindow.OnDismissListener onDismissListener) {
         this.onDismissListener = onDismissListener;
@@ -58,17 +60,26 @@ public class ViewInfosPopupWindow {
         realPopupWindow.dismiss();
     }
 
+    private int getPopupWindowHeight(Context context) {
+        if (screenIsPortrait(context)) {
+            return (int) (LayoutInspector.Companion.getScreenHeight() * 0.45);
+        } else {
+            return (int) (LayoutInspector.Companion.getScreenHeight() * 0.9);
+
+        }
+    }
+
 
     private void initRealPopupWindow(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layoutinspector_popupwindow_detail_view, null);
         initViewAttributeViews(view, context);
         initViewHierarchyViews(view, context);
-        realPopupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, sPopupWindowHeight) {
+        realPopupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, getPopupWindowHeight(context)) {
         };
         realPopupWindow.setOutsideTouchable(true);
         realPopupWindow.setFocusable(true);
         realPopupWindow.setOnDismissListener(() -> {
-            if (onDismissListener != null ) {
+            if (onDismissListener != null) {
                 onDismissListener.onDismiss();
             }
         });
@@ -118,6 +129,7 @@ public class ViewInfosPopupWindow {
         if (realPopupWindow == null) {
             initRealPopupWindow(context);
         }
+        realPopupWindow.setHeight(getPopupWindowHeight(context));
 
         //设置数据
         viewAttributesAdapter.setDatas(collectViewAttributes(inspectedView, inspectItemView));

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.mi.layoutinspector.LayoutInspector
 import com.mi.layoutinspector.R
+import com.mi.layoutinspector.utils.screenIsPortrait
 import com.mi.layoutinspector.viewinfos.ViewInfosPopupWindow
 
 /**
@@ -35,8 +36,11 @@ class InspectPage constructor(
             }
     private var curInspectedView: View? = null
     private var curInspectItemView: InspectItemView? = null
-    private var yOfContentView = -1
+    private var offsetY = -1
+    private var offsetX = -1
     private var mPaint: Paint = Paint()
+
+    private var preScreenOrientation = screenIsPortrait(context)
 
     init {
         mPaint.color = ContextCompat.getColor(context, R.color.li_color_34b1f3)
@@ -66,17 +70,23 @@ class InspectPage constructor(
         return view
     }
 
-    private fun calYOfContentView() {
-        if (yOfContentView == -1) {
+    private fun calOffset() {
+        if (preScreenOrientation != screenIsPortrait(context)) {
+            offsetX = -1
+            offsetY = -1
+        }
+        preScreenOrientation = screenIsPortrait(context)
+        if (offsetY == -1) {
             val location = IntArray(2)
             childOfContentView.getLocationOnScreen(location)
-            yOfContentView = location[1]
+            offsetY = location[1]
+            offsetX = location[0]
         }
     }
 
     fun showInspectorViews() {
         visibility = View.VISIBLE
-        calYOfContentView()
+        calOffset()
         removeAllViews()
         collectInspectItemViews()
     }
@@ -118,13 +128,16 @@ class InspectPage constructor(
     @SuppressLint("DrawAllocation")
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         for (i in 0 until childCount) {
-            val inspectItemView = getChildAt(i)
+            val inspectItemView = getChildAt(i) as InspectItemView
             val viewInfo = viewInfos[i]
             val location = IntArray(2)
             viewInfo.view.getLocationOnScreen(location)
-            val x = location[0] // view距离 屏幕左边的距离（即x轴方向）
-            val y = location[1] - yOfContentView // view距离 屏幕顶边的距离（即y轴方向）
-            inspectItemView.layout(x, y, x + viewInfo.view.width, y + viewInfo.view.height)
+            val x = location[0] - offsetX// view距离 屏幕左边的距离（即x轴方向）
+            val y = location[1] - offsetY // view距离 屏幕顶边的距离（即y轴方向）
+            inspectItemView.apply {
+                layout(x, y, x + viewInfo.view.width, y + viewInfo.view.height)
+                isOutOfScreen = x * y < 0 || x >= this@InspectPage.measuredWidth || y >= this@InspectPage.measuredHeight
+            }
         }
     }
 

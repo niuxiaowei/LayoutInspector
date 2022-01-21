@@ -2,7 +2,7 @@ package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.view.View
 import com.mi.layoutinspector.inspect.ViewInspector
-import com.mi.layoutinspector.getSuperClass
+import com.mi.layoutinspector.utils.getSuperClass
 
 /**
  * create by niuxiaowei

@@ -34,10 +34,21 @@
             android:textColor="#000000"
             android:textSize="10dp"
             android:layout_gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-        </TextView>
+        <TextView
+            android:id="@+id/not_clickable_reason"
+            android:layout_marginLeft="2dp"
+            android:gravity="center_vertical"
+            tools:text="faffed"
+            android:visibility="gone"
+            android:textColor="@color/li_color_5a5a5a_60"
+            android:textSize="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <View

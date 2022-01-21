@@ -42,6 +42,13 @@ class InspectItemView constructor(
 
     private var isSelecte: Boolean = false
 
+    //InspectItemView是否超出了屏幕
+    var isOutOfScreen: Boolean = false
+
+    // InspectItemView大小是否是小于等于0
+    var sizeIsZero: Boolean = false
+        get() = width * height <= 0
+
     init {
         mPaint = Paint()
         mPaint.color = COLOR_BORDER
@@ -103,6 +110,9 @@ class InspectItemView constructor(
      * @param paint Paint
      */
     internal fun drawMargin(canvas: Canvas?, paint: Paint) {
+        if (sizeIsZero) {
+            return
+        }
         if (inspectedView.layoutParams is ViewGroup.MarginLayoutParams) {
             //横线长度
             val horLlineLen = 30.0
@@ -200,7 +210,9 @@ class InspectItemView constructor(
     }
 
     override fun draw(canvas: Canvas?) {
-
+        if (sizeIsZero) {
+            return
+        }
         val width = this.width
         val height = this.height
         val LEFT = 0.0f

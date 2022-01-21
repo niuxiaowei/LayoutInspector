@@ -120,19 +120,11 @@ class LayoutInspector(val activity: Activity, var contentViewId: Int? = 0) {
         }
 
         fun getScreenWidth(): Int {
-            if (screenWidth > 0) {
-                return screenWidth
-            }
-            screenWidth = getDisplayMetrics().widthPixels
-            return screenWidth
+            return getDisplayMetrics().widthPixels
         }
 
         fun getScreenHeight(): Int {
-            if (screenHeight > 0) {
-                return screenHeight
-            }
-            screenHeight = getDisplayMetrics().heightPixels
-            return screenHeight
+            return getDisplayMetrics().heightPixels
         }
 
         fun getViewAttributesCollectors(): List<IViewAttributeCollector> {

@@ -4,6 +4,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.mi.layoutinspector.*
 import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.utils.dp2px
+import com.mi.layoutinspector.utils.getDimension
+import com.mi.layoutinspector.utils.getDimensionWithUnitName
+import com.mi.layoutinspector.utils.getUnitStr
 import com.mi.layoutinspector.widget.CustomDialog
 
 /**
@@ -19,7 +23,9 @@ class ViewSizeCollector : IViewAttributeCollector {
         result.add(ViewAttribute("宽", "${getDimensionWithUnitName(inspectedView.width.toFloat())} "))
         result.add(ViewAttribute("高", "${getDimensionWithUnitName(inspectedView.height.toFloat())} "))
 
-        result.add(ViewAttribute("坐标", "x: ${getDimensionWithUnitName(inspectedView.x)} y:${getDimensionWithUnitName(inspectedView.y)}"))
+        val location = IntArray(2)
+        inspectedView.getLocationOnScreen(location)
+        result.add(ViewAttribute("坐标", "x: ${getDimensionWithUnitName(location[0].toFloat())} y:${getDimensionWithUnitName(location[1].toFloat())}"))
 
         result.add(ViewAttribute("paddingLeft", getDimensionWithUnitName(inspectedView.paddingLeft.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(inspectedView.paddingLeft.toFloat()).toString(), OptType.PADDING_LEFT)))
         result.add(ViewAttribute("paddingRight", getDimensionWithUnitName(inspectedView.paddingRight.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(inspectedView.paddingRight.toFloat()).toString(), OptType.PADDING_RIGHT)))
