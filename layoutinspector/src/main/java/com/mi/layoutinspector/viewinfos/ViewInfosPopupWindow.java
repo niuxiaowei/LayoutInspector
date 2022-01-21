@@ -139,7 +139,7 @@ public class ViewInfosPopupWindow {
 
         int[] size = getPopupWindowSize();
         int[] popupWindowPos = calculatePopWindowPos(inspectedView, size[1], size[0]);
-        realPopupWindow.showAtLocation(inspectedView, Gravity.TOP, popupWindowPos[0], popupWindowPos[1]);
+        realPopupWindow.showAtLocation(inspectItemView, Gravity.LEFT | Gravity.TOP, popupWindowPos[0], popupWindowPos[1]);
     }
 
     /**
@@ -156,28 +156,40 @@ public class ViewInfosPopupWindow {
      * 计算出来的位置，y方向就在anchorView的上面和下面对齐显示，x方向就是与屏幕右边对齐显示
      * 如果anchorView的位置有变化，就可以适当自己额外加入偏移来修正
      *
-     * @param anchorView   呼出window的view
-     * @param windowHeight
-     * @param windowWidth
+     * @param anchorView  呼出window的view
+     * @param popupHeight
+     * @param popupWidth
      * @return window显示的左上角的xOff, yOff坐标
      */
-    private static int[] calculatePopWindowPos(final View anchorView, final int windowHeight, final int windowWidth) {
-        final int[] windowPos = new int[2];
+    private static int[] calculatePopWindowPos(final View anchorView, final int popupHeight, final int popupWidth) {
+        final int[] result = new int[2];
         final int[] anchorLoc = new int[2];
         // 获取锚点View在屏幕上的左上角坐标位置
         anchorView.getLocationOnScreen(anchorLoc);
         final int anchorHeight = anchorView.getHeight();
         final int anchorWidth = anchorView.getWidth();
-        // 判断需要向上弹出还是向下弹出显示
-        final boolean isNeedShowUp = (LayoutInspector.Companion.getScreenHeight() - anchorLoc[1] - anchorHeight < windowHeight);
-        if (isNeedShowUp) {
-            windowPos[0] = anchorLoc[0] + anchorWidth / 2 - windowWidth / 2;
-            windowPos[1] = anchorLoc[1] - windowHeight;
+        if (screenIsPortrait(anchorView.getContext())) {
+            // 判断需要在anchorView向上弹出还是向下弹出显示
+            final boolean isNeedShowUp = (LayoutInspector.Companion.getScreenHeight() - anchorLoc[1] - anchorHeight < popupHeight);
+            result[0] = anchorLoc[0] + anchorWidth / 2 - popupWidth / 2;
+            if (isNeedShowUp) {
+                result[1] = anchorLoc[1] - popupHeight;
+            } else {
+                result[1] = anchorLoc[1] + anchorHeight;
+            }
         } else {
-            windowPos[0] = anchorLoc[0] + anchorWidth / 2 - windowWidth / 2;
-            windowPos[1] = anchorLoc[1] + anchorHeight;
+            anchorLoc[0] = (int) anchorView.getX();
+            anchorLoc[1] = (int) anchorView.getY();
+            // 判断需要左anchorView边还是右边弹出
+            final boolean isNeedShowRight = (anchorLoc[0]+ anchorWidth+popupWidth > LayoutInspector.Companion.getScreenWidth() );
+            if (isNeedShowRight) {
+                result[0] = anchorLoc[0] - popupWidth;
+            } else {
+                result[0] = anchorLoc[0] + anchorWidth;
+            }
+            result[1] = 0;
         }
-        return windowPos;
+        return result;
     }
 
     private List<ViewAttribute> collectViewAttributes(View inspectedView, InspectItemView inspectItemView) {
