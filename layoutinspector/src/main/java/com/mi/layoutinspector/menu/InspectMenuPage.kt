@@ -74,7 +74,7 @@ class InspectMenuPage(context: Context,
                 val offsetY = y - lastY
                 // 在当前left、top、right、bottom的基础上加上偏移量
                 val lp = parentView.layoutParams as LayoutParams
-                val isInScreen = (lp.leftMargin + offsetX > 0 && lp.leftMargin + offsetX + menuViewWidth < LayoutInspector.getScreenWidth() && lp.topMargin + offsetY > 0 && lp.topMargin + offsetY + menuViewHeight + 600 < LayoutInspector.getScreenHeight())
+                val isInScreen = (lp.leftMargin + offsetX > 0 && lp.leftMargin + offsetX + menuViewWidth < LayoutInspector.getScreenWidth() && lp.topMargin + offsetY > 0 && lp.topMargin + offsetY + menuViewHeight < LayoutInspector.getScreenHeight())
                 if (isInScreen) {
                     lp.leftMargin = lp.leftMargin + offsetX
                     lp.topMargin = lp.topMargin + offsetY
