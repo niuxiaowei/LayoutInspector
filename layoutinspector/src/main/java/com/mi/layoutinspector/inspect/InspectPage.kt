@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.PopupWindow
 import com.mi.layoutinspector.LayoutInspector
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.utils.screenIsPortrait
@@ -22,18 +23,18 @@ import com.mi.layoutinspector.viewinfos.ViewInfosPopupWindow
 
 @SuppressLint("ViewConstructor")
 class InspectPage constructor(
-        context: Context,
-        private var childOfContentView: View
+    context: Context,
+    private var childOfContentView: View,
+    private val decorView: View?
 ) : FrameLayout(context) {
-
 
     private var viewInfos = mutableListOf<InspectViewInfo>()
     private val viewInfosPopupWindow =
-            ViewInfosPopupWindow {
-                curInspectedView = null
-                curInspectItemView?.setSelecte(false)
-                curInspectItemView = null
-            }
+        ViewInfosPopupWindow(decorView, PopupWindow.OnDismissListener {
+            curInspectedView = null
+            curInspectItemView?.setSelecte(false)
+            curInspectItemView = null
+        })
     private var curInspectedView: View? = null
     private var curInspectItemView: InspectItemView? = null
     private var offsetY = -1
@@ -53,17 +54,18 @@ class InspectPage constructor(
     }
 
     private fun add(
-            viewInfo: InspectViewInfo,
-            parent: InspectItemView?
+        viewInfo: InspectViewInfo,
+        parent: InspectItemView?
     ): InspectItemView {
         viewInfos.add(viewInfo)
-        val isSetClick4View = !(viewInfo.view is ViewGroup && !LayoutInspector.isViewGroupShowViewAttributes)
+        val isSetClick4View =
+            !(viewInfo.view is ViewGroup && !LayoutInspector.isViewGroupShowViewAttributes)
         val view = InspectItemView(
-                context,
-                viewInfo.view,
-                this,
-                isSetClick4View,
-                parent
+            context,
+            viewInfo.view,
+            this,
+            isSetClick4View,
+            parent
         )
         val lp = LayoutParams(viewInfo.view.width, viewInfo.view.height)
         addView(view, lp)
@@ -107,7 +109,10 @@ class InspectPage constructor(
     }
 
 
-    private fun collectInspectItemViewsForViewGroup(view: ViewGroup, parent: InspectItemView? = null) {
+    private fun collectInspectItemViewsForViewGroup(
+        view: ViewGroup,
+        parent: InspectItemView? = null
+    ) {
         view.let {
             var childCount = 0
             childCount = it.childCount
@@ -136,7 +141,8 @@ class InspectPage constructor(
             val y = location[1] - offsetY // view距离 屏幕顶边的距离（即y轴方向）
             inspectItemView.apply {
                 layout(x, y, x + viewInfo.view.width, y + viewInfo.view.height)
-                isOutOfScreen = x * y < 0 || x >= this@InspectPage.measuredWidth || y >= this@InspectPage.measuredHeight
+                isOutOfScreen =
+                    x * y < 0 || x >= this@InspectPage.measuredWidth || y >= this@InspectPage.measuredHeight
             }
         }
     }

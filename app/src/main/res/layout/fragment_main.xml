@@ -12,6 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:padding="3dp"
+        android:textSize="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
@@ -22,6 +23,8 @@
         android:id="@+id/click1"
         android:layout_marginTop="20dp"
         android:padding="5dp"
+        android:textSize="15dp"
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
@@ -32,6 +35,7 @@
         android:id="@+id/show_dialog"
         android:layout_marginTop="20dp"
         android:padding="5dp"
+        android:textSize="15dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +47,8 @@
         android:id="@+id/click3"
         android:layout_marginTop="20dp"
         android:padding="5dp"
-        android:layout_gravity="right"
+        android:textSize="15dp"
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/teal_200"
@@ -58,24 +63,28 @@
         android:orientation="vertical"
         android:gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:padding="5dp"
+            android:textSize="15dp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:id="@+id/show_pupupwindow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:text="谈一个popupwindow" />
+            android:text="弹一个popupwindow" />
 
         <TextView
             android:id="@+id/show_toast"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:padding="5dp"
+            android:textSize="15dp"
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"

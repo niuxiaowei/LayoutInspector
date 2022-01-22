@@ -3,6 +3,7 @@ package com.mi.layoutinspector
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
+import android.app.Dialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +13,9 @@ import android.support.v4.app.FragmentManager
 import android.util.DisplayMetrics
 import android.view.ViewGroup
 import com.mi.layoutinspector.inspect.InspectPageManager
+import com.mi.layoutinspector.utils.getActivityFromDialog
+import com.mi.layoutinspector.utils.getContentViewForActivity
+import com.mi.layoutinspector.utils.getContentViewForDialog
 import com.mi.layoutinspector.viewinfos.viewattributes.*
 import java.lang.IllegalArgumentException
 
@@ -23,12 +27,11 @@ import java.lang.IllegalArgumentException
  **/
 class LayoutInspector(val activity: Activity) {
 
-    private var contentView: ViewGroup? = null
     var contentViewIdName: String? = null
     var activityName: String? = null
-    private var inspectPageManager: InspectPageManager? = null
+    private val inspectPageManagers: MutableList<InspectPageManager> = mutableListOf()
     val fragments = Fragments(activity)
-
+    private var inspectPageManagerOfActivityInit = false
 
     init {
         onActivityCreate()
@@ -76,7 +79,8 @@ class LayoutInspector(val activity: Activity) {
 
         fun init(application: Application) {
             this.application = application
-            this.application?.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+            this.application?.registerActivityLifecycleCallbacks(object :
+                Application.ActivityLifecycleCallbacks {
                 override fun onActivityPaused(activity: Activity) {
                 }
 
@@ -130,6 +134,20 @@ class LayoutInspector(val activity: Activity) {
         fun getViewAttributesCollectors(): List<IViewAttributeCollector> {
             return viewAttributesCollectors
         }
+
+        /**
+         * 检测Dialog
+         */
+        fun inspectDialog(dialog: Dialog) {
+            val activity = getActivityFromDialog(dialog)
+            activity?.let {
+                findLayoutInspector(it)?.startInspectDialog(dialog)
+            }
+        }
+
+        fun stopInspectDialog(dialog: Dialog){
+
+        }
     }
 
     private fun onActivityCreate() {
@@ -137,20 +155,29 @@ class LayoutInspector(val activity: Activity) {
     }
 
 
-    @SuppressLint("ClickableViewAccessibility")
-    fun init() {
-        if (contentView != null) {
-            return
+    private fun startInspectDialog(dialog: Dialog){
+        getContentViewForDialog(dialog)?.let{
+            inspectPageManagers.add(InspectPageManager(activity, this, it,dialog.window?.decorView))
         }
-        contentView = activity.window.decorView.findViewById(android.R.id.content)
-        inspectPageManager = InspectPageManager(activity, this, contentView as ViewGroup)
-        createActivityInfo()
     }
 
-    private fun createActivityInfo() {
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun init() {
+        if (inspectPageManagerOfActivityInit) {
+            return
+        }
+        inspectPageManagerOfActivityInit = true
+        val contentView = getContentViewForActivity(activity)
+        inspectPageManagers.add(InspectPageManager(activity, this, contentView,activity.window.decorView))
+        createActivityInfo(contentView)
+    }
+
+    private fun createActivityInfo(contentView: ViewGroup) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             try {
-                val layoutId = contentView?.getChildAt(0)?.sourceLayoutResId
+                val layoutId = contentView.getChildAt(0)?.sourceLayoutResId
                 if (layoutId != null) {
                     if (layoutId > 0) {
                         contentViewIdName = activity.resources.getResourceEntryName(layoutId)

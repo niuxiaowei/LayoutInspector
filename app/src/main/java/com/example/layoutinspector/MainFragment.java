@@ -11,6 +11,8 @@ import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.mi.layoutinspector.widget.CustomDialog;
@@ -55,18 +57,22 @@ public class MainFragment extends Fragment {
                 public void onOkClick(@NotNull String editMsg) {
                     Toast.makeText(getContext(), "ok click", Toast.LENGTH_LONG).show();
                 }
-            }, "我是一个对话框", "没有点击事件").show();
+            }, "我是一个对话框", "我设置了点击事件，点我").show();
         });
 
         view.findViewById(R.id.show_pupupwindow).setOnClickListener(v -> {
-            new CustomDialog(getContext(), new CustomDialog.IOkClickListener() {
-                @Override
-                public void onOkClick(@NotNull String editMsg) {
-                    Toast.makeText(getContext(), "ok click", Toast.LENGTH_LONG).show();
-                }
-            }, "我是一个对话框", "没有点击事件").show();
+            showPopupWindow(v);
         });
     }
+
+    private void showPopupWindow(View anchor){
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_window,null);
+        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.showAsDropDown(anchor);
+    }
+
+
 
     public void onBackPressed() {
         if (addToContentViewFragment != null) {

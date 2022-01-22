@@ -12,12 +12,18 @@ import com.mi.layoutinspector.menu.InspectMenuPage
  * <p>
  * @author niuxiaowei
  * @date 2022/1/8.
- * 管理InspectPage, InspectMenuPage. 一个R.id.content view 的子view会对应一个InspectPage，InspectMenuPage处于 R.id.content view的最顶层
+ * InspectPageManager管理InspectPage, InspectMenuPage。其中InspectPage对应于contentView的一个子view，它主要是对该子view及它包含的所有子view进行
+ * 映射，在InspectPage中把这些view的边界等信息绘制出来，InspectPage会被添加到contentView中，并且位于它映射的子view的上层.
+ * InspectMenuPage是一个菜单（包含显示，更多功能），它会被添加到contentView中，并且位于最顶层。
+ *
+ * @param contentView 对应activity的android.R.id.content  或者Dialog的android.R.id.content 或者PopupWindow的PopupDecorView
  *
  */
-class InspectPageManager(context: Context,
-                         private val layoutInspector: LayoutInspector,
-                         private val contentView: ViewGroup
+class InspectPageManager(
+    context: Context,
+    private val layoutInspector: LayoutInspector,
+    private val contentView: ViewGroup,
+    private val decorView: View?
 ) {
     var inspectorViewShowed = false
     private val inspectMenuPage = InspectMenuPage(context, layoutInspector, this)
@@ -77,7 +83,7 @@ class InspectPageManager(context: Context,
                 }
             }
             childViewAndIndexWrappers?.forEach { (childView, index) ->
-                val inspectPage = InspectPage(context, childView)
+                val inspectPage = InspectPage(context, childView, decorView)
                 inspectPages.add(inspectPage)
                 val lp = FrameLayout.LayoutParams(childView.layoutParams)
                 addView(inspectPage, index, lp)
@@ -139,4 +145,19 @@ class InspectPageManager(context: Context,
             it.hideViewInfosPopupWindow()
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is InspectPageManager) return false
+
+        if (contentView != other.contentView) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return contentView.hashCode()
+    }
+
+
 }

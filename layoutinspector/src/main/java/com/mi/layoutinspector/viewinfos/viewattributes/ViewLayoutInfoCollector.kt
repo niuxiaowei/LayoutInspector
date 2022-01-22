@@ -2,7 +2,7 @@ package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.util.Log
 import android.view.View
-import com.mi.layoutinspector.LayoutInflaterProxy
+import com.mi.layoutinspector.replacemethod.LayoutInflaterProxy
 import com.mi.layoutinspector.inspect.ViewInspector
 
 /**
@@ -34,7 +34,7 @@ class ViewLayoutInfoCollector : IViewAttributeCollector {
      * @return View? 找到包含LayoutInflaterProxy.TAG_KEY_LAYOUT_NAME tag的parent view 则返回，否则返回null
      */
     private fun findParentWithLayoutName(inspectorView: View?): View? {
-        if (inspectorView == null) {
+        if (inspectorView == null || inspectorView.parent !is View) {
             return null
         }
         return if (inspectorView.getTag(LayoutInflaterProxy.TAG_KEY_LAYOUT_NAME) != null) {

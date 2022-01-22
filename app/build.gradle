@@ -75,8 +75,7 @@ replaceMethod {
                 desc "(int,android.view.ViewGroup)android.view.View"
             }
             by {
-                className = "com.mi.layoutinspector.LayoutInflaterProxy"
-                methodName = "inflate"
+                className = "com.mi.layoutinspector.replacemethod.LayoutInflaterProxy"
                 addExtraParams = true
             }
         }
@@ -90,8 +89,7 @@ replaceMethod {
                 ignoreOverideStaticMethod true
             }
             by {
-                className = "com.mi.layoutinspector.LayoutInflaterProxy"
-                methodName = "inflate"
+                className = "com.mi.layoutinspector.replacemethod.LayoutInflaterProxy"
                 addExtraParams  true
             }
         }
@@ -104,8 +102,7 @@ replaceMethod {
                 desc "(int,android.view.ViewGroup,boolean)android.view.View"
             }
             by {
-                className = "com.mi.layoutinspector.LayoutInflaterProxy"
-                methodName = "inflate"
+                className = "com.mi.layoutinspector.replacemethod.LayoutInflaterProxy"
                 addExtraParams =  true
             }
         }
@@ -117,8 +114,30 @@ replaceMethod {
                 methodName "show"
             }
             by {
-                className = "com.mi.layoutinspector.LayoutInflaterProxy"
-                methodName = "show"
+                className = "com.mi.layoutinspector.replacemethod.DialogProxy"
+            }
+        }
+
+        register {
+            replace {
+                invokeType "ins"
+                className "android.app.Dialog"
+                methodName "dismiss"
+            }
+            by {
+                className = "com.mi.layoutinspector.replacemethod.DialogProxy"
+            }
+        }
+
+        register {
+            replace {
+                invokeType "ins"
+                className "android.widget.PopupWindow"
+                methodName "showAsDropDown"
+                desc "(android.view.View)"
+            }
+            by {
+                className = "com.mi.layoutinspector.replacemethod.PopupWindowProxy"
             }
         }
 
