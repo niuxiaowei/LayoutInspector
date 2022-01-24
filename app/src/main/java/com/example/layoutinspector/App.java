@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.mi.layoutinspector.LayoutInspector;
 import com.mi.layoutinspector.viewinfos.viewattributes.IViewAttributeCollector;
 import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute;
-import com.mi.layoutinspector.inspect.IViewInspector;
+import com.mi.layoutinspector.inspector.IViewInspector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

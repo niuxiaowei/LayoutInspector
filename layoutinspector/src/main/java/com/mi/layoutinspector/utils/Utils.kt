@@ -1,5 +1,6 @@
 package com.mi.layoutinspector.utils
 
+import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import com.mi.layoutinspector.LayoutInspector
@@ -40,9 +41,9 @@ fun getUnitStr(): String {
 
 fun dp2px(value: Float): Float {
     return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        value,
-        LayoutInspector.getDisplayMetrics()
+            TypedValue.COMPLEX_UNIT_DIP,
+            value,
+            LayoutInspector.getDisplayMetrics()
     );
 }
 
@@ -72,5 +73,7 @@ fun distance(x1: Int, y1: Int, x2: Int, y2: Int): Float {
     val dy = y1 - y2
     return sqrt(dx * dx + dy * dy.toDouble()).toFloat()
 }
+
+
 
 

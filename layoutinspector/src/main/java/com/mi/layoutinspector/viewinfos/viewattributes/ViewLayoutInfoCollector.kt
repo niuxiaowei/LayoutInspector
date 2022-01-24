@@ -3,7 +3,8 @@ package com.mi.layoutinspector.viewinfos.viewattributes
 import android.util.Log
 import android.view.View
 import com.mi.layoutinspector.replacemethod.LayoutInflaterProxy
-import com.mi.layoutinspector.inspect.IViewInspector
+import com.mi.layoutinspector.inspector.IViewInspector
+import com.mi.layoutinspector.utils.findParentWithTag
 
 /**
  * create by niuxiaowei
@@ -13,7 +14,7 @@ import com.mi.layoutinspector.inspect.IViewInspector
 class ViewLayoutInfoCollector : IViewAttributeCollector {
     override fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
-        val parentView = findParentWithLayoutName(inspectedView)
+        val parentView = findParentWithTag(inspectedView, LayoutInflaterProxy.TAG_KEY_LAYOUT_NAME)
         if (parentView != null) {
             result.add(ViewAttribute("所属布局名称", "R.layout." + parentView.getTag(LayoutInflaterProxy.TAG_KEY_LAYOUT_NAME).toString()))
             val inflateMethodInfo = parentView.getTag(LayoutInflaterProxy.TAG_KEY_INFLATE_METHOD_NAME).toString()
@@ -28,19 +29,5 @@ class ViewLayoutInfoCollector : IViewAttributeCollector {
         return result
     }
 
-    /**
-     * 查找包含LayoutInflaterProxy.TAG_KEY_LAYOUT_NAME tag的parent view
-     * @param inspectorView View?
-     * @return View? 找到包含LayoutInflaterProxy.TAG_KEY_LAYOUT_NAME tag的parent view 则返回，否则返回null
-     */
-    private fun findParentWithLayoutName(inspectorView: View?): View? {
-        if (inspectorView == null || inspectorView.parent !is View) {
-            return null
-        }
-        return if (inspectorView.getTag(LayoutInflaterProxy.TAG_KEY_LAYOUT_NAME) != null) {
-            inspectorView
-        } else {
-            findParentWithLayoutName(inspectorView.parent as View)
-        }
-    }
+
 }

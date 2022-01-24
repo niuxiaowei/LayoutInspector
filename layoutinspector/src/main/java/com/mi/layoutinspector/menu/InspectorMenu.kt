@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
 import android.view.*
-import com.mi.layoutinspector.ActivityInspector
+import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.utils.distance
 import com.mi.layoutinspector.utils.px2dip
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.layoutinspector_view_inspector_ui_menu.vie
  * @author niuxiaowei
  * @date 2022/1/8.
  */
-class InspectorMenu( private val activityInspector: ActivityInspector) {
+class InspectorMenu(private val activityInspector: ActivityInspector) {
     private val morePopupWindow: MorePopupWindow = MorePopupWindow()
     private var menuView: View? = null
     private val context: Context = activityInspector.activity
@@ -32,9 +32,9 @@ class InspectorMenu( private val activityInspector: ActivityInspector) {
 
     private fun setOnTouchListener(layoutParam: WindowManager.LayoutParams) {
         ViewTouchListener(
-            layoutParam,
-            activityInspector.activity.windowManager,
-            menuView!!
+                layoutParam,
+                activityInspector.activity.windowManager,
+                menuView!!
         ).let {
             menuView?.setOnTouchListener(it)
             menuView?.show?.setOnTouchListener(it)
@@ -48,7 +48,7 @@ class InspectorMenu( private val activityInspector: ActivityInspector) {
             width = WindowManager.LayoutParams.WRAP_CONTENT
             height = WindowManager.LayoutParams.WRAP_CONTENT
             flags =
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
             x = 0
             y = 150
             gravity = Gravity.LEFT or Gravity.TOP
@@ -57,17 +57,19 @@ class InspectorMenu( private val activityInspector: ActivityInspector) {
     }
 
     private class ViewTouchListener(
-        private val wl: WindowManager.LayoutParams,
-        private val windowManager: WindowManager,
-        private val rootView: View
+            private val wl: WindowManager.LayoutParams,
+            private val windowManager: WindowManager,
+            private val rootView: View
     ) : View.OnTouchListener {
         private var x = 0
         private var y = 0
         private var pressStartTime = 0L
         private var moveDistance = 0f
-        private val MAX_CLICK_DURATION = 1000
-        private val MAX_CLICK_DISTANCE = 15
 
+        private companion object {
+            const val MAX_CLICK_DURATION = 1000
+            const val MAX_CLICK_DISTANCE = 15
+        }
 
         override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
             when (motionEvent.action) {
@@ -108,18 +110,18 @@ class InspectorMenu( private val activityInspector: ActivityInspector) {
     @SuppressLint("ClickableViewAccessibility")
     private fun createMenuView(): View {
         val view = LayoutInflater.from(context)
-            .inflate(R.layout.layoutinspector_view_inspector_ui_menu, null)
+                .inflate(R.layout.layoutinspector_view_inspector_ui_menu, null)
         view.show.apply {
             text = "显示"
-            if (activityInspector.inspectorViewShowed) {
+            if (activityInspector.inspectorsShowed) {
                 text = "隐藏"
             }
             setOnClickListener {
-                if (activityInspector.inspectorViewShowed) {
-                    activityInspector.hideInspectorViews()
+                if (activityInspector.inspectorsShowed) {
+                    activityInspector.hideInspectors()
                     text = "显示"
                 } else {
-                    activityInspector.showInspectorViews()
+                    activityInspector.showInspectors()
                     text = "隐藏"
                 }
             }
@@ -127,13 +129,12 @@ class InspectorMenu( private val activityInspector: ActivityInspector) {
         view.more.apply {
 
             setOnClickListener {
-                activityInspector.hideInspectorViews()
-                activityInspector.hideShowedView()
+                activityInspector.hideInspectors()
                 view.show.text = "显示"
                 morePopupWindow.showPopupWindow(
-                    activityInspector,
-                    activityInspector.activity,
-                    view.more
+                        activityInspector,
+                        activityInspector.activity,
+                        view.more
                 )
             }
         }

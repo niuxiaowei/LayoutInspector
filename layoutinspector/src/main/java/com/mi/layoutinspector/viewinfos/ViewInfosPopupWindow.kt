@@ -5,13 +5,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import com.mi.layoutinspector.ActivityInspector
 import com.mi.layoutinspector.LayoutInspector.Companion.getScreenHeight
 import com.mi.layoutinspector.LayoutInspector.Companion.getViewAttributesCollectors
 import com.mi.layoutinspector.R
-import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.inspector.ViewInspector
 import com.mi.layoutinspector.utils.calculatePopWindowOffsets
 import com.mi.layoutinspector.utils.getPopupWindowSize
 import com.mi.layoutinspector.utils.screenIsPortrait
@@ -30,9 +30,8 @@ import java.util.ArrayList
  * @date 2022/1/22.
  */
 class ViewInfosPopupWindow(
-    private val decorView: View?,
-    private val onDismissListener: PopupWindow.OnDismissListener?,
-    private val activityInspector: ActivityInspector
+        private val decorView: View?,
+        private val onDismissListener: PopupWindow.OnDismissListener?
 ) {
     private var realPopupWindow: PopupWindow? = null
 
@@ -61,12 +60,12 @@ class ViewInfosPopupWindow(
 
     private fun initRealPopupWindow(context: Context) {
         val view: View = LayoutInflater.from(context)
-            .inflate(R.layout.layoutinspector_popupwindow_detail_view, null)
+                .inflate(R.layout.layoutinspector_popupwindow_detail_view, null)
         initViewAttributeViews(view, context)
         initViewHierarchyViews(view, context)
         realPopupWindow = PopupWindow(
-            view, LinearLayout.LayoutParams.WRAP_CONTENT,
-            getPopupWindowHeight(context)
+                view, WindowManager.LayoutParams.WRAP_CONTENT,
+                getPopupWindowHeight(context)
         ).apply {
             isOutsideTouchable = true
             isFocusable = true
@@ -124,8 +123,8 @@ class ViewInfosPopupWindow(
      * @param viewInspector
      */
     fun showViewInfos(
-        context: Context, inspectedView: View,
-        viewInspector: ViewInspector
+            context: Context, inspectedView: View,
+            viewInspector: ViewInspector
     ) {
         if (realPopupWindow == null) {
             initRealPopupWindow(context)
@@ -140,34 +139,34 @@ class ViewInfosPopupWindow(
 
         realPopupWindow?.let {
             val size = getPopupWindowSize(it)
-            val offsets = calculatePopWindowOffsets(inspectedView, size[1], size[0], null)
+            val offsets = calculatePopWindowOffsets(inspectedView, size[1], size[0], decorView)
             it.showAtLocation(
-                activityInspector.activity.window.decorView,
-                Gravity.LEFT or Gravity.TOP,
-                offsets[0],
-                offsets[1]
+                    decorView,
+                    Gravity.LEFT or Gravity.TOP,
+                    offsets[0],
+                    offsets[1]
             )
         }
     }
 
 
     private fun collectViewAttributes(
-        inspectedView: View,
-        viewInspector: ViewInspector
+            inspectedView: View,
+            viewInspector: ViewInspector
     ): List<ViewAttribute>? {
         val viewAttributes: MutableList<ViewAttribute> = ArrayList()
         val collectors = getViewAttributesCollectors()
         for (i in collectors.indices) {
             val viewDetailCollector = collectors[i]
             val viewAttribute = viewDetailCollector.collectViewAttribute(
-                inspectedView,
-                viewInspector
+                    inspectedView,
+                    viewInspector
             )
             if (viewAttribute != null) {
                 viewAttributes.add(viewAttribute)
             }
             val collectViewAttributes =
-                viewDetailCollector.collectViewAttributes(inspectedView, viewInspector)
+                    viewDetailCollector.collectViewAttributes(inspectedView, viewInspector)
             if (collectViewAttributes != null && collectViewAttributes.size > 0) {
                 viewAttributes.addAll(collectViewAttributes)
             }
@@ -176,20 +175,20 @@ class ViewInfosPopupWindow(
     }
 
     private fun collectChilds(
-        hierarchyItems: MutableList<HierarchyItem>, parent: ViewInspector,
-        parentHierarchy: HierarchyItem
+            hierarchyItems: MutableList<HierarchyItem>, parent: ViewInspector,
+            parentHierarchy: HierarchyItem
     ) {
         if (parent.childs() != null) {
             for (j in parent.childs()!!.indices) {
                 val child = parent.childs()!![j] as ViewInspector
                 val id = getId(child.inspectedView())
                 hierarchyItems.add(
-                    HierarchyItem(
-                        child.inspectedView().javaClass.simpleName + id,
-                        child,
-                        parentHierarchy,
-                        false
-                    )
+                        HierarchyItem(
+                                child.inspectedView().javaClass.simpleName + id,
+                                child,
+                                parentHierarchy,
+                                false
+                        )
                 )
             }
         }
@@ -208,18 +207,18 @@ class ViewInfosPopupWindow(
         if (parent != null && parent.childs() != null) {
             //收集兄弟控件
             parentHierarchy = HierarchyItem(
-                parent.inspectedView().javaClass.simpleName + getId(parent.inspectedView()),
-                parent,
-                null,
-                false
+                    parent.inspectedView().javaClass.simpleName + getId(parent.inspectedView()),
+                    parent,
+                    null,
+                    false
             )
             for (i in parent.childs()!!.indices) {
                 val brother = parent.childs()!![i] as ViewInspector
                 val brotherHierarchy = HierarchyItem(
-                    brother.inspectedView().javaClass.simpleName + getId(brother.inspectedView()),
-                    brother,
-                    parentHierarchy,
-                    brother == viewInspector
+                        brother.inspectedView().javaClass.simpleName + getId(brother.inspectedView()),
+                        brother,
+                        parentHierarchy,
+                        brother == viewInspector
                 )
                 result.add(brotherHierarchy)
                 val isCurView = brother == viewInspector
@@ -231,10 +230,10 @@ class ViewInfosPopupWindow(
             result.add(0, parentHierarchy)
         } else {
             parentHierarchy = HierarchyItem(
-                viewInspector.inspectedView().javaClass.simpleName + getId(viewInspector.inspectedView()),
-                viewInspector,
-                null,
-                true
+                    viewInspector.inspectedView().javaClass.simpleName + getId(viewInspector.inspectedView()),
+                    viewInspector,
+                    null,
+                    true
             )
             result.add(parentHierarchy)
             //收集当前控件的子控件
@@ -248,10 +247,10 @@ class ViewInfosPopupWindow(
         }
         while (parent != null) {
             val curItem = HierarchyItem(
-                parent.inspectedView().javaClass.simpleName + getId(parent.inspectedView()),
-                parent,
-                null,
-                false
+                    parent.inspectedView().javaClass.simpleName + getId(parent.inspectedView()),
+                    parent,
+                    null,
+                    false
             )
             preItem.parent = curItem
             preItem = curItem

@@ -5,7 +5,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import com.mi.layoutinspector.*
-import com.mi.layoutinspector.inspect.IViewInspector
+import com.mi.layoutinspector.inspector.IViewInspector
 import com.mi.layoutinspector.utils.*
 import com.mi.layoutinspector.widget.CustomDialog
 

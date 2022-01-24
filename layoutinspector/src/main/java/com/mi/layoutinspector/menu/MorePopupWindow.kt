@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import com.mi.layoutinspector.ActivityInspector
+import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.LayoutInspector
 import com.mi.layoutinspector.LayoutInspector.Companion.isViewGroupShowViewAttributes
 import com.mi.layoutinspector.R
@@ -45,7 +45,7 @@ class MorePopupWindow {
         }
         contentView?.apply {
             activity_name.text = "当前Activity: ${activityInspector.activityName}"
-            layout_id.text = "当前Activity的layout：R.layout.${activityInspector.contentViewIdName}"
+            layout_id.text = "当前Activity的layout：R.layout.${activityInspector.contentLayoutName}"
         }
         setDpPxRadioState()
         setResponseCLickState()

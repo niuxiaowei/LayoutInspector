@@ -1,4 +1,4 @@
-package com.mi.layoutinspector.inspect
+package com.mi.layoutinspector.inspector
 
 import android.view.View
 
@@ -46,5 +46,5 @@ interface IViewInspector {
      * 获取子检查器
      * @return MutableList<ViewInspector>?
      */
-    fun childs():MutableList<IViewInspector>?
+    fun childs(): MutableList<IViewInspector>?
 }

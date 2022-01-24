@@ -3,7 +3,7 @@ package com.mi.layoutinspector.viewinfos.viewattributes
 import android.view.View
 import android.view.ViewGroup
 import com.mi.layoutinspector.*
-import com.mi.layoutinspector.inspect.IViewInspector
+import com.mi.layoutinspector.inspector.IViewInspector
 import com.mi.layoutinspector.utils.dp2px
 import com.mi.layoutinspector.utils.getDimension
 import com.mi.layoutinspector.utils.getDimensionWithUnitName

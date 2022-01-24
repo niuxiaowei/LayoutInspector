@@ -1,4 +1,4 @@
-package com.mi.layoutinspector.inspect
+package com.mi.layoutinspector.inspector
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.PopupWindow
-import com.mi.layoutinspector.ActivityInspector
 import com.mi.layoutinspector.LayoutInspector
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.utils.screenIsPortrait
@@ -23,20 +22,18 @@ import com.mi.layoutinspector.viewinfos.ViewInfosPopupWindow
  **/
 
 @SuppressLint("ViewConstructor")
-class ViewInspectors constructor(
-    context: Context,
-    private var childOfContentView: View,
-    private val decorView: View?,
-    private val activityInspector: ActivityInspector
-) : FrameLayout(context) {
+class PageInspector constructor(
+        context: Context,
+        private var childOfContentView: View,
+        decorView: View?
+) : FrameLayout(context), IInspector {
 
-    private var viewInfos = mutableListOf<InspectViewInfo>()
     private val viewInfosPopupWindow =
-        ViewInfosPopupWindow(decorView, PopupWindow.OnDismissListener {
-            curInspectedView = null
-            curViewInspector?.setSelecte(false)
-            curViewInspector = null
-        },activityInspector)
+            ViewInfosPopupWindow(decorView, PopupWindow.OnDismissListener {
+                curInspectedView = null
+                curViewInspector?.setSelecte(false)
+                curViewInspector = null
+            })
     private var curInspectedView: View? = null
     private var curViewInspector: ViewInspector? = null
     private var offsetY = -1
@@ -56,20 +53,19 @@ class ViewInspectors constructor(
     }
 
     private fun add(
-        viewInfo: InspectViewInfo,
-        parent: ViewInspector?
+            view: View,
+            parent: ViewInspector?
     ): ViewInspector {
-        viewInfos.add(viewInfo)
         val isSetClick4View =
-            !(viewInfo.view is ViewGroup && !LayoutInspector.isViewGroupShowViewAttributes)
+                !(view is ViewGroup && !LayoutInspector.isViewGroupShowViewAttributes)
         val view = ViewInspector(
-            context,
-            viewInfo.view,
-            this,
-            isSetClick4View,
-            parent
+                context,
+                view,
+                this,
+                isSetClick4View,
+                parent
         )
-        val lp = LayoutParams(viewInfo.view.width, viewInfo.view.height)
+        val lp = LayoutParams(view.width, view.height)
         addView(view, lp)
         return view
     }
@@ -88,32 +84,43 @@ class ViewInspectors constructor(
         }
     }
 
-    fun showInspectorViews() {
+    override fun hideInspectors() {
+        visibility = View.GONE
+        removeAllViews()
+    }
+
+    private fun setSize() {
+        if (layoutParams.width * layoutParams.height > 0) {
+            return
+        }
+        val lp = layoutParams.apply {
+            width = childOfContentView.width
+            height = childOfContentView.height
+        }
+        layoutParams = lp
+    }
+
+    override fun showInspectors() {
+        setSize()
         visibility = View.VISIBLE
         calOffset()
         removeAllViews()
-        collectInspectItemViews()
+        collectViewInspectors()
     }
 
-    fun hideInspectorViews() {
-        visibility = View.GONE
-        removeAllViews()
-        viewInfos.clear()
-    }
-
-    private fun collectInspectItemViews() {
+    private fun collectViewInspectors() {
         if (childOfContentView is ViewGroup) {
-            val parent = add(InspectViewInfo(childOfContentView), null)
-            collectInspectItemViewsForViewGroup(childOfContentView as ViewGroup, parent)
+            val parent = add(childOfContentView, null)
+            collectViewInspectorsForViewGroup(childOfContentView as ViewGroup, parent)
         } else {
-            add(InspectViewInfo(childOfContentView), null)
+            add(childOfContentView, null)
         }
     }
 
 
-    private fun collectInspectItemViewsForViewGroup(
-        view: ViewGroup,
-        parent: ViewInspector? = null
+    private fun collectViewInspectorsForViewGroup(
+            view: ViewGroup,
+            parent: ViewInspector? = null
     ) {
         view.let {
             var childCount = 0
@@ -122,10 +129,10 @@ class ViewInspectors constructor(
                 val child = it.getChildAt(index)
                 if (child != null && child.visibility == View.VISIBLE) {
                     if (child is ViewGroup) {
-                        val innerParent = add(InspectViewInfo(child), parent)
-                        collectInspectItemViewsForViewGroup(child, innerParent)
+                        val innerParent = add(child, parent)
+                        collectViewInspectorsForViewGroup(child, innerParent)
                     } else {
-                        add(InspectViewInfo(child), parent)
+                        add(child, parent)
                     }
                 }
             }
@@ -135,16 +142,15 @@ class ViewInspectors constructor(
     @SuppressLint("DrawAllocation")
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         for (i in 0 until childCount) {
-            val inspectItemView = getChildAt(i) as ViewInspector
-            val viewInfo = viewInfos[i]
+            val viewInspector = getChildAt(i) as ViewInspector
             val location = IntArray(2)
-            viewInfo.view.getLocationOnScreen(location)
+            viewInspector.inspectedView().getLocationOnScreen(location)
             val x = location[0] - offsetX// view距离 屏幕左边的距离（即x轴方向）
             val y = location[1] - offsetY // view距离 屏幕顶边的距离（即y轴方向）
-            inspectItemView.apply {
-                layout(x, y, x + viewInfo.view.width, y + viewInfo.view.height)
+            viewInspector.apply {
+                layout(x, y, x + viewInspector.inspectedView().width, y + viewInspector.inspectedView().height)
                 isOutOfScreen =
-                    x * y < 0 || x >= this@ViewInspectors.measuredWidth || y >= this@ViewInspectors.measuredHeight
+                        x * y < 0 || x >= this@PageInspector.measuredWidth || y >= this@PageInspector.measuredHeight
             }
         }
     }
@@ -174,7 +180,5 @@ class ViewInspectors constructor(
     fun curInspectedView(): View? {
         return curInspectedView
     }
-
-    data class InspectViewInfo(val view: View)
 
 }

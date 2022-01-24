@@ -2,4 +2,8 @@
 <resources>
     <item name="tag_key_layout_name" type="id"/>
     <item name="tag_key_inflate_method" type="id"/>
+    <item name="tag_key_activity_name" type="id" />
+    <item name="tag_key_activity_layout_name" type="id" />
+    <item name="tag_key_component_name" type="id" />
+    <item name="tag_key_component_layout_name" type="id" />
 </resources>

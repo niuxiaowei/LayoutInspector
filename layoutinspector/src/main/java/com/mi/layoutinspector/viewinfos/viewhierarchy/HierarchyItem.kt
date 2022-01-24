@@ -1,6 +1,6 @@
 package com.mi.layoutinspector.viewinfos.viewhierarchy
 
-import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.inspector.ViewInspector
 
 /**
  * create by niuxiaowei

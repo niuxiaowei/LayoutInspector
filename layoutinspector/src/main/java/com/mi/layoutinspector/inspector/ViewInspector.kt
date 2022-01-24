@@ -1,4 +1,4 @@
-package com.mi.layoutinspector.inspect
+package com.mi.layoutinspector.inspector
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,11 +19,11 @@ import com.mi.layoutinspector.R
 
 @SuppressLint("ViewConstructor")
 class ViewInspector constructor(
-    context: Context,
-    private val inspectedView: View,
-    val viewInspectors: ViewInspectors,
-    var isSetClick4View: Boolean,
-    private val parent: IViewInspector?
+        context: Context,
+        private val inspectedView: View,
+        val pageInspector: PageInspector,
+        var isSetClick4View: Boolean,
+        private val parent: IViewInspector?
 ) : android.support.v7.widget.AppCompatTextView(context), IViewInspector {
 
     private var children: MutableList<IViewInspector>? = null
@@ -56,8 +56,8 @@ class ViewInspector constructor(
         mPaint.strokeWidth = STROKE_WIDTH  //画笔粗细
         if (isSetClick4View) {
             setOnClickListener {
-                if (viewInspectors.curInspectedView() == inspectedView) {
-                    viewInspectors.hideViewInfosPopupWindow()
+                if (pageInspector.curInspectedView() == inspectedView) {
+                    pageInspector.hideViewInfosPopupWindow()
                     setSelecte(false)
                 } else {
                     showViewInfosPopupWindow()
@@ -78,12 +78,12 @@ class ViewInspector constructor(
     }
 
     override fun hideViewInfosPopupWindown() {
-        viewInspectors.hideViewInfosPopupWindow()
+        pageInspector.hideViewInfosPopupWindow()
         setSelecte(false)
     }
 
     override fun showViewInfosPopupWindow() {
-        viewInspectors.showViewInfosPopupWindow(inspectedView, this)
+        pageInspector.showViewInfosPopupWindow(inspectedView, this)
         setSelecte(true)
 
     }

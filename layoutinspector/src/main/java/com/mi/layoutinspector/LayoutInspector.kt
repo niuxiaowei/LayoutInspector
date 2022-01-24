@@ -7,6 +7,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.widget.PopupWindow
+import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.utils.getActivityFromDialog
 import com.mi.layoutinspector.viewinfos.viewattributes.*
 import java.lang.IllegalArgumentException
@@ -38,6 +39,7 @@ class LayoutInspector() {
             viewAttributesCollectors.add(ViewLayoutInfoCollector())
             viewAttributesCollectors.add(ViewBackgroundCollector())
             viewAttributesCollectors.add(ViewTextInfoCollector())
+            viewAttributesCollectors.add(ComponentInfoCollector())
         }
 
 
@@ -61,7 +63,7 @@ class LayoutInspector() {
         fun init(application: Application) {
             this.application = application
             this.application?.registerActivityLifecycleCallbacks(object :
-                Application.ActivityLifecycleCallbacks {
+                    Application.ActivityLifecycleCallbacks {
                 override fun onActivityPaused(activity: Activity) {
                 }
 
@@ -70,7 +72,7 @@ class LayoutInspector() {
 
                 override fun onActivityDestroyed(activity: Activity) {
                     findActivityInspector(activity)?.let {
-                        it.onActivityDestory()
+                        it.onDestory()
                         activityInspectors.remove(it)
                     }
 
@@ -83,11 +85,11 @@ class LayoutInspector() {
                 }
 
                 override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                    activityInspectors.add(ActivityInspector(activity))
+                    activityInspectors.add(ActivityInspector(activity).apply { onCreate() })
                 }
 
                 override fun onActivityResumed(activity: Activity) {
-                    findActivityInspector(activity)?.init()
+                    findActivityInspector(activity)?.onResume()
                 }
 
             })
@@ -121,7 +123,7 @@ class LayoutInspector() {
          */
         fun startInspect(any: Any) {
             getActivity(any)?.let {
-                findActivityInspector(it)?.startInspect(any)
+                findActivityInspector(it)?.createComponentInspector(any)
             }
         }
 

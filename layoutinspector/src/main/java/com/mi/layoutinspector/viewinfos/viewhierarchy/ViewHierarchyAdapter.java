@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mi.layoutinspector.R;
-import com.mi.layoutinspector.inspect.ViewInspector;
+import com.mi.layoutinspector.inspector.ViewInspector;
 
 import org.jetbrains.annotations.NotNull;
 
