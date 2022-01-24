@@ -2,21 +2,19 @@ package com.mi.layoutinspector.viewinfos
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import com.mi.layoutinspector.LayoutInspector
+import com.mi.layoutinspector.ActivityInspector
 import com.mi.layoutinspector.LayoutInspector.Companion.getScreenHeight
-import com.mi.layoutinspector.LayoutInspector.Companion.getScreenWidth
 import com.mi.layoutinspector.LayoutInspector.Companion.getViewAttributesCollectors
 import com.mi.layoutinspector.R
-import com.mi.layoutinspector.inspect.InspectItemView
+import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.utils.calculatePopWindowOffsets
+import com.mi.layoutinspector.utils.getPopupWindowSize
 import com.mi.layoutinspector.utils.screenIsPortrait
-import com.mi.layoutinspector.viewinfos.viewattributes.IViewAttributeCollector
 import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute
 import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttributesAdapter
 import com.mi.layoutinspector.viewinfos.viewhierarchy.HierarchyItem
@@ -33,7 +31,8 @@ import java.util.ArrayList
  */
 class ViewInfosPopupWindow(
     private val decorView: View?,
-    private val onDismissListener: PopupWindow.OnDismissListener?
+    private val onDismissListener: PopupWindow.OnDismissListener?,
+    private val activityInspector: ActivityInspector
 ) {
     private var realPopupWindow: PopupWindow? = null
 
@@ -122,11 +121,11 @@ class ViewInfosPopupWindow(
      *
      * @param context
      * @param inspectedView   被检测器检测的view
-     * @param inspectItemView
+     * @param viewInspector
      */
     fun showViewInfos(
         context: Context, inspectedView: View,
-        inspectItemView: InspectItemView
+        viewInspector: ViewInspector
     ) {
         if (realPopupWindow == null) {
             initRealPopupWindow(context)
@@ -134,78 +133,27 @@ class ViewInfosPopupWindow(
         realPopupWindow!!.height = getPopupWindowHeight(context)
 
         //设置数据
-        viewAttributesAdapter!!.setDatas(collectViewAttributes(inspectedView, inspectItemView))
-        viewHierarchyAdapter!!.setDatas(collectHierarchyItems(inspectItemView))
-        viewHierarchyAdapter!!.setInspectItemView(inspectItemView)
-        val size = getPopupWindowSize()
-        val popupWindowPos = calculatePopWindowPos(inspectedView, size[1], size[0])
-        realPopupWindow!!.showAtLocation(
-            inspectItemView,
-            Gravity.LEFT or Gravity.TOP,
-            popupWindowPos[0],
-            popupWindowPos[1]
-        )
-    }
+        viewAttributesAdapter?.setDatas(collectViewAttributes(inspectedView, viewInspector))
+        viewHierarchyAdapter?.setDatas(collectHierarchyItems(viewInspector))
+        viewHierarchyAdapter?.setInspectItemView(viewInspector)
 
-    /**
-     * @return 返回popupwindow的size，size[0]:width   size[1]: height
-     */
-    private fun getPopupWindowSize(): IntArray {
-        val size = IntArray(2)
-        size[0] = realPopupWindow!!.contentView.measuredWidth
-        size[1] = realPopupWindow!!.contentView.measuredHeight
-        return size
-    }
 
-    /**
-     * 计算出来的位置，y方向就在anchorView的上面和下面对齐显示，x方向就是与屏幕右边对齐显示
-     * 如果anchorView的位置有变化，就可以适当自己额外加入偏移来修正
-     *
-     * @param anchorView  呼出window的view
-     * @param popupHeight
-     * @param popupWidth
-     * @return window显示的左上角的xOff, yOff坐标
-     */
-    private fun calculatePopWindowPos(
-        anchorView: View,
-        popupHeight: Int,
-        popupWidth: Int
-    ): IntArray {
-        val result = IntArray(2)
-        val anchorViewLocation = IntArray(2)
-        val decorViewLocation = IntArray(2)
-        anchorView.getLocationOnScreen(anchorViewLocation)
-        decorView?.getLocationOnScreen(decorViewLocation)
-        val anchorHeight = anchorView.height
-        val anchorWidth = anchorView.width
-        if (screenIsPortrait(anchorView.context)) {
-            // 竖屏的时候展示在anchor的上边或下边。判断需要在anchorView向上弹出还是向下弹出显示
-            val isNeedShowUp =
-                getScreenHeight() - anchorViewLocation[1] - anchorHeight < popupHeight
-            result[0] =
-                anchorViewLocation[0] - decorViewLocation[0] + anchorWidth / 2 - popupWidth / 2
-            if (isNeedShowUp) {
-                result[1] = anchorViewLocation[1] - decorViewLocation[1] - popupHeight
-            } else {
-                result[1] = anchorViewLocation[1] - decorViewLocation[1] + anchorHeight
-            }
-        } else {
-            // 横屏的时候展示在anchor的左边或右边，判断需要左anchorView边还是右边弹出
-            val isNeedShowRight =
-                anchorViewLocation[0] + anchorWidth + popupWidth > getScreenWidth()
-            if (isNeedShowRight) {
-                result[0] = anchorViewLocation[0] - decorViewLocation[0] - popupWidth
-            } else {
-                result[0] = anchorViewLocation[0] - decorViewLocation[0] + anchorWidth
-            }
-            result[1] = anchorViewLocation[1] - decorViewLocation[1]
+        realPopupWindow?.let {
+            val size = getPopupWindowSize(it)
+            val offsets = calculatePopWindowOffsets(inspectedView, size[1], size[0], null)
+            it.showAtLocation(
+                activityInspector.activity.window.decorView,
+                Gravity.LEFT or Gravity.TOP,
+                offsets[0],
+                offsets[1]
+            )
         }
-        return result
     }
+
 
     private fun collectViewAttributes(
         inspectedView: View,
-        inspectItemView: InspectItemView
+        viewInspector: ViewInspector
     ): List<ViewAttribute>? {
         val viewAttributes: MutableList<ViewAttribute> = ArrayList()
         val collectors = getViewAttributesCollectors()
@@ -213,13 +161,13 @@ class ViewInfosPopupWindow(
             val viewDetailCollector = collectors[i]
             val viewAttribute = viewDetailCollector.collectViewAttribute(
                 inspectedView,
-                inspectItemView
+                viewInspector
             )
             if (viewAttribute != null) {
                 viewAttributes.add(viewAttribute)
             }
             val collectViewAttributes =
-                viewDetailCollector.collectViewAttributes(inspectedView, inspectItemView)
+                viewDetailCollector.collectViewAttributes(inspectedView, viewInspector)
             if (collectViewAttributes != null && collectViewAttributes.size > 0) {
                 viewAttributes.addAll(collectViewAttributes)
             }
@@ -228,12 +176,12 @@ class ViewInfosPopupWindow(
     }
 
     private fun collectChilds(
-        hierarchyItems: MutableList<HierarchyItem>, parent: InspectItemView,
+        hierarchyItems: MutableList<HierarchyItem>, parent: ViewInspector,
         parentHierarchy: HierarchyItem
     ) {
         if (parent.childs() != null) {
             for (j in parent.childs()!!.indices) {
-                val child = parent.childs()!![j] as InspectItemView
+                val child = parent.childs()!![j] as ViewInspector
                 val id = getId(child.inspectedView())
                 hierarchyItems.add(
                     HierarchyItem(
@@ -250,12 +198,12 @@ class ViewInfosPopupWindow(
     /**
      * 只收集当前inspectItemView.inspectedView的子控件和它的兄弟控件，剩下的只收集 它的父级控件  （有的界面很复杂的话，显示的界面会非常多，因此不会收集那么多）
      *
-     * @param inspectItemView
+     * @param viewInspector
      * @return
      */
-    private fun collectHierarchyItems(inspectItemView: InspectItemView): List<HierarchyItem>? {
+    private fun collectHierarchyItems(viewInspector: ViewInspector): List<HierarchyItem>? {
         val result: MutableList<HierarchyItem> = ArrayList()
-        var parent = inspectItemView.parent() as InspectItemView?
+        var parent = viewInspector.parent() as ViewInspector?
         var parentHierarchy: HierarchyItem? = null
         if (parent != null && parent.childs() != null) {
             //收集兄弟控件
@@ -266,37 +214,37 @@ class ViewInfosPopupWindow(
                 false
             )
             for (i in parent.childs()!!.indices) {
-                val brother = parent.childs()!![i] as InspectItemView
+                val brother = parent.childs()!![i] as ViewInspector
                 val brotherHierarchy = HierarchyItem(
                     brother.inspectedView().javaClass.simpleName + getId(brother.inspectedView()),
                     brother,
                     parentHierarchy,
-                    brother == inspectItemView
+                    brother == viewInspector
                 )
                 result.add(brotherHierarchy)
-                val isCurView = brother == inspectItemView
+                val isCurView = brother == viewInspector
                 if (isCurView) {
                     //收集当前控件的子控件
-                    collectChilds(result, inspectItemView, brotherHierarchy)
+                    collectChilds(result, viewInspector, brotherHierarchy)
                 }
             }
             result.add(0, parentHierarchy)
         } else {
             parentHierarchy = HierarchyItem(
-                inspectItemView.inspectedView().javaClass.simpleName + getId(inspectItemView.inspectedView()),
-                inspectItemView,
+                viewInspector.inspectedView().javaClass.simpleName + getId(viewInspector.inspectedView()),
+                viewInspector,
                 null,
                 true
             )
             result.add(parentHierarchy)
             //收集当前控件的子控件
-            collectChilds(result, inspectItemView, parentHierarchy)
+            collectChilds(result, viewInspector, parentHierarchy)
         }
 
         //收集爷爷辈的控件
         var preItem: HierarchyItem = parentHierarchy
         if (parent != null) {
-            parent = parent.parent() as InspectItemView?
+            parent = parent.parent() as ViewInspector?
         }
         while (parent != null) {
             val curItem = HierarchyItem(
@@ -308,7 +256,7 @@ class ViewInfosPopupWindow(
             preItem.parent = curItem
             preItem = curItem
             result.add(0, curItem)
-            parent = parent.parent() as InspectItemView?
+            parent = parent.parent() as ViewInspector?
         }
 
         //add blank count

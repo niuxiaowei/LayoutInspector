@@ -1,7 +1,7 @@
 package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.view.View
-import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.inspect.IViewInspector
 import com.mi.layoutinspector.utils.getSuperClass
 
 /**
@@ -9,7 +9,7 @@ import com.mi.layoutinspector.utils.getSuperClass
  * date : 22-1-18
  **/
 class ViewBackgroundCollector : IViewAttributeCollector {
-    override fun collectViewAttribute(inspectedView: View, viewInspector: ViewInspector): ViewAttribute? {
+    override fun collectViewAttribute(inspectedView: View, IViewInspector: IViewInspector): ViewAttribute? {
         val viewClass: Class<*> = inspectedView.javaClass
         try {
             val superClass = getSuperClass(viewClass, View::class.java)

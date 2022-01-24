@@ -1,7 +1,7 @@
 package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.view.View
-import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.inspect.IViewInspector
 
 /**
  * create by niuxiaowei
@@ -12,20 +12,20 @@ interface IViewAttributeCollector {
     /**
      * 收集一个 viewDetail
      * @param inspectedView View 被收集属性的view
-     * @param viewInspector 具体的view检测器
+     * @param IViewInspector 具体的view检测器
      * @return ViewAttribute
      */
-    fun collectViewAttribute(inspectedView: View, viewInspector: ViewInspector): ViewAttribute? {
+    fun collectViewAttribute(inspectedView: View, IViewInspector: IViewInspector): ViewAttribute? {
         return null
     }
 
     /**
      * 收集多个ViewDetails
      * @param inspectedView View 被收集属性的view
-     * @param viewInspector 具体的view检测器
+     * @param IViewInspector 具体的view检测器
      * @return MutableList<ViewAttribute>?
      */
-    fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
+    fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         return null
     }
 }

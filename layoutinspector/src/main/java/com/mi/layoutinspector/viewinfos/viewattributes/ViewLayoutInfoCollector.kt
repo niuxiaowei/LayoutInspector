@@ -3,7 +3,7 @@ package com.mi.layoutinspector.viewinfos.viewattributes
 import android.util.Log
 import android.view.View
 import com.mi.layoutinspector.replacemethod.LayoutInflaterProxy
-import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.inspect.IViewInspector
 
 /**
  * create by niuxiaowei
@@ -11,7 +11,7 @@ import com.mi.layoutinspector.inspect.ViewInspector
  * view所属的layout文件已经被inflate出来的位置信息收集器
  **/
 class ViewLayoutInfoCollector : IViewAttributeCollector {
-    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
+    override fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
         val parentView = findParentWithLayoutName(inspectedView)
         if (parentView != null) {

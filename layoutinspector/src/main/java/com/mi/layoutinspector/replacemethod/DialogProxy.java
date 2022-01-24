@@ -18,7 +18,7 @@ public class DialogProxy {
     public static void show(Dialog dialog) {
         Log.i("replacemethod", "dialog#show() replaced.  dialog:" + dialog);
         dialog.show();
-        LayoutInspector.Companion.inspectDialog(dialog);
+        LayoutInspector.Companion.startInspect(dialog);
     }
 
     public static void dismiss(Dialog dialog) {

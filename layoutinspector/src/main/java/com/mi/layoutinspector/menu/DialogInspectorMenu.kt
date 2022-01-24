@@ -6,24 +6,19 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import com.mi.layoutinspector.inspect.InspectPageManager
+import com.mi.layoutinspector.ComponentInspector
 import com.mi.layoutinspector.LayoutInspector
 import com.mi.layoutinspector.R
 import kotlinx.android.synthetic.main.layoutinspector_view_inspector_ui_menu.view.*
-import kotlin.math.sqrt
-
+import java.lang.Math.sqrt
 
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.
  * <p>
  * @author niuxiaowei
- * @date 2022/1/8.
- * 承载菜单的page
+ * @date 2022/1/23.
  */
-class InspectMenuPage(context: Context,
-                      private val layoutInspector: LayoutInspector,
-                      private val inspectPageManager: InspectPageManager
-) : FrameLayout(context) {
+class DialogInspectorMenu(context: Context,componentInspector: ComponentInspector) : FrameLayout(context) {
     private var lastX: Int = 0
     private var lastY: Int = 100
     private var tempLastX: Int = 0
@@ -74,7 +69,8 @@ class InspectMenuPage(context: Context,
                 val offsetY = y - lastY
                 // 在当前left、top、right、bottom的基础上加上偏移量
                 val lp = parentView.layoutParams as LayoutParams
-                val isInScreen = (lp.leftMargin + offsetX > 0 && lp.leftMargin + offsetX + menuViewWidth < LayoutInspector.getScreenWidth() && lp.topMargin + offsetY > 0 && lp.topMargin + offsetY + menuViewHeight < LayoutInspector.getScreenHeight())
+                val isInScreen =
+                    (lp.leftMargin + offsetX > 0 && lp.leftMargin + offsetX + menuViewWidth < LayoutInspector.getScreenWidth() && lp.topMargin + offsetY > 0 && lp.topMargin + offsetY + menuViewHeight + 600 < LayoutInspector.getScreenHeight())
                 if (isInScreen) {
                     lp.leftMargin = lp.leftMargin + offsetX
                     lp.topMargin = lp.topMargin + offsetY
@@ -108,7 +104,8 @@ class InspectMenuPage(context: Context,
 
     @SuppressLint("ClickableViewAccessibility")
     private fun createMenuView(): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.layoutinspector_view_inspector_ui_menu, null)
+        val view = LayoutInflater.from(context)
+            .inflate(R.layout.layoutinspector_view_inspector_ui_menu, null)
         view.setOnTouchListener { v, event ->
             return@setOnTouchListener startDrag(v, null, event)
         }
@@ -121,9 +118,11 @@ class InspectMenuPage(context: Context,
             setOnTouchListener { v, event -> return@setOnTouchListener startDrag(view, v, event) }
             setOnClickListener {
                 if (inspectPageManager.inspectorViewShowed) {
+                    inspectPageManager.hideInspectorView()
                     inspectPageManager.hideInspectorViews()
                     text = "显示"
                 } else {
+                    inspectPageManager.showInspectorView()
                     inspectPageManager.showInspectorViews()
                     text = "隐藏"
                 }
@@ -133,13 +132,14 @@ class InspectMenuPage(context: Context,
             setOnTouchListener { v, event -> return@setOnTouchListener startDrag(view, v, event) }
 
             setOnClickListener {
+                inspectPageManager.hideInspectorView()
                 inspectPageManager.hideInspectorViews()
                 inspectPageManager.hideShowedView()
                 view.show.text = "显示"
                 morePopupWindow.showPopupWindow(
-                        layoutInspector,
-                        layoutInspector.activity,
-                        view.more
+                    layoutInspector,
+                    layoutInspector.activity,
+                    view.more
                 )
             }
         }
@@ -147,4 +147,7 @@ class InspectMenuPage(context: Context,
         menuView = view
         return view
     }
+}
+
+
 }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.mi.layoutinspector.LayoutInspector;
 import com.mi.layoutinspector.viewinfos.viewattributes.IViewAttributeCollector;
 import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute;
-import com.mi.layoutinspector.inspect.ViewInspector;
+import com.mi.layoutinspector.inspect.IViewInspector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,16 +36,16 @@ public class App extends Application {
         LayoutInspector.Companion.regist(new IViewAttributeCollector() {
             @Nullable
             @Override
-            public List<ViewAttribute> collectViewAttributes(@NotNull View inspectView, @NotNull ViewInspector viewInspector) {
+            public List<ViewAttribute> collectViewAttributes(@NotNull View inspectView, @NotNull IViewInspector IViewInspector) {
                 return null;
             }
 
             @Nullable
             @Override
-            public ViewAttribute collectViewAttribute(@NotNull View inspectView, @NotNull ViewInspector viewInspector) {
+            public ViewAttribute collectViewAttribute(@NotNull View inspectView, @NotNull IViewInspector IViewInspector) {
                 if (inspectView instanceof TextView) {
                     ViewAttribute viewAttribute = new ViewAttribute("修改TextView内容", "点击进行修改", v -> {
-                        viewInspector.hideViewInfosPopupWindown();
+                        IViewInspector.hideViewInfosPopupWindown();
                         TextView textView = (TextView) inspectView;
                         final EditText editText = new EditText(inspectView.getContext());
                         AlertDialog.Builder inputDialog =

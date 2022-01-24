@@ -4,6 +4,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.PopupWindow;
 
+import com.mi.layoutinspector.LayoutInspector;
+
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.
  * <p>
@@ -16,5 +18,6 @@ public class PopupWindowProxy {
     public static void showAsDropDown(PopupWindow popupWindow, View anchor){
         Log.i("replacemethod", "popupWindow#showAsDropDown(anchor) replaced.  popupWindow:" + popupWindow);
         popupWindow.showAsDropDown(anchor);
+        LayoutInspector.Companion.startInspect(popupWindow);
     }
 }

@@ -3,7 +3,7 @@ package com.mi.layoutinspector.viewinfos.viewattributes
 import android.view.View
 import android.view.ViewGroup
 import com.mi.layoutinspector.*
-import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.inspect.IViewInspector
 import com.mi.layoutinspector.utils.dp2px
 import com.mi.layoutinspector.utils.getDimension
 import com.mi.layoutinspector.utils.getDimensionWithUnitName
@@ -18,7 +18,7 @@ import com.mi.layoutinspector.widget.CustomDialog
 class ViewSizeCollector : IViewAttributeCollector {
 
 
-    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
+    override fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
         result.add(ViewAttribute("宽", "${getDimensionWithUnitName(inspectedView.width.toFloat())} "))
         result.add(ViewAttribute("高", "${getDimensionWithUnitName(inspectedView.height.toFloat())} "))
@@ -27,25 +27,25 @@ class ViewSizeCollector : IViewAttributeCollector {
         inspectedView.getLocationOnScreen(location)
         result.add(ViewAttribute("坐标", "x: ${getDimensionWithUnitName(location[0].toFloat())} y:${getDimensionWithUnitName(location[1].toFloat())}"))
 
-        result.add(ViewAttribute("paddingLeft", getDimensionWithUnitName(inspectedView.paddingLeft.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(inspectedView.paddingLeft.toFloat()).toString(), OptType.PADDING_LEFT)))
-        result.add(ViewAttribute("paddingRight", getDimensionWithUnitName(inspectedView.paddingRight.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(inspectedView.paddingRight.toFloat()).toString(), OptType.PADDING_RIGHT)))
-        result.add(ViewAttribute("paddingBottom", getDimensionWithUnitName(inspectedView.paddingBottom.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(inspectedView.paddingBottom.toFloat()).toString(), OptType.PADDING_BOTTOM)))
-        result.add(ViewAttribute("paddingTop", getDimensionWithUnitName(inspectedView.paddingTop.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(inspectedView.paddingTop.toFloat()).toString(), OptType.PADDING_TOP)))
+        result.add(ViewAttribute("paddingLeft", getDimensionWithUnitName(inspectedView.paddingLeft.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(inspectedView.paddingLeft.toFloat()).toString(), OptType.PADDING_LEFT)))
+        result.add(ViewAttribute("paddingRight", getDimensionWithUnitName(inspectedView.paddingRight.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(inspectedView.paddingRight.toFloat()).toString(), OptType.PADDING_RIGHT)))
+        result.add(ViewAttribute("paddingBottom", getDimensionWithUnitName(inspectedView.paddingBottom.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(inspectedView.paddingBottom.toFloat()).toString(), OptType.PADDING_BOTTOM)))
+        result.add(ViewAttribute("paddingTop", getDimensionWithUnitName(inspectedView.paddingTop.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(inspectedView.paddingTop.toFloat()).toString(), OptType.PADDING_TOP)))
 
         if (inspectedView.layoutParams is ViewGroup.MarginLayoutParams) {
             val marginLP = inspectedView.layoutParams as ViewGroup.MarginLayoutParams
-            result.add(ViewAttribute("leftMargin", getDimensionWithUnitName(marginLP.leftMargin.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(marginLP.leftMargin.toFloat()).toString(), OptType.MARGIN_LEFT)))
-            result.add(ViewAttribute("rightMargin", getDimensionWithUnitName(marginLP.rightMargin.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(marginLP.rightMargin.toFloat()).toString(), OptType.MARGIN_RIGHT)))
-            result.add(ViewAttribute("topMargin", getDimensionWithUnitName(marginLP.topMargin.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(marginLP.topMargin.toFloat()).toString(), OptType.MARGIN_TOP)))
-            result.add(ViewAttribute("bottomMargin", getDimensionWithUnitName(marginLP.bottomMargin.toFloat()), createClickListener(viewInspector, inspectedView, getDimension(marginLP.bottomMargin.toFloat()).toString(), OptType.MARGIN_BOTTOM)))
+            result.add(ViewAttribute("leftMargin", getDimensionWithUnitName(marginLP.leftMargin.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(marginLP.leftMargin.toFloat()).toString(), OptType.MARGIN_LEFT)))
+            result.add(ViewAttribute("rightMargin", getDimensionWithUnitName(marginLP.rightMargin.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(marginLP.rightMargin.toFloat()).toString(), OptType.MARGIN_RIGHT)))
+            result.add(ViewAttribute("topMargin", getDimensionWithUnitName(marginLP.topMargin.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(marginLP.topMargin.toFloat()).toString(), OptType.MARGIN_TOP)))
+            result.add(ViewAttribute("bottomMargin", getDimensionWithUnitName(marginLP.bottomMargin.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(marginLP.bottomMargin.toFloat()).toString(), OptType.MARGIN_BOTTOM)))
         }
         return result
     }
 
-    private fun createClickListener(viewInspector: ViewInspector, inspectedView: View, hintMsg: String, optType: OptType): View.OnClickListener {
+    private fun createClickListener(IViewInspector: IViewInspector, inspectedView: View, hintMsg: String, optType: OptType): View.OnClickListener {
 
         return View.OnClickListener {
-            viewInspector.hideViewInfosPopupWindown()
+            IViewInspector.hideViewInfosPopupWindown()
             var title = when (optType) {
                 OptType.PADDING_BOTTOM -> "修改padding bottom(数字)"
                 OptType.PADDING_TOP -> "修改padding top(数字)"

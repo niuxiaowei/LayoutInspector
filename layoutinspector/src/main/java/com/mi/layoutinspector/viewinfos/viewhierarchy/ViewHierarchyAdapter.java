@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mi.layoutinspector.R;
-import com.mi.layoutinspector.inspect.InspectItemView;
+import com.mi.layoutinspector.inspect.ViewInspector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,13 +23,13 @@ import java.util.List;
 public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdapter.ViewHolder> {
     private final String TAG = "FileListAdapter";
     private List<HierarchyItem> mDatas = null;
-    private InspectItemView inspectItemView;
+    private ViewInspector viewInspector;
 
     public ViewHierarchyAdapter() {
     }
 
-    public void setInspectItemView(InspectItemView inspectItemView) {
-        this.inspectItemView = inspectItemView;
+    public void setInspectItemView(ViewInspector viewInspector) {
+        this.viewInspector = viewInspector;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,10 +75,10 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
 
         //收集不可点击的原因
         String notClickableReason = "";
-        if (hierarchyItem.getInspectItemView().getSizeIsZero()) {
+        if (hierarchyItem.getViewInspector().getSizeIsZero()) {
             notClickableReason = "(宽/高是0)";
         }
-        if (hierarchyItem.getInspectItemView().isOutOfScreen()) {
+        if (hierarchyItem.getViewInspector().isOutOfScreen()) {
             notClickableReason += " (超出屏幕)";
         }
 
@@ -99,10 +99,10 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
             holder.notClickableReason.setVisibility(View.GONE);
         }
 
-        if (hierarchyItem.getInspectItemView() != null && !hierarchyItem.isSelected() && TextUtils.isEmpty(notClickableReason)) {
+        if (hierarchyItem.getViewInspector() != null && !hierarchyItem.isSelected() && TextUtils.isEmpty(notClickableReason)) {
             holder.itemView.setOnClickListener(v -> {
-                inspectItemView.hideViewInfosPopupWindown();
-                hierarchyItem.getInspectItemView().showViewInfosPopupWindow();
+                viewInspector.hideViewInfosPopupWindown();
+                hierarchyItem.getViewInspector().showViewInfosPopupWindow();
             });
         } else {
             holder.itemView.setOnClickListener(null);

@@ -2,7 +2,7 @@ package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.view.View
 import com.mi.layoutinspector.utils.getId
-import com.mi.layoutinspector.inspect.ViewInspector
+import com.mi.layoutinspector.inspect.IViewInspector
 
 /**
  * create by niuxiaowei
@@ -11,7 +11,7 @@ import com.mi.layoutinspector.inspect.ViewInspector
 
  **/
 class ViewIdClassCollector : IViewAttributeCollector {
-    override fun collectViewAttributes(inspectedView: View, viewInspector: ViewInspector): List<ViewAttribute>? {
+    override fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
         getId(inspectedView)?.let {
             result.add(ViewAttribute("id名字", it))
