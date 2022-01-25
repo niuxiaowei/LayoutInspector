@@ -2,6 +2,8 @@ package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.mi.layoutinspector.*
 import com.mi.layoutinspector.inspector.IViewInspector
 import com.mi.layoutinspector.utils.dp2px
@@ -22,6 +24,14 @@ class ViewSizeCollector : IViewAttributeCollector {
         val result = arrayListOf<ViewAttribute>()
         result.add(ViewAttribute("宽", "${getDimensionWithUnitName(inspectedView.width.toFloat())} "))
         result.add(ViewAttribute("高", "${getDimensionWithUnitName(inspectedView.height.toFloat())} "))
+        inspectedView.layoutParams?.let { layoutParams ->
+            layoutParamsToStr(layoutParams.width)?.let {
+                result.add(ViewAttribute("layout_width", it))
+            }
+            layoutParamsToStr(layoutParams.height)?.let {
+                result.add(ViewAttribute("layout_width", it))
+            }
+        }
 
         val location = IntArray(2)
         inspectedView.getLocationOnScreen(location)
@@ -39,7 +49,18 @@ class ViewSizeCollector : IViewAttributeCollector {
             result.add(ViewAttribute("topMargin", getDimensionWithUnitName(marginLP.topMargin.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(marginLP.topMargin.toFloat()).toString(), OptType.MARGIN_TOP)))
             result.add(ViewAttribute("bottomMargin", getDimensionWithUnitName(marginLP.bottomMargin.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(marginLP.bottomMargin.toFloat()).toString(), OptType.MARGIN_BOTTOM)))
         }
+
+
+
         return result
+    }
+
+    private fun layoutParamsToStr(value: Int): String? {
+        return when (value) {
+            WRAP_CONTENT -> "wrap_content"
+            MATCH_PARENT -> "match_parent"
+            else -> null
+        }
     }
 
     private fun createClickListener(IViewInspector: IViewInspector, inspectedView: View, hintMsg: String, optType: OptType): View.OnClickListener {
