@@ -1,13 +1,12 @@
 package com.mi.layoutinspector.inspector
 
 import android.app.Activity
-import android.os.Build
+import android.util.Log
 import android.view.ViewGroup
 import com.mi.layoutinspector.Fragments
 import com.mi.layoutinspector.menu.InspectorMenu
 import com.mi.layoutinspector.utils.getContentViewForActivity
 import com.mi.layoutinspector.utils.getLayoutName
-import com.mi.layoutinspector.utils.idToString
 
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.
@@ -46,6 +45,14 @@ class ActivityInspector(val activity: Activity) : ComponentInspector() {
         menu = InspectorMenu(this).apply { onCreate() }
     }
 
+    fun onStart() {
+    }
+
+    internal fun removeInspector(removed: ComponentInspector) {
+        componentInspectors.remove(removed)
+        Log.i("LayoutInspector", "removeInspector  componentInspectors count:${componentInspectors.size}   removed:${removed}")
+    }
+
     private fun createActivityInfo(contentView: ViewGroup) {
         contentLayoutName = getLayoutName(contentView.getChildAt(0))
         activityName = activity.javaClass.simpleName
@@ -61,9 +68,12 @@ class ActivityInspector(val activity: Activity) : ComponentInspector() {
         componentInspectors.forEach { it.showInspectors() }
     }
 
-    fun onDestory() {
+
+    override fun onDestory() {
         fragments.unRegisterFragmentLifecycle()
         menu?.onDestory()
+        componentInspectors.forEach { it.onDestory() }
+        componentInspectors.clear()
     }
 }
 

@@ -1,6 +1,7 @@
 package com.mi.layoutinspector.inspector
 
 import android.app.Dialog
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -176,6 +177,10 @@ abstract class ComponentInspector() : IInspector {
         var result = contentView?.hashCode() ?: 0
         result = 31 * result + (decorView?.hashCode() ?: 0)
         return result
+    }
+
+    open fun onDestory() {
+        pageInspectors.clear()
     }
 }
 

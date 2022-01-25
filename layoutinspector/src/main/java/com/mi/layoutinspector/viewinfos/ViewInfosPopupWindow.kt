@@ -74,9 +74,9 @@ class ViewInfosPopupWindow(
 
     private fun getPopupWindowWidth(context: Context): Int {
         return if (screenIsPortrait(context)) {
-            (getScreenWidth() * 0.9).toInt()
+            (getScreenWidth() * 0.95).toInt()
         } else {
-            (getScreenHeight() * 0.9).toInt()
+            (getScreenHeight() * 0.95).toInt()
         }
     }
 

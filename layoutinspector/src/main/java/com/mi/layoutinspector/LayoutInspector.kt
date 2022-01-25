@@ -6,11 +6,11 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.widget.PopupWindow
 import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.utils.getActivityFromDialog
 import com.mi.layoutinspector.viewinfos.viewattributes.*
-import java.lang.IllegalArgumentException
 
 
 /**
@@ -65,9 +65,13 @@ class LayoutInspector() {
             this.application?.registerActivityLifecycleCallbacks(object :
                     Application.ActivityLifecycleCallbacks {
                 override fun onActivityPaused(activity: Activity) {
+                    Log.i("LayoutInspector", " onActivityPaused  $activity")
                 }
 
                 override fun onActivityStarted(activity: Activity) {
+                    findActivityInspector(activity)?.onStart()
+                    Log.i("LayoutInspector", " onActivityStarted  $activity")
+
                 }
 
                 override fun onActivityDestroyed(activity: Activity) {
@@ -75,21 +79,30 @@ class LayoutInspector() {
                         it.onDestory()
                         activityInspectors.remove(it)
                     }
+                    Log.i("LayoutInspector", " onActivityDestroyed  $activity")
 
                 }
 
                 override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+                    Log.i("LayoutInspector", " onActivitySaveInstanceState  $activity")
+
                 }
 
                 override fun onActivityStopped(activity: Activity) {
+                    Log.i("LayoutInspector", " onActivityStopped  $activity")
+
                 }
 
                 override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                     activityInspectors.add(ActivityInspector(activity).apply { onCreate() })
+                    Log.i("LayoutInspector", " onActivityCreated  $activity")
+
                 }
 
                 override fun onActivityResumed(activity: Activity) {
                     findActivityInspector(activity)?.onResume()
+                    Log.i("LayoutInspector", " onActivityResumed  $activity")
+
                 }
 
             })

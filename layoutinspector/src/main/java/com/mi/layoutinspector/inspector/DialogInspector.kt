@@ -3,6 +3,7 @@ package com.mi.layoutinspector.inspector
 import android.app.Dialog
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.inspector.ComponentInspector
 import com.mi.layoutinspector.menu.DialogInspectorMenu
@@ -26,6 +27,16 @@ class DialogInspector(private val dialog: Dialog, activityInspector: ActivityIns
         setContentDecorView(getContentViewForDialog(dialog), dialog.window?.decorView!!)
         activityName = activityInspector.activityName
         contentLayoutName = activityInspector.contentLayoutName
+
+        dialog.window!!.decorView.viewTreeObserver.addOnWindowAttachListener(object : ViewTreeObserver.OnWindowAttachListener {
+            override fun onWindowDetached() {
+                activityInspector.removeInspector(this@DialogInspector)
+            }
+
+            override fun onWindowAttached() {
+            }
+
+        })
     }
 
     override fun viewIsMenu(view: View): Boolean {
@@ -36,6 +47,7 @@ class DialogInspector(private val dialog: Dialog, activityInspector: ActivityIns
         contentView.addView(menu)
     }
 
+
     override fun addTagsForView(view: View) {
         super.addTagsForView(view)
         view.apply {
@@ -43,4 +55,6 @@ class DialogInspector(private val dialog: Dialog, activityInspector: ActivityIns
             setTag(TAG_COMPONENT_LAYOUT_NAME, getLayoutName(if (contentView?.childCount!! > 0) contentView?.getChildAt(0) else null))
         }
     }
+
+
 }

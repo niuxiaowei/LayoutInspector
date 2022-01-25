@@ -47,7 +47,7 @@ class PageInspector constructor(
         mPaint.strokeWidth = 2.0f
         //InspectPage的点击事件拦截掉
         setOnClickListener {
-            Log.i("InspectPage", "InspectPage  click")
+            Log.i("LayoutInspector", "InspectPage  click")
         }
         visibility = View.GONE
     }

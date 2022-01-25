@@ -1,7 +1,9 @@
 package com.mi.layoutinspector.inspector
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.PopupWindow
 import com.mi.layoutinspector.utils.getLayoutName
 import com.mi.layoutinspector.viewinfos.viewattributes.ComponentInfoCollector
@@ -20,6 +22,15 @@ class PopupWindowInspector(private val popupWindow: PopupWindow, activityInspect
             //activity的decorview作为popupwindow的decorview
             setContentDecorView(contentView, activityInspector.activity.window.decorView)
         }
+        popupWindow.contentView.viewTreeObserver.addOnWindowAttachListener(object :ViewTreeObserver.OnWindowAttachListener{
+            override fun onWindowDetached() {
+                activityInspector.removeInspector(this@PopupWindowInspector)
+            }
+
+            override fun onWindowAttached() {
+            }
+
+        })
     }
 
     override fun addTagsForView(view: View) {

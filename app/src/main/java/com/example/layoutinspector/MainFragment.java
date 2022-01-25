@@ -1,13 +1,16 @@
 package com.example.layoutinspector;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,13 +55,21 @@ public class MainFragment extends Fragment {
         view.findViewById(R.id.show_toast).setOnClickListener(v -> Toast.makeText(getContext(), "hello bottom", Toast.LENGTH_LONG).show());
 
         view.findViewById(R.id.show_dialog).setOnClickListener(v -> {
-            new CustomDialog(getContext(), new CustomDialog.IOkClickListener() {
+            Dialog dialog = new CustomDialog(getContext(), new CustomDialog.IOkClickListener() {
                 @Override
                 public void onOkClick(@NotNull String editMsg) {
                     Toast.makeText(getContext(), "ok click", Toast.LENGTH_LONG).show();
                 }
-            }, "我是一个对话框", "我设置了点击事件，点我").show();
+            }, "我是一个对话框", "我设置了点击事件，点我");
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    Log.i("layoutinspector", "dialog dismiss");
+                }
+            });
+            dialog.show();
         });
+
 
         view.findViewById(R.id.show_pupupwindow).setOnClickListener(v -> {
             showPopupWindow(v);
