@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import com.mi.layoutinspector.LayoutInspector.Companion.getScreenHeight
+import com.mi.layoutinspector.LayoutInspector.Companion.getScreenWidth
 import com.mi.layoutinspector.LayoutInspector.Companion.getViewAttributesCollectors
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.inspector.ViewInspector
@@ -30,10 +31,27 @@ import java.util.ArrayList
  * @date 2022/1/22.
  */
 class ViewInfosPopupWindow(
-        private val decorView: View?,
+        private val decorView: View,
         private val onDismissListener: PopupWindow.OnDismissListener?
 ) {
-    private var realPopupWindow: PopupWindow? = null
+    private val realPopupWindow: PopupWindow by lazy {
+        val context = decorView.context
+        val view: View = LayoutInflater.from(context)
+                .inflate(R.layout.layoutinspector_popupwindow_detail_view, null)
+        initViewAttributeViews(view, context)
+        initViewHierarchyViews(view, context)
+        view.tab_view_attribute.performClick()
+        PopupWindow(
+                view, getPopupWindowWidth(context),
+                getPopupWindowHeight(context)
+        ).apply {
+            isOutsideTouchable = true
+            isFocusable = true
+            setOnDismissListener {
+                onDismissListener?.onDismiss()
+            }
+        }
+    }
 
     private var viewAttributesAdapter: ViewAttributesAdapter? = null
 
@@ -43,10 +61,7 @@ class ViewInfosPopupWindow(
      * 因此viewinfos
      */
     fun hideViewInfos() {
-        if (realPopupWindow == null) {
-            return
-        }
-        realPopupWindow!!.dismiss()
+        realPopupWindow.dismiss()
     }
 
     private fun getPopupWindowHeight(context: Context): Int {
@@ -57,24 +72,12 @@ class ViewInfosPopupWindow(
         }
     }
 
-
-    private fun initRealPopupWindow(context: Context) {
-        val view: View = LayoutInflater.from(context)
-                .inflate(R.layout.layoutinspector_popupwindow_detail_view, null)
-        initViewAttributeViews(view, context)
-        initViewHierarchyViews(view, context)
-        realPopupWindow = PopupWindow(
-                view, WindowManager.LayoutParams.WRAP_CONTENT,
-                getPopupWindowHeight(context)
-        ).apply {
-            isOutsideTouchable = true
-            isFocusable = true
-            setOnDismissListener {
-                onDismissListener?.onDismiss()
-            }
+    private fun getPopupWindowWidth(context: Context): Int {
+        return if (screenIsPortrait(context)) {
+            (getScreenWidth() * 0.9).toInt()
+        } else {
+            (getScreenHeight() * 0.9).toInt()
         }
-
-        view.tab_view_attribute.performClick()
     }
 
     private fun initViewAttributeViews(rootView: View, context: Context) {
@@ -126,10 +129,8 @@ class ViewInfosPopupWindow(
             context: Context, inspectedView: View,
             viewInspector: ViewInspector
     ) {
-        if (realPopupWindow == null) {
-            initRealPopupWindow(context)
-        }
-        realPopupWindow!!.height = getPopupWindowHeight(context)
+        realPopupWindow.height = getPopupWindowHeight(context)
+        realPopupWindow.height = getPopupWindowWidth(context)
 
         //设置数据
         viewAttributesAdapter?.setDatas(collectViewAttributes(inspectedView, viewInspector))
@@ -137,7 +138,7 @@ class ViewInfosPopupWindow(
         viewHierarchyAdapter?.setInspectItemView(viewInspector)
 
 
-        realPopupWindow?.let {
+        realPopupWindow.let {
             val size = getPopupWindowSize(it)
             val offsets = calculatePopWindowOffsets(inspectedView, size[1], size[0], decorView)
             it.showAtLocation(
@@ -259,7 +260,7 @@ class ViewInfosPopupWindow(
         }
 
         //add blank count
-        val addBlankCount = 4
+        val addBlankCount = 2
         for (i in result.indices) {
             val hierarchyItem = result[i]
             if (hierarchyItem.parent != null) {

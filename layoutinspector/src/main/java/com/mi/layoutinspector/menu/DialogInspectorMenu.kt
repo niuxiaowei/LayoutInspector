@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import com.mi.layoutinspector.LayoutInspector
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.inspector.DialogInspector
 import com.mi.layoutinspector.utils.distance
 import com.mi.layoutinspector.utils.px2dip
 import kotlinx.android.synthetic.main.layoutinspector_view_inspector_ui_menu.view.*
-import java.lang.Math.sqrt
 
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.
@@ -33,7 +31,12 @@ class DialogInspectorMenu(context: Context, private val dialogInspector: DialogI
         addView(menuView, layoutParams)
     }
 
-    private class OnTouchListenerImpl(private val parentView: View) : OnTouchListener {
+    companion object {
+        const val MAX_CLICK_DURATION = 1000
+        const val MAX_CLICK_DISTANCE = 15
+    }
+
+    private inner class OnTouchListenerImpl(private val menuRootView: View) : OnTouchListener {
 
         private var menuViewWidth = 0
         private var menuViewHeight = 0
@@ -43,19 +46,25 @@ class DialogInspectorMenu(context: Context, private val dialogInspector: DialogI
         private var pressStartTime: Long = 0
         private var tempLastX: Int = 0
         private var tempLastY: Int = 0
+        private var dialogWidth: Int = 0
+        private var dialogHeight: Int = 0
 
-        companion object {
-            const val MAX_CLICK_DURATION = 1000
-            const val MAX_CLICK_DISTANCE = 15
-        }
+
+
 
         override fun onTouch(v: View?, event: MotionEvent): Boolean {
             val x = event.x.toInt()
             val y = event.y.toInt()
             if (menuViewHeight == 0) {
-                menuViewHeight = parentView.height
-                menuViewWidth = parentView.width
+                menuViewHeight = menuRootView.height
+                menuViewWidth = menuRootView.width
             }
+
+            if (dialogWidth == 0) {
+                dialogWidth = if (this@DialogInspectorMenu.parent is View) (this@DialogInspectorMenu.parent as View).width else 0
+                dialogHeight = if (this@DialogInspectorMenu.parent is View) (this@DialogInspectorMenu.parent as View).height else 0
+            }
+
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     lastX = x
@@ -72,13 +81,13 @@ class DialogInspectorMenu(context: Context, private val dialogInspector: DialogI
                     val offsetX = x - lastX
                     val offsetY = y - lastY
                     // 在当前left、top、right、bottom的基础上加上偏移量
-                    val lp = parentView.layoutParams as LayoutParams
+                    val lp = menuRootView.layoutParams as LayoutParams
                     val isInScreen =
-                            (lp.leftMargin + offsetX > 0 && lp.leftMargin + offsetX + menuViewWidth < LayoutInspector.getScreenWidth() && lp.topMargin + offsetY > 0 && lp.topMargin + offsetY + menuViewHeight + 600 < LayoutInspector.getScreenHeight())
+                            (lp.leftMargin + offsetX > 0 && lp.leftMargin + offsetX + menuViewWidth < dialogWidth && lp.topMargin + offsetY > 0 && lp.topMargin + offsetY + menuViewHeight < dialogHeight)
                     if (isInScreen) {
                         lp.leftMargin = lp.leftMargin + offsetX
                         lp.topMargin = lp.topMargin + offsetY
-                        parentView.layoutParams = lp
+                        menuRootView.layoutParams = lp
                     }
                     moveDistance += px2dip(distance(tempLastX, tempLastY, x, y))
                 }

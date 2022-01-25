@@ -29,7 +29,7 @@ class PageInspector constructor(
 ) : FrameLayout(context), IInspector {
 
     private val viewInfosPopupWindow =
-            ViewInfosPopupWindow(decorView, PopupWindow.OnDismissListener {
+            ViewInfosPopupWindow(decorView!!, PopupWindow.OnDismissListener {
                 curInspectedView = null
                 curViewInspector?.setSelecte(false)
                 curViewInspector = null

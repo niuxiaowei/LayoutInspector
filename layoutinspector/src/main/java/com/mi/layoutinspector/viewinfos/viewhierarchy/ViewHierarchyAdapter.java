@@ -36,14 +36,12 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
         TextView viewDesc;
         TextView cliclableView;
         View layout;
-        TextView notClickableReason;
 
         public ViewHolder(View view) {
             super(view);
             viewDesc = view.findViewById(R.id.view_desc);
             cliclableView = view.findViewById(R.id.label);
             layout = view.findViewById(R.id.layout);
-            notClickableReason = view.findViewById(R.id.not_clickable_reason);
         }
     }
 
@@ -71,32 +69,29 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
         for (int i = 0; i < hierarchyItem.getBlankCount(); i++) {
             blankStr.append(" ");
         }
-        holder.viewDesc.setText(blankStr + "-" + hierarchyItem.getViewDesc());
 
         //收集不可点击的原因
         String notClickableReason = "";
         if (hierarchyItem.getViewInspector().getSizeIsZero()) {
-            notClickableReason = "(宽/高是0)";
+            notClickableReason = " (宽/高是0)";
         }
         if (hierarchyItem.getViewInspector().isOutOfScreen()) {
             notClickableReason += " (超出屏幕)";
         }
 
+        holder.viewDesc.setText(blankStr + "-" + hierarchyItem.getViewDesc() + notClickableReason);
+
         if (hierarchyItem.isSelected()) {
             holder.viewDesc.setTextColor(holder.layout.getResources().getColor(R.color.li_gift_number_second));
             holder.viewDesc.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             holder.cliclableView.setText(R.string.li_cur_view_text);
-            holder.notClickableReason.setVisibility(View.GONE);
         } else if (!TextUtils.isEmpty(notClickableReason)) {
-            holder.notClickableReason.setText(notClickableReason);
-            holder.notClickableReason.setVisibility(View.VISIBLE);
             holder.cliclableView.setVisibility(View.INVISIBLE);
             holder.viewDesc.setTextColor(holder.itemView.getResources().getColor(R.color.li_color_5a5a5a_60));
         } else {
             holder.viewDesc.setTextColor(holder.layout.getResources().getColor(R.color.li_black));
             holder.viewDesc.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             holder.cliclableView.setText(R.string.li_clickable_text);
-            holder.notClickableReason.setVisibility(View.GONE);
         }
 
         if (hierarchyItem.getViewInspector() != null && !hierarchyItem.isSelected() && TextUtils.isEmpty(notClickableReason)) {
