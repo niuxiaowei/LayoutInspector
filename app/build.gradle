@@ -141,5 +141,41 @@ replaceMethod {
             }
         }
 
+        register {
+            replace {
+                invokeType "ins"
+                className "android.widget.PopupWindow"
+                methodName "showAsDropDown"
+                desc "(android.view.View,int,int)"
+            }
+            by {
+                className = "com.mi.layoutinspector.replacemethod.PopupWindowProxy"
+            }
+        }
+
+        register {
+            replace {
+                invokeType "ins"
+                className "android.widget.PopupWindow"
+                methodName "showAsDropDown"
+                desc "(android.view.View,int,int,int)"
+            }
+            by {
+                className = "com.mi.layoutinspector.replacemethod.PopupWindowProxy"
+            }
+        }
+
+        register {
+            replace {
+                invokeType "ins"
+                className "android.widget.PopupWindow"
+                methodName "showAtLocation"
+                desc "(android.view.View,int,int,int)"
+            }
+            by {
+                className = "com.mi.layoutinspector.replacemethod.PopupWindowProxy"
+            }
+        }
+
     }
 }

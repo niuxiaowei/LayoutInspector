@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,15 +75,47 @@ public class MainFragment extends Fragment {
         view.findViewById(R.id.show_pupupwindow).setOnClickListener(v -> {
             showPopupWindow(v);
         });
+
+        view.findViewById(R.id.show_pupupwindow1).setOnClickListener(v -> {
+            showPopupWindow1(v);
+        });
+
+        view.findViewById(R.id.show_pupupwindow2).setOnClickListener(v -> {
+            showPopupWindow2(v);
+        });
+
+        view.findViewById(R.id.show_pupupwindow3).setOnClickListener(v -> {
+            showPopupWindow3(v);
+        });
     }
 
-    private void showPopupWindow(View anchor){
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_window,null);
+    private void showPopupWindow(View anchor) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_window, null);
         PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setOutsideTouchable(true);
         popupWindow.showAsDropDown(anchor);
     }
 
+    private void showPopupWindow1(View anchor) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_window, null);
+        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.showAsDropDown(anchor, 20, 20);
+    }
+
+    private void showPopupWindow2(View anchor) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_window, null);
+        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.showAsDropDown(anchor, 30, 20, Gravity.LEFT);
+    }
+
+    private void showPopupWindow3(View anchor) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_window, null);
+        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.showAtLocation(anchor, Gravity.LEFT, 100, 100);
+    }
 
 
     public void onBackPressed() {
