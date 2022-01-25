@@ -58,15 +58,6 @@ fun getSuperClass(child: Class<*>, superClass: Class<*>): Class<*>? {
     } else getSuperClass(child.superclass, superClass)
 }
 
-fun getId(view: View): String? {
-    try {
-        val entryname: String = view.resources.getResourceEntryName(view.id)
-        return "R.id.$entryname"
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-    return null
-}
 
 fun distance(x1: Int, y1: Int, x2: Int, y2: Int): Float {
     val dx = x1 - x2

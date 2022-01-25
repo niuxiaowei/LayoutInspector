@@ -38,7 +38,7 @@ fun calculatePopWindowOffsets(
     if (screenIsPortrait(anchorView.context) || alignModeInLandscape == PopupWindowAlignAnchorView.VERTICAL) {
         // 竖屏的时候展示在anchor的上边或下边。判断需要在anchorView向上弹出还是向下弹出显示
         val isNeedShowUp =
-            LayoutInspector.getScreenHeight() - anchorViewLocation[1] - anchorHeight < popupHeight
+            getScreenHeight() - anchorViewLocation[1] - anchorHeight < popupHeight
         result[0] =
             anchorViewLocation[0] - decorViewLocation[0] + anchorWidth / 2 - popupWidth / 2
         if (isNeedShowUp) {
@@ -49,7 +49,7 @@ fun calculatePopWindowOffsets(
     } else {
         // 横屏的时候展示在anchor的左边或右边，判断需要左anchorView边还是右边弹出
         val isNeedShowRight =
-            anchorViewLocation[0] + anchorWidth + popupWidth > LayoutInspector.getScreenWidth()
+            anchorViewLocation[0] + anchorWidth + popupWidth > getScreenWidth()
         if (isNeedShowRight) {
             result[0] = anchorViewLocation[0] - decorViewLocation[0] - popupWidth
         } else {

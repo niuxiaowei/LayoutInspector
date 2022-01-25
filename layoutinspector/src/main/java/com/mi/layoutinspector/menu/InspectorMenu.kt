@@ -50,7 +50,7 @@ class InspectorMenu(private val activityInspector: ActivityInspector) {
             flags =
                     WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
             x = 0
-            y = 150
+            y = 200
             gravity = Gravity.LEFT or Gravity.TOP
             format = PixelFormat.TRANSPARENT
         }

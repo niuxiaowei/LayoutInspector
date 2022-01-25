@@ -8,14 +8,10 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import com.mi.layoutinspector.LayoutInspector.Companion.getScreenHeight
-import com.mi.layoutinspector.LayoutInspector.Companion.getScreenWidth
-import com.mi.layoutinspector.LayoutInspector.Companion.getViewAttributesCollectors
+import com.mi.layoutinspector.LayoutInspector.getViewAttributesCollectors
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.inspector.ViewInspector
-import com.mi.layoutinspector.utils.calculatePopWindowOffsets
-import com.mi.layoutinspector.utils.getPopupWindowSize
-import com.mi.layoutinspector.utils.screenIsPortrait
+import com.mi.layoutinspector.utils.*
 import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttribute
 import com.mi.layoutinspector.viewinfos.viewattributes.ViewAttributesAdapter
 import com.mi.layoutinspector.viewinfos.viewhierarchy.HierarchyItem
@@ -168,7 +164,7 @@ class ViewInfosPopupWindow(
             }
             val collectViewAttributes =
                     viewDetailCollector.collectViewAttributes(inspectedView, viewInspector)
-            if (collectViewAttributes != null && collectViewAttributes.size > 0) {
+            if (collectViewAttributes != null && collectViewAttributes.isNotEmpty()) {
                 viewAttributes.addAll(collectViewAttributes)
             }
         }
@@ -205,7 +201,7 @@ class ViewInfosPopupWindow(
         val result: MutableList<HierarchyItem> = ArrayList()
         var parent = viewInspector.parent() as ViewInspector?
         var parentHierarchy: HierarchyItem? = null
-        if (parent != null && parent.childs() != null) {
+        if (parent?.childs() != null) {
             //收集兄弟控件
             parentHierarchy = HierarchyItem(
                     parent.inspectedView().javaClass.simpleName + getId(parent.inspectedView()),
@@ -270,13 +266,7 @@ class ViewInfosPopupWindow(
         return result
     }
 
-    private fun getId(view: View): String {
-        try {
-            val entryname = view.resources.getResourceEntryName(view.id)
-            return "(R.id.$entryname)"
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return ""
+    private fun getId(view: View): String? {
+        return idToString(view) ?: ""
     }
 }

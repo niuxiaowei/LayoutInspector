@@ -1,8 +1,8 @@
 package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.view.View
-import com.mi.layoutinspector.utils.getId
 import com.mi.layoutinspector.inspector.IViewInspector
+import com.mi.layoutinspector.utils.idToString
 
 /**
  * create by niuxiaowei
@@ -13,7 +13,7 @@ import com.mi.layoutinspector.inspector.IViewInspector
 class ViewIdClassCollector : IViewAttributeCollector {
     override fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
-        getId(inspectedView)?.let {
+        idToString(inspectedView)?.let {
             result.add(ViewAttribute("id名字", it))
         }
         result.add(ViewAttribute("类名", inspectedView.javaClass.simpleName + ""))

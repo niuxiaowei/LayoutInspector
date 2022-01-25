@@ -17,6 +17,10 @@ fun idToString(id: Int, context: Context): String? {
     }
 }
 
+fun idToString(view: View): String? {
+    return idToString(view.id, view.context)
+}
+
 fun getLayoutName(view: View?): String? {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         try {

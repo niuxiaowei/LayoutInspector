@@ -18,6 +18,6 @@ public class PopupWindowProxy {
     public static void showAsDropDown(PopupWindow popupWindow, View anchor){
         Log.i("replacemethod", "popupWindow#showAsDropDown(anchor) replaced.  popupWindow:" + popupWindow);
         popupWindow.showAsDropDown(anchor);
-        LayoutInspector.Companion.startInspect(popupWindow);
+        LayoutInspector.INSTANCE.startInspect(popupWindow);
     }
 }

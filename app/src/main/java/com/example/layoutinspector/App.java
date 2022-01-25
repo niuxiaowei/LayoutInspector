@@ -33,7 +33,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        LayoutInspector.Companion.regist(new IViewAttributeCollector() {
+        LayoutInspector.INSTANCE.register(new IViewAttributeCollector() {
             @Nullable
             @Override
             public List<ViewAttribute> collectViewAttributes(@NotNull View inspectView, @NotNull IViewInspector IViewInspector) {
