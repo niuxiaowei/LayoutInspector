@@ -24,6 +24,7 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
     private final String TAG = "FileListAdapter";
     private List<HierarchyItem> mDatas = null;
     private ViewInspector viewInspector;
+    private final static int ONE_BLANK_LEN = 6;
 
     public ViewHierarchyAdapter() {
     }
@@ -64,11 +65,7 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
             return;
         }
         final HierarchyItem hierarchyItem = mDatas.get(position);
-        //blank
-        StringBuilder blankStr = new StringBuilder();
-        for (int i = 0; i < hierarchyItem.getBlankCount(); i++) {
-            blankStr.append(" ");
-        }
+
 
         //收集不可点击的原因
         String notClickableReason = "";
@@ -78,8 +75,8 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
         if (hierarchyItem.getViewInspector().isOutOfScreen()) {
             notClickableReason += " (超出屏幕)";
         }
-
-        holder.viewDesc.setText(blankStr + "-" + hierarchyItem.getViewDesc() + notClickableReason);
+        holder.viewDesc.setPadding(ONE_BLANK_LEN * hierarchyItem.getBlankCount(), holder.viewDesc.getPaddingTop(), holder.viewDesc.getPaddingRight(), holder.viewDesc.getPaddingBottom());
+        holder.viewDesc.setText( "-" + hierarchyItem.getViewDesc() + notClickableReason);
 
         if (hierarchyItem.isSelected()) {
             holder.viewDesc.setTextColor(holder.layout.getResources().getColor(R.color.li_gift_number_second));

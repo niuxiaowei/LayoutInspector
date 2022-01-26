@@ -78,7 +78,8 @@ afterEvaluate {
 //            artifact "/home/niuxiaowie/mi/work/workspace/LayoutInspector/layoutinspector/build/outputs/aar/layoutinspector-debug.aar"
 //            groupId "com.mi.tools"
 //            artifactId "layoutinspector"
-//            version "1.0.0"
+//            version "1.0.12"
+//            }
 //        }
 //    }
 //}

@@ -22,8 +22,7 @@ class ViewSizeCollector : IViewAttributeCollector {
 
     override fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
-        result.add(ViewAttribute("宽", "${getDimensionWithUnitName(inspectedView.width.toFloat())} "))
-        result.add(ViewAttribute("高", "${getDimensionWithUnitName(inspectedView.height.toFloat())} "))
+        result.add(ViewAttribute("size", "width:${getDimensionWithUnitName(inspectedView.width.toFloat())}  height:${getDimensionWithUnitName(inspectedView.height.toFloat())} "))
         inspectedView.layoutParams?.let { layoutParams ->
             layoutParamsToStr(layoutParams.width)?.let {
                 result.add(ViewAttribute("layout_width", it))

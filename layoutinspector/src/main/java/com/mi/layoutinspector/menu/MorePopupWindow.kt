@@ -28,6 +28,10 @@ class MorePopupWindow {
 
     @SuppressLint("SetTextI18n")
     fun showPopupWindow(activityInspector: ActivityInspector, context: Context, anchor: View) {
+        if (isShowing()) {
+            realPopupWindow?.dismiss()
+            return
+        }
         this.activityInspector = activityInspector
         if (realPopupWindow == null) {
             contentView = LayoutInflater.from(context)
@@ -92,6 +96,10 @@ class MorePopupWindow {
                     offsets[1]
             )
         }
+    }
+
+    internal fun isShowing(): Boolean {
+        return realPopupWindow?.isShowing ?: false
     }
 
     @SuppressLint("SetTextI18n")

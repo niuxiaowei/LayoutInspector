@@ -30,7 +30,7 @@ class Fragments(val activity: Activity) {
                     if (supportFragments == null) {
                         supportFragments = mutableListOf()
                     }
-                    supportFragments?.add(f)
+                    supportFragments?.add(0, f)
                 }
 
                 override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
@@ -55,7 +55,7 @@ class Fragments(val activity: Activity) {
                         fragments = mutableListOf()
                     }
                     if (f != null) {
-                        fragments?.add(f)
+                        fragments?.add(0, f)
                     }
                 }
 
@@ -92,18 +92,37 @@ class Fragments(val activity: Activity) {
      */
     fun getFragmentClassNames(): MutableList<String>? {
         var result: MutableList<String>? = null
-        supportFragments?.forEach {
-            if (result == null) {
-                result = mutableListOf()
+        supportFragments?.apply {
+            filter { !it.isHidden }.forEach {
+                if (result == null) {
+                    result = mutableListOf()
+                }
+                result?.add(it.javaClass.name)
             }
-            result?.add(0, it.javaClass.name)
-        }
-        fragments?.forEach {
-            if (result == null) {
-                result = mutableListOf()
+            filter { it.isHidden }.forEach {
+                if (result == null) {
+                    result = mutableListOf()
+                }
+                result?.add(it.javaClass.name)
             }
-            result?.add(0, it.javaClass.name)
         }
+
+
+        fragments?.apply {
+            filter { !it.isHidden }?.forEach {
+                if (result == null) {
+                    result = mutableListOf()
+                }
+                result?.add(it.javaClass.name)
+            }
+            filter { it.isHidden }?.forEach {
+                if (result == null) {
+                    result = mutableListOf()
+                }
+                result?.add(it.javaClass.name)
+            }
+        }
+
         return result
     }
 }

@@ -11,7 +11,7 @@ import com.mi.layoutinspector.inspector.IViewInspector
 class ViewClickInfoCollector : IViewAttributeCollector {
     override fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
-        result.add(ViewAttribute("view属性", "点击不显示view属性界面", View.OnClickListener {
+        result.add(ViewAttribute("view检查器", "点击不显示该view的检查器", View.OnClickListener {
             IViewInspector.setClickable(false)
             IViewInspector.hideViewInfosPopupWindown()
         }))

@@ -149,6 +149,7 @@ abstract class ComponentInspector() : IInspector {
     override fun hideInspectors() {
         pageInspectors.forEach {
             it.hideInspectors()
+            it.hideViewInfosPopupWindow()
         }
         inspectorsShowed = false
     }

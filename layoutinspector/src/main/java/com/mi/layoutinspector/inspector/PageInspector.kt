@@ -90,14 +90,13 @@ class PageInspector constructor(
     }
 
     private fun setSize() {
-        if (layoutParams.width * layoutParams.height > 0) {
-            return
+        if (layoutParams.width * layoutParams.height <= 0 || layoutParams.width < 0 || layoutParams.height < 0) {
+            val lp = layoutParams.apply {
+                width = childOfContentView.width
+                height = childOfContentView.height
+            }
+            layoutParams = lp
         }
-        val lp = layoutParams.apply {
-            width = childOfContentView.width
-            height = childOfContentView.height
-        }
-        layoutParams = lp
     }
 
     override fun showInspectors() {

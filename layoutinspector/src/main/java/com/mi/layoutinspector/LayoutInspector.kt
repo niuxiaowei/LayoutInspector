@@ -34,9 +34,9 @@ object LayoutInspector {
     init {
         viewAttributesCollectors.add(ViewIdClassCollector())
         viewAttributesCollectors.add(ComponentInfoCollector())
+        viewAttributesCollectors.add(ViewLayoutInfoCollector())
         viewAttributesCollectors.add(ViewSizeCollector())
         viewAttributesCollectors.add(ViewClickInfoCollector())
-        viewAttributesCollectors.add(ViewLayoutInfoCollector())
         viewAttributesCollectors.add(ViewBackgroundCollector())
         viewAttributesCollectors.add(ViewTextInfoCollector())
     }

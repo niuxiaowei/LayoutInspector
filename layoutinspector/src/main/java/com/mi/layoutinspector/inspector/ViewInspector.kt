@@ -40,7 +40,7 @@ class ViewInspector constructor(
 
     companion object {
         private const val STROKE_WIDTH = 3.0f
-        private const val STROKE_WIDTH_SELECT = 10.0f
+        private const val STROKE_WIDTH_SELECT = 18.0f
         private val COLOR_BORDER: Int = ContextCompat.getColor(getContext(), R.color.li_color_fc2f68)
         private val COLOR_CORNER: Int by lazy { ContextCompat.getColor(getContext(), R.color.li_color_34b1f3) }
         private val COLOR_PADDING: Int by lazy { ContextCompat.getColor(getContext(), R.color.li_color_03A9F4) }
