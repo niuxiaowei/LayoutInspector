@@ -267,6 +267,7 @@ class ViewInfosPopupWindow(
     }
 
     private fun getId(view: View): String? {
-        return idToString(view) ?: ""
+        idToString(view)?.let { return "($it)" }
+        return ""
     }
 }

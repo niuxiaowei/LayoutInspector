@@ -7,6 +7,8 @@ import android.graphics.Paint
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
+import com.mi.layoutinspector.LayoutInspector
+import com.mi.layoutinspector.LayoutInspector.getContext
 import com.mi.layoutinspector.R
 
 /**
@@ -30,16 +32,21 @@ class ViewInspector constructor(
 
     init {
         parent?.addChild(this)
+
     }
 
     private var mPaint: Paint = Paint()
-    private val COLOR_BORDER: Int by lazy { ContextCompat.getColor(context, R.color.li_color_fc2f68) }
-    private val COLOR_CORNER: Int by lazy { ContextCompat.getColor(context, R.color.li_color_34b1f3) }
-    private val COLOR_PADDING: Int by lazy { ContextCompat.getColor(context, R.color.li_color_03A9F4) }
-    private val COLOR_BORDER_SELECT: Int by lazy { ContextCompat.getColor(context, R.color.li_gift_number_second) }
 
-    private val STROKE_WIDTH: Float = 3.0f
-    private val STROKE_WIDTH_SELECT = 15.0f
+
+    companion object {
+        private const val STROKE_WIDTH = 3.0f
+        private const val STROKE_WIDTH_SELECT = 10.0f
+        private val COLOR_BORDER: Int = ContextCompat.getColor(getContext(), R.color.li_color_fc2f68)
+        private val COLOR_CORNER: Int by lazy { ContextCompat.getColor(getContext(), R.color.li_color_34b1f3) }
+        private val COLOR_PADDING: Int by lazy { ContextCompat.getColor(getContext(), R.color.li_color_03A9F4) }
+        private val COLOR_BORDER_SELECT: Int by lazy { ContextCompat.getColor(getContext(), R.color.li_gift_number_second) }
+    }
+
 
     private var isSelecte: Boolean = false
 
@@ -49,6 +56,7 @@ class ViewInspector constructor(
     // InspectItemView大小是否是小于等于0
     var sizeIsZero: Boolean = false
         get() = width * height <= 0
+
 
     init {
         mPaint = Paint()

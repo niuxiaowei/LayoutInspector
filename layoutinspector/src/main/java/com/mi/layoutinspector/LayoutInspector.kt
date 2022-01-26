@@ -28,7 +28,6 @@ object LayoutInspector {
     var unitsIsDP = false
     private val activityInspectors = mutableListOf<ActivityInspector>()
 
-
     init {
         viewAttributesCollectors.add(ViewIdClassCollector())
         viewAttributesCollectors.add(ComponentInfoCollector())
