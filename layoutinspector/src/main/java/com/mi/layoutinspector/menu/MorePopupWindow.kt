@@ -5,15 +5,16 @@ import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.LayoutInspector
+import com.mi.layoutinspector.LayoutInspector.isShowViewMargin
+import com.mi.layoutinspector.LayoutInspector.isShowViewPadding
 import com.mi.layoutinspector.LayoutInspector.isViewGroupShowViewAttributes
 import com.mi.layoutinspector.R
-import com.mi.layoutinspector.utils.PopupWindowAlignAnchorView
-import com.mi.layoutinspector.utils.calculatePopWindowOffsets
-import com.mi.layoutinspector.utils.getPopupWindowSize
+import com.mi.layoutinspector.utils.*
 import kotlinx.android.synthetic.main.layoutinspector_popupwindow_more_view.view.*
 
 /**
@@ -30,18 +31,41 @@ class MorePopupWindow {
         this.activityInspector = activityInspector
         if (realPopupWindow == null) {
             contentView = LayoutInflater.from(context)
-                .inflate(R.layout.layoutinspector_popupwindow_more_view, null)
-            realPopupWindow = object : PopupWindow(
-                contentView,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ) {}
+                    .inflate(R.layout.layoutinspector_popupwindow_more_view, null)
+            realPopupWindow = PopupWindow(
+                    contentView,
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT
+            )
             (realPopupWindow as PopupWindow).apply {
                 isOutsideTouchable = true
                 isFocusable = true
             }
-            initUnitsView()
-            initViewGroupShowViews()
+            contentView?.dp_px_group?.setOnCheckedChangeListener { _, id ->
+                when (id) {
+                    R.id.dp -> LayoutInspector.unitsIsDP = true
+                    R.id.px -> LayoutInspector.unitsIsDP = false
+                }
+            }
+            contentView?.viewgroup_show_group?.setOnCheckedChangeListener { _, id ->
+                when (id) {
+                    R.id.yes -> isViewGroupShowViewAttributes = true
+                    R.id.no -> isViewGroupShowViewAttributes = false
+                }
+            }
+            contentView?.show_view_margin_group?.setOnCheckedChangeListener { _, id ->
+                when (id) {
+                    R.id.margin_yes -> isShowViewMargin = true
+                    R.id.margin_no -> isShowViewMargin = false
+                }
+            }
+
+            contentView?.show_view_padding_group?.setOnCheckedChangeListener { _, id ->
+                when (id) {
+                    R.id.padding_yes -> isShowViewPadding = true
+                    R.id.padding_no -> isShowViewPadding = false
+                }
+            }
         }
         contentView?.apply {
             activity_name.text = "当前Activity: ${activityInspector.activityName}"
@@ -51,26 +75,29 @@ class MorePopupWindow {
         setResponseCLickState()
         initFragmentsView()
 
+        setPaddingState()
+        setMarginState()
+
+        setScreenInfoForView()
+
         realPopupWindow?.let {
             val size = getPopupWindowSize(it)
             val offsets = calculatePopWindowOffsets(
-                anchor, size[0], size[1], null, PopupWindowAlignAnchorView.VERTICAL
+                    anchor, size[0], size[1], null, PopupWindowAlignAnchorView.VERTICAL
             )
             it.showAtLocation(
-                activityInspector.activity.window.decorView,
-                Gravity.LEFT or Gravity.TOP,
-                offsets[0],
-                offsets[1]
+                    activityInspector.activity.window.decorView,
+                    Gravity.LEFT or Gravity.TOP,
+                    offsets[0],
+                    offsets[1]
             )
         }
     }
 
-    private fun initUnitsView() {
-        contentView?.dp_px_group?.setOnCheckedChangeListener { radioGroup, id ->
-            when (id) {
-                R.id.dp -> LayoutInspector.unitsIsDP = true
-                R.id.px -> LayoutInspector.unitsIsDP = false
-            }
+    @SuppressLint("SetTextI18n")
+    private fun setScreenInfoForView() {
+        contentView?.apply {
+            screen_info.text = "屏幕:宽 ${getDimensionWithUnitName(getScreenWidth().toFloat())} 高 ${getDimensionWithUnitName(getScreenHeight().toFloat())}"
         }
     }
 
@@ -85,15 +112,6 @@ class MorePopupWindow {
             }
         }
         contentView?.fragments?.text = fragmentsStr
-    }
-
-    private fun initViewGroupShowViews() {
-        contentView?.viewgroup_show_group?.setOnCheckedChangeListener { radioGroup, id ->
-            when (id) {
-                R.id.yes -> isViewGroupShowViewAttributes = true
-                R.id.no -> isViewGroupShowViewAttributes = false
-            }
-        }
     }
 
     private fun setDpPxRadioState() {
@@ -117,6 +135,30 @@ class MorePopupWindow {
             } else {
                 yes.isChecked = false
                 no.isChecked = true
+            }
+        }
+    }
+
+    private fun setPaddingState() {
+        contentView?.apply {
+            if (isShowViewPadding) {
+                padding_yes.isChecked = true
+                padding_no.isChecked = false
+            } else {
+                padding_yes.isChecked = false
+                padding_no.isChecked = true
+            }
+        }
+    }
+
+    private fun setMarginState() {
+        contentView?.apply {
+            if (isShowViewMargin) {
+                margin_yes.isChecked = true
+                margin_no.isChecked = false
+            } else {
+                margin_yes.isChecked = false
+                margin_no.isChecked = true
             }
         }
     }

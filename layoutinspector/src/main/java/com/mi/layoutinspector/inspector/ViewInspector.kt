@@ -266,18 +266,20 @@ class ViewInspector constructor(
         }
 
         //画padding
-        mPaint.color = COLOR_PADDING
-        if (inspectedView.paddingTop > 0) {
-            canvas.drawRect(LEFT, TOP, width.toFloat(), inspectedView.paddingTop.toFloat(), mPaint)
-        }
-        if (inspectedView.paddingBottom > 0) {
-            canvas.drawRect(LEFT, height.toFloat() - inspectedView.paddingBottom.toFloat(), width.toFloat(), height.toFloat(), mPaint)
-        }
-        if (inspectedView.paddingLeft > 0) {
-            canvas.drawRect(LEFT, TOP, inspectedView.paddingLeft.toFloat(), height.toFloat(), mPaint)
-        }
-        if (inspectedView.paddingRight > 0) {
-            canvas.drawRect(width.toFloat() - inspectedView.paddingRight, TOP, width.toFloat(), height.toFloat(), mPaint)
+        if (LayoutInspector.isShowViewPadding) {
+            mPaint.color = COLOR_PADDING
+            if (inspectedView.paddingTop > 0) {
+                canvas.drawRect(LEFT, TOP, width.toFloat(), inspectedView.paddingTop.toFloat(), mPaint)
+            }
+            if (inspectedView.paddingBottom > 0) {
+                canvas.drawRect(LEFT, height.toFloat() - inspectedView.paddingBottom.toFloat(), width.toFloat(), height.toFloat(), mPaint)
+            }
+            if (inspectedView.paddingLeft > 0) {
+                canvas.drawRect(LEFT, TOP, inspectedView.paddingLeft.toFloat(), height.toFloat(), mPaint)
+            }
+            if (inspectedView.paddingRight > 0) {
+                canvas.drawRect(width.toFloat() - inspectedView.paddingRight, TOP, width.toFloat(), height.toFloat(), mPaint)
+            }
         }
 
         super.draw(canvas)

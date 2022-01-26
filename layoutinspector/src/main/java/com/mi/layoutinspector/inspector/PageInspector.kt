@@ -156,10 +156,12 @@ class PageInspector constructor(
     }
 
     override fun dispatchDraw(canvas: Canvas?) {
-        for (i in 0 until childCount) {
-            val inspectItemView = getChildAt(i)
-            if (inspectItemView is ViewInspector) {
-                inspectItemView.drawMargin(canvas, mPaint)
+        if (LayoutInspector.isShowViewMargin) {
+            for (i in 0 until childCount) {
+                val inspectItemView = getChildAt(i)
+                if (inspectItemView is ViewInspector) {
+                    inspectItemView.drawMargin(canvas, mPaint)
+                }
             }
         }
         super.dispatchDraw(canvas)

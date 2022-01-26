@@ -9,6 +9,123 @@
     android:orientation="vertical"
     android:padding="10dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/left" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text=" left margin"
+            android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/right" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text=" right margin"
+            android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/top" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text=" top margin"
+            android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/bottom" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text=" bottom margin"
+            android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+
+            android:layout_marginLeft="10dp"
+            android:background="#4103A9F4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:text=" 代表view的padding"
+            android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_info" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/li_divider_height"
+        android:background="@color/li_color_B2B2B2"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
+
+    <TextView
+        android:id="@+id/screen_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/li_black"
+        android:textSize="@dimen/li_more_view_text_size"
+        tools:text="ff" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/li_divider_height"
+        android:background="@color/li_color_B2B2B2"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
+
     <TextView
         android:id="@+id/activity_name"
         android:layout_width="wrap_content"
@@ -157,6 +274,114 @@
 
             <RadioButton
                 android:id="@+id/no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="否"
+
+                android:textSize="@dimen/li_more_view_text_size" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/li_divider_height"
+        android:background="@color/li_color_B2B2B2"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/show_view_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="显示view margin:"
+            android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_id" />
+
+        <RadioGroup
+            android:id="@+id/show_view_margin_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/dp_px"
+            app:layout_constraintLeft_toRightOf="@+id/dp_px"
+            app:layout_constraintTop_toTopOf="@+id/dp_px">
+
+            <RadioButton
+                android:id="@+id/margin_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="是"
+
+                android:textSize="@dimen/li_more_view_text_size" />
+
+            <RadioButton
+                android:id="@+id/margin_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="否"
+
+                android:textSize="@dimen/li_more_view_text_size" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/li_divider_height"
+        android:background="@color/li_color_B2B2B2"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/show_view_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="显示view padding:"
+            android:textColor="@color/li_black"
+            android:textSize="@dimen/li_more_view_text_size"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_id" />
+
+        <RadioGroup
+            android:id="@+id/show_view_padding_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/dp_px"
+            app:layout_constraintLeft_toRightOf="@+id/dp_px"
+            app:layout_constraintTop_toTopOf="@+id/dp_px">
+
+            <RadioButton
+                android:id="@+id/padding_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="是"
+
+                android:textSize="@dimen/li_more_view_text_size" />
+
+            <RadioButton
+                android:id="@+id/padding_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="否"

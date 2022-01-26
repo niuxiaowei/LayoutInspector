@@ -26,6 +26,9 @@ object LayoutInspector {
 
     //当前的单位是否是dp
     var unitsIsDP = false
+    //是否显示view的padding margin
+    var isShowViewPadding = true
+    var isShowViewMargin = true
     private val activityInspectors = mutableListOf<ActivityInspector>()
 
     init {
