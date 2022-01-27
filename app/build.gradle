@@ -65,7 +65,7 @@ dependencies {
 
 replaceMethod {
     open = true //这里如果设置为false,则会关闭插桩
-    openLog true
+    openLog false
     replaceByMethods {
         register {
             replace {
