@@ -22,14 +22,14 @@ public class LayoutInflaterProxy {
     public static final int TAG_KEY_INFLATE_METHOD_NAME = R.id.tag_key_inflate_method;
 
     public static View inflate(LayoutInflater layoutInflater, int resource, ViewGroup root, Object[] objects) {
-        Log.i("replacemethod", "layoutInflater#inflate(resource, root) replaced.  res:" + resource);
+        Log.i("LayoutInspector", "layoutInflater#inflate(resource, root) replaced.  res:" + resource);
         View view = layoutInflater.inflate(resource, root);
         setTagInfoForView(view, resource, objects, LayoutInspector.INSTANCE.getContext().getResources());
         return view;
     }
 
     public static View inflate(Context context, int resource, ViewGroup root, Object[] objects) {
-        Log.i("replacemethod", "View#inflate(context,resource, root) replaced.  res:" + resource);
+        Log.i("LayoutInspector", "View#inflate(context,resource, root) replaced.  res:" + resource);
         View view = View.inflate(context,resource, root);
         setTagInfoForView(view, resource, objects, LayoutInspector.INSTANCE.getContext().getResources());
         return view;
@@ -53,7 +53,7 @@ public class LayoutInflaterProxy {
     }
 
     public static View inflate(LayoutInflater layoutInflater, int resource, ViewGroup root, boolean attachToRoot, Object[] objects) {
-        Log.i("replacemethod", "layoutInflater#inflate(resource,root,attachToRoot) replaced.  res:" + resource);
+        Log.i("LayoutInspector", "layoutInflater#inflate(resource,root,attachToRoot) replaced.  res:" + resource);
         View view = layoutInflater.inflate(resource, root, attachToRoot);
         setTagInfoForView(view, resource, objects, LayoutInspector.INSTANCE.getContext().getResources());
         return view;

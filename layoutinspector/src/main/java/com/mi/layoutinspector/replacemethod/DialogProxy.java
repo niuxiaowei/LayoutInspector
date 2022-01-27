@@ -17,13 +17,13 @@ import com.mi.layoutinspector.widget.CustomDialog;
 public class DialogProxy {
 
     public static void show(Dialog dialog) {
-        Log.i("replacemethod", "dialog#show() replaced.  dialog:" + dialog);
+        Log.i("LayoutInspector", "dialog#show() replaced.  dialog:" + dialog);
         dialog.show();
         LayoutInspector.INSTANCE.startInspect(dialog);
     }
 
     public static void dismiss(Dialog dialog) {
-        Log.i("replacemethod", "dialog#dismiss() replaced.  dialog:" + dialog);
+        Log.i("LayoutInspector", "dialog#dismiss() replaced.  dialog:" + dialog);
         dialog.dismiss();
     }
 }

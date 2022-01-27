@@ -1,6 +1,9 @@
 package com.mi.layoutinspector.viewinfos.viewattributes
 
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.view.View
+import com.mi.layoutinspector.R
 import com.mi.layoutinspector.inspector.IViewInspector
 
 /**
@@ -9,13 +12,23 @@ import com.mi.layoutinspector.inspector.IViewInspector
  * view点击事件信息收集器
  **/
 class ViewClickInfoCollector : IViewAttributeCollector {
+
+    companion object{
+        val TAG_CLICK_INTO = R.id.tag_key_click
+        val TAG_LONG_CLICK_INTO = R.id.tag_key_long_click
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun collectViewAttributes(inspectedView: View, IViewInspector: IViewInspector): List<ViewAttribute>? {
         val result = arrayListOf<ViewAttribute>()
-        result.add(ViewAttribute("view检查器", "点击不显示该view的检查器", View.OnClickListener {
-            IViewInspector.setClickable(false)
-            IViewInspector.hideViewInfosPopupWindown()
-        }))
-        result.add(ViewAttribute("是否设置点击事件", if (inspectedView.hasOnClickListeners()) "是" else "否"))
+        result.add(ViewAttribute("是否设置onClickListener", if (inspectedView.hasOnClickListeners()) "是" else "否"))
+        inspectedView.getTag(TAG_CLICK_INTO)?.let {
+            result.add(ViewAttribute("onClickListener位置", it.toString()))
+        }
+        result.add(ViewAttribute("是否设置onLongClickListener", if (inspectedView.hasOnLongClickListeners()) "是" else "否"))
+        inspectedView.getTag(TAG_LONG_CLICK_INTO)?.let {
+            result.add(ViewAttribute("onLongClickListener位置", it.toString()))
+        }
         return result
     }
 }

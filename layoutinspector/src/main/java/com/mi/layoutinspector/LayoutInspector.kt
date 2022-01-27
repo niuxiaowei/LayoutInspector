@@ -10,6 +10,8 @@ import android.util.Log
 import android.widget.PopupWindow
 import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.utils.getActivityFromDialog
+import com.mi.layoutinspector.utils.getBoolean
+import com.mi.layoutinspector.utils.saveBoolean
 import com.mi.layoutinspector.viewinfos.viewattributes.*
 
 
@@ -19,26 +21,49 @@ import com.mi.layoutinspector.viewinfos.viewattributes.*
  **/
 object LayoutInspector {
 
-    //ViewGroup是否显示 view的属性界面
-    var isViewGroupShowViewAttributes = true
     private var viewAttributesCollectors = arrayListOf<IViewAttributeCollector>()
     private var application: Application? = null
+    private val activityInspectors = mutableListOf<ActivityInspector>()
 
+    private const val KEY_SHOW_PADDING = "key_show_padding"
+    private const val KEY_SHOW_MARGIN = "key_show_margin"
+    private const val KEY_UNITS_DP = "key_units_is_dp"
+    private const val KEY_VIEW_GROUP_SHOW_INSPECTOR = "KEY_VIEW_GROUP_SHOW_INSPECTOR"
+
+    //ViewGroup是否显示 view的检测器界面
+    var isViewGroupShowViewInspector = true
+        set(value) {
+            field = value
+            saveBoolean(KEY_VIEW_GROUP_SHOW_INSPECTOR, value)
+        }
     //当前的单位是否是dp
     var unitsIsDP = false
+        set(value) {
+            field = value
+            saveBoolean(KEY_UNITS_DP, value)
+        }
+
     //是否显示view的padding margin
     var isShowViewPadding = true
+        set(value) {
+            field = value
+            saveBoolean(KEY_SHOW_PADDING, value)
+        }
     var isShowViewMargin = true
-    private val activityInspectors = mutableListOf<ActivityInspector>()
+        set(value) {
+            field = value
+            saveBoolean(KEY_SHOW_MARGIN, value)
+        }
 
     init {
         viewAttributesCollectors.add(ViewIdClassCollector())
-        viewAttributesCollectors.add(ComponentInfoCollector())
+        viewAttributesCollectors.add(ViewInspectorInfoCollector())
         viewAttributesCollectors.add(ViewLayoutInfoCollector())
-        viewAttributesCollectors.add(ViewSizeCollector())
         viewAttributesCollectors.add(ViewClickInfoCollector())
+        viewAttributesCollectors.add(ViewSizeCollector())
         viewAttributesCollectors.add(ViewBackgroundCollector())
         viewAttributesCollectors.add(ViewTextInfoCollector())
+        viewAttributesCollectors.add(ComponentInfoCollector())
     }
 
 
@@ -103,8 +128,12 @@ object LayoutInspector {
                 Log.i("LayoutInspector", " onActivityResumed  $activity")
 
             }
-
         })
+
+        isViewGroupShowViewInspector = getBoolean(KEY_VIEW_GROUP_SHOW_INSPECTOR, true)
+        unitsIsDP = getBoolean(KEY_UNITS_DP, false)
+        isShowViewPadding = getBoolean(KEY_SHOW_PADDING, true)
+        isShowViewMargin = getBoolean(KEY_SHOW_MARGIN, true)
     }
 
     fun getContext(): Context {

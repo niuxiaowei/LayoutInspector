@@ -57,7 +57,7 @@ class PageInspector constructor(
             parent: ViewInspector?
     ): ViewInspector {
         val isSetClick4View =
-                !(view is ViewGroup && !LayoutInspector.isViewGroupShowViewAttributes)
+                !(view is ViewGroup && !LayoutInspector.isViewGroupShowViewInspector)
         val view = ViewInspector(
                 context,
                 view,
@@ -71,17 +71,17 @@ class PageInspector constructor(
     }
 
     private fun calOffset() {
-        if (preScreenOrientation != screenIsPortrait(context)) {
-            offsetX = -1
-            offsetY = -1
-        }
-        preScreenOrientation = screenIsPortrait(context)
-        if (offsetY == -1) {
-            val location = IntArray(2)
-            childOfContentView.getLocationOnScreen(location)
-            offsetY = location[1]
-            offsetX = location[0]
-        }
+//        if (preScreenOrientation != screenIsPortrait(context)) {
+//            offsetX = -1
+//            offsetY = -1
+//        }
+//        preScreenOrientation = screenIsPortrait(context)
+//        if (offsetY == -1) {
+        val location = IntArray(2)
+        childOfContentView.getLocationOnScreen(location)
+        offsetY = location[1]
+        offsetX = location[0]
+//        }
     }
 
     override fun hideInspectors() {
@@ -90,11 +90,18 @@ class PageInspector constructor(
     }
 
     private fun setSize() {
-        if (layoutParams.width * layoutParams.height <= 0 || layoutParams.width < 0 || layoutParams.height < 0) {
-            val lp = layoutParams.apply {
+        var resetLayoutParams = false
+        val lp = layoutParams.apply {
+            if (width != childOfContentView.width) {
                 width = childOfContentView.width
-                height = childOfContentView.height
+                resetLayoutParams = true
             }
+            if (height != childOfContentView.height) {
+                height = childOfContentView.height
+                resetLayoutParams = true
+            }
+        }
+        if (resetLayoutParams) {
             layoutParams = lp
         }
     }

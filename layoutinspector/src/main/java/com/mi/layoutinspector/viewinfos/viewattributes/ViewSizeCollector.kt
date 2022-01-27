@@ -28,7 +28,7 @@ class ViewSizeCollector : IViewAttributeCollector {
                 result.add(ViewAttribute("layout_width", it))
             }
             layoutParamsToStr(layoutParams.height)?.let {
-                result.add(ViewAttribute("layout_width", it))
+                result.add(ViewAttribute("layout_height", it))
             }
         }
 

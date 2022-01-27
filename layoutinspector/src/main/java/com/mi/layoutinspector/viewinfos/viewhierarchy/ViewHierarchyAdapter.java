@@ -70,13 +70,17 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
         //收集不可点击的原因
         String notClickableReason = "";
         if (hierarchyItem.getViewInspector().getSizeIsZero()) {
-            notClickableReason = " (宽/高是0)";
+            if (hierarchyItem.getViewInspector().getWidth() == 0) {
+                notClickableReason = "(宽度为0)";
+            } else {
+                notClickableReason = "(高度为0)";
+            }
         }
         if (hierarchyItem.getViewInspector().isOutOfScreen()) {
             notClickableReason += " (超出屏幕)";
         }
         holder.viewDesc.setPadding(ONE_BLANK_LEN * hierarchyItem.getBlankCount(), holder.viewDesc.getPaddingTop(), holder.viewDesc.getPaddingRight(), holder.viewDesc.getPaddingBottom());
-        holder.viewDesc.setText( "-" + hierarchyItem.getViewDesc() + notClickableReason);
+        holder.viewDesc.setText("-" + hierarchyItem.getViewDesc() + notClickableReason);
 
         if (hierarchyItem.isSelected()) {
             holder.viewDesc.setTextColor(holder.layout.getResources().getColor(R.color.li_gift_number_second));

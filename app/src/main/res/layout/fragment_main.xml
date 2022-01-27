@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/teal_200"
-        android:text="@string/app_name" />
+        android:text="设置了长按事件" />
 
     <com.example.layoutinspector.MyView
         android:layout_marginTop="10dp"

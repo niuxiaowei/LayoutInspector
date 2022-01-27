@@ -177,5 +177,31 @@ replaceMethod {
             }
         }
 
+        register {
+            replace {
+                invokeType "ins"
+                className "android.view.View"
+                methodName "setOnClickListener"
+                desc "(android.view.View\$OnClickListener)"
+            }
+            by {
+                className = "com.mi.layoutinspector.replacemethod.OnClickListenerProxy"
+                addExtraParams =  true
+            }
+        }
+
+        register {
+            replace {
+                invokeType "ins"
+                className "android.view.View"
+                methodName "setOnLongClickListener"
+                desc "(android.view.View\$OnLongClickListener)"
+            }
+            by {
+                className = "com.mi.layoutinspector.replacemethod.OnClickListenerProxy"
+                addExtraParams =  true
+            }
+        }
+
     }
 }

@@ -6,13 +6,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.LinearLayout
 import android.widget.PopupWindow
 import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.LayoutInspector
 import com.mi.layoutinspector.LayoutInspector.isShowViewMargin
 import com.mi.layoutinspector.LayoutInspector.isShowViewPadding
-import com.mi.layoutinspector.LayoutInspector.isViewGroupShowViewAttributes
+import com.mi.layoutinspector.LayoutInspector.isViewGroupShowViewInspector
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.utils.*
 import kotlinx.android.synthetic.main.layoutinspector_popupwindow_more_view.view.*
@@ -53,8 +52,8 @@ class MorePopupWindow {
             }
             contentView?.viewgroup_show_group?.setOnCheckedChangeListener { _, id ->
                 when (id) {
-                    R.id.yes -> isViewGroupShowViewAttributes = true
-                    R.id.no -> isViewGroupShowViewAttributes = false
+                    R.id.yes -> isViewGroupShowViewInspector = true
+                    R.id.no -> isViewGroupShowViewInspector = false
                 }
             }
             contentView?.show_view_margin_group?.setOnCheckedChangeListener { _, id ->
@@ -137,7 +136,7 @@ class MorePopupWindow {
 
     private fun setResponseCLickState() {
         contentView?.apply {
-            if (isViewGroupShowViewAttributes) {
+            if (isViewGroupShowViewInspector) {
                 yes.isChecked = true
                 no?.isChecked = false
             } else {

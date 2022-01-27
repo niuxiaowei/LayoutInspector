@@ -247,7 +247,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="ViewGroup显示View属性界面:"
+            android:text="ViewGroup显示View检测器:"
             android:textColor="@color/li_black"
             android:textSize="@dimen/li_more_view_text_size"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -6,4 +6,6 @@
     <item name="tag_key_activity_layout_name" type="id" />
     <item name="tag_key_component_name" type="id" />
     <item name="tag_key_component_layout_name" type="id" />
+    <item name="tag_key_click" type="id" />
+    <item name="tag_key_long_click" type="id" />
 </resources>

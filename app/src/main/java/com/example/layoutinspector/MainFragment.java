@@ -87,6 +87,14 @@ public class MainFragment extends Fragment {
         view.findViewById(R.id.show_pupupwindow3).setOnClickListener(v -> {
             showPopupWindow3(v);
         });
+
+        view.findViewById(R.id.click3).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "设置了长按事件的view", Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
     }
 
     private void showPopupWindow(View anchor) {
