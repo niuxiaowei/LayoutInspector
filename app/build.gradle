@@ -121,17 +121,6 @@ replaceMethod {
         register {
             replace {
                 invokeType "ins"
-                className "android.app.Dialog"
-                methodName "dismiss"
-            }
-            by {
-                className = "com.mi.layoutinspector.replacemethod.DialogProxy"
-            }
-        }
-
-        register {
-            replace {
-                invokeType "ins"
                 className "android.widget.PopupWindow"
                 methodName "showAsDropDown"
                 desc "(android.view.View)"

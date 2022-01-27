@@ -22,8 +22,4 @@ public class DialogProxy {
         LayoutInspector.INSTANCE.startInspect(dialog);
     }
 
-    public static void dismiss(Dialog dialog) {
-        Log.i("LayoutInspector", "dialog#dismiss() replaced.  dialog:" + dialog);
-        dialog.dismiss();
-    }
 }
