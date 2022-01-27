@@ -14,9 +14,7 @@ public class OnClickListenerProxy {
 
     public static void setOnClickListener(View view, View.OnClickListener clickListener, Object[] objects) {
         view.setOnClickListener(new ClickListenerWrapper(clickListener, objects));
-        String className = objects[0] + "";
-        String classSimpleName = className.substring(className.lastIndexOf(".") + 1);
-        view.setTag(R.id.tag_key_click, classSimpleName + "#" + objects[1] + "#" + objects[3] + "行");
+        view.setTag(R.id.tag_key_click, getCodeInfo(objects));
     }
 
     public static class ClickListenerWrapper implements View.OnClickListener {
@@ -39,10 +37,15 @@ public class OnClickListenerProxy {
         }
     }
 
-    public static void setOnLongClickListener(View view, View.OnLongClickListener onLongClickListener, Object[] objects) {
+    private static String getCodeInfo(Object[] objects) {
         String className = objects[0] + "";
         String classSimpleName = className.substring(className.lastIndexOf(".") + 1);
-        view.setTag(R.id.tag_key_long_click, classSimpleName + "#" + objects[1] + "#" + objects[3] + "行");
+        return classSimpleName + "#" + objects[1] + "#" + objects[3] + "行";
+    }
+
+    public static void setOnLongClickListener(View view, View.OnLongClickListener onLongClickListener, Object[] objects) {
+
+        view.setTag(R.id.tag_key_long_click, getCodeInfo(objects));
         view.setOnLongClickListener(new OnLongClickListenerWrapper(onLongClickListener, objects));
     }
 
