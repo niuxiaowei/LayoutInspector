@@ -51,7 +51,8 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'org.jetbrains:annotations:15.0'
-    implementation project(path: ':layoutinspector')
+    implementation project(path: '::layoutinspector-no-op')
+//    implementation project(path: ':layoutinspector')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

@@ -84,7 +84,7 @@ object LayoutInspector {
         return null
     }
 
-    fun init(application: Application) {
+    internal fun init(application: Application) {
         this.application = application
         this.application?.registerActivityLifecycleCallbacks(object :
                 Application.ActivityLifecycleCallbacks {

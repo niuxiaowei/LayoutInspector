@@ -1,3 +1,4 @@
+include ':layoutinspector-no-op'
 include ':layoutinspector'
 include ':app'
 rootProject.name = "LayoutInspector"
