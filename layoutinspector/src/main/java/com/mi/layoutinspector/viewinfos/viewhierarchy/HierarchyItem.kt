@@ -1,5 +1,6 @@
 package com.mi.layoutinspector.viewinfos.viewhierarchy
 
+import android.view.ViewGroup
 import com.mi.layoutinspector.inspector.ViewInspector
 
 /**
@@ -11,7 +12,20 @@ import com.mi.layoutinspector.inspector.ViewInspector
  * @param isSelected 是否是被选择的
  * @param isBrotherhood 是否是兄弟关系
  **/
-data class HierarchyItem(val viewDesc: String, val viewInspector: ViewInspector?, var parent: HierarchyItem? = null, var isSelected: Boolean = false) {
+data class HierarchyItem(
+    val viewDesc: String,
+    val viewInspector: ViewInspector?,
+    var parent: HierarchyItem? = null,
+    var isSelected: Boolean = false
+) {
     var blankCount: Int = 0
+    var childCount = 0
+    init {
+        viewInspector?.let {
+            if (it.inspectedView() is ViewGroup) {
+                childCount = (it.inspectedView() as ViewGroup).childCount
+            }
+        }
+    }
 
 }

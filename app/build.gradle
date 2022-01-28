@@ -67,8 +67,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     //    implementation "com.mi.tools:layoutinspector:1.0.1"
-//    debugImplementation 'com.github.niuxiaowei:LayoutInspector:2.0.0'
-//    releaseImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector-no-op:2.0.0'
+//    debugImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector:v3.0.0'
+//    releaseImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector-no-op:v3.0.0'
 }
 
 replaceMethod {

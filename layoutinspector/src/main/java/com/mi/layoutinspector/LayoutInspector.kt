@@ -61,7 +61,9 @@ object LayoutInspector {
         viewAttributesCollectors.add(ViewLayoutInfoCollector())
         viewAttributesCollectors.add(ViewClickInfoCollector())
         viewAttributesCollectors.add(ViewSizeCollector())
-        viewAttributesCollectors.add(ViewBackgroundCollector())
+        viewAttributesCollectors.add(BaseViewAttributeCollector())
+        viewAttributesCollectors.add(BaseViewGroupAttributeCollector())
+        viewAttributesCollectors.add(RecyclerViewAttributeCollector())
         viewAttributesCollectors.add(ViewTextInfoCollector())
         viewAttributesCollectors.add(ComponentInfoCollector())
     }

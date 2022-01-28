@@ -12,10 +12,10 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:paddingLeft="20dp"
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:textColor="#000000"
         android:text="second fragment第一行" />
 
@@ -30,29 +30,5 @@
         android:text="second fragment第二行" />
 
 
-    <TextView
-        android:id="@+id/show_dialog"
-        android:layout_marginTop="20dp"
-        android:padding="5dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:text="second fragment第三行" />
-
-
-    <TextView
-        android:id="@+id/click3"
-        android:layout_marginTop="20dp"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:text="second fragment第四行" />
-
-    <com.example.layoutinspector.MyView
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -54,7 +54,8 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layoutinspector_adapter_hierarchy_view_item, parent, false);//加载view布局文件
+        View view =
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.layoutinspector_adapter_hierarchy_view_item, parent, false);//加载view布局文件
         return new ViewHolder(view);
     }
 
@@ -79,8 +80,16 @@ public class ViewHierarchyAdapter extends RecyclerView.Adapter<ViewHierarchyAdap
         if (hierarchyItem.getViewInspector().isOutOfScreen()) {
             notClickableReason += " (超出屏幕)";
         }
-        holder.viewDesc.setPadding(ONE_BLANK_LEN * hierarchyItem.getBlankCount(), holder.viewDesc.getPaddingTop(), holder.viewDesc.getPaddingRight(), holder.viewDesc.getPaddingBottom());
-        holder.viewDesc.setText("-" + hierarchyItem.getViewDesc() + notClickableReason);
+
+        String childCount = "";
+        if (hierarchyItem.getChildCount() > 0) {
+            childCount = " (子控件" + hierarchyItem.getChildCount() + "个)";
+        }
+
+        holder.viewDesc.setPadding(ONE_BLANK_LEN * hierarchyItem.getBlankCount(),
+                holder.viewDesc.getPaddingTop(), holder.viewDesc.getPaddingRight(),
+                holder.viewDesc.getPaddingBottom());
+        holder.viewDesc.setText("-" + hierarchyItem.getViewDesc() + childCount + notClickableReason);
 
         if (hierarchyItem.isSelected()) {
             holder.viewDesc.setTextColor(holder.layout.getResources().getColor(R.color.li_gift_number_second));
