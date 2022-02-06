@@ -55,8 +55,8 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'org.jetbrains:annotations:15.0'
-    releaseImplementation project(path: '::layoutinspector-no-op')
-    debugImplementation project(path: ':layoutinspector')
+//    releaseImplementation project(path: '::layoutinspector-no-op')
+//    debugImplementation project(path: ':layoutinspector')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -66,15 +66,15 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    //    implementation "com.mi.tools:layoutinspector:1.0.1"
-//    debugImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector:v3.0.0'
-//    releaseImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector-no-op:v3.0.0'
+    debugImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector:2.0.1'
+    releaseImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector-no-op:2.0.1'
 }
 
 replaceMethod {
     open = true //这里如果设置为false,则会关闭插桩
     openLog false
     replaceByMethods {
+        //对inflate方法进行替换，用来显示view的layout被inflate的位置信息
         register {
             replace {
                 invokeType "ins"
@@ -115,6 +115,7 @@ replaceMethod {
             }
         }
 
+        //若想对dialog进行检测，需要添加下面配置
         register {
             replace {
                 invokeType "ins"
@@ -126,6 +127,7 @@ replaceMethod {
             }
         }
 
+        //若想对PopupWindow进行检测，需要添加下面配置
         register {
             replace {
                 invokeType "ins"
@@ -174,6 +176,7 @@ replaceMethod {
             }
         }
 
+        //对setOnClickListener方法进行替换，在view检测器中显示click的位置信息
         register {
             replace {
                 invokeType "ins"
@@ -187,6 +190,7 @@ replaceMethod {
             }
         }
 
+        //对setOnLongClickListener方法进行替换，在view检测器中显示click的位置信息
         register {
             replace {
                 invokeType "ins"
