@@ -278,3 +278,50 @@ replaceMethod {
     }
 }
 ```
+
+3.扩展view的属性
+
+调用下面的方法，可以对view的属性进行扩展，具体可以参考demo中的例子
+```
+LayoutInspector.INSTANCE.register(IViewAttributeCollector collector)
+
+```
+
+如下代码对TextView的文本进行动态修改：
+
+```
+LayoutInspector.INSTANCE.register(new IViewAttributeCollector() {
+            @Nullable
+            @Override
+            public List<ViewAttribute> collectViewAttributes(@NotNull View inspectView, @NotNull IViewInspector IViewInspector) {
+                return null;
+            }
+
+            @Nullable
+            @Override
+            public ViewAttribute collectViewAttribute(@NotNull View inspectView, @NotNull IViewInspector IViewInspector) {
+                if (inspectView instanceof TextView) {
+                    ViewAttribute viewAttribute = new ViewAttribute("修改TextView内容", "点击进行修改", v -> {
+                        IViewInspector.hideViewInfosPopupWindown();
+                        TextView textView = (TextView) inspectView;
+                        final EditText editText = new EditText(inspectView.getContext());
+                        AlertDialog.Builder inputDialog =
+                                new AlertDialog.Builder(inspectView.getContext());
+                        inputDialog.setTitle("输入内容").setView(editText);
+                        inputDialog.setPositiveButton("确定修改",
+                                (dialog, which) -> {
+                                    String msg = editText.getText().toString();
+                                    if (!TextUtils.isEmpty(msg)) {
+                                        textView.setText(msg);
+                                    }
+                                }).show();
+                    });
+                    return viewAttribute;
+                }
+                return null;
+
+            }
+        });
+```
+
+该库使用了[对方法进行替换库](https://github.com/niuxiaowei/ReplaceMethod)
