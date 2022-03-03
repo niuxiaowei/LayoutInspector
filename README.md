@@ -281,13 +281,14 @@ replaceMethod {
 
 3.扩展view的属性
 
-调用下面的方法，可以对view的属性进行扩展，具体可以参考demo中的例子
+调用下面的方法，可以在检测器中显示扩展的view属性，具体可以参考demo中的例子
+
 ```
 LayoutInspector.INSTANCE.register(IViewAttributeCollector collector)
 
 ```
 
-如下代码对TextView的文本进行动态修改：
+如下代码对TextView的文本进行动态修改（检测器显示的时候就会显示该项）：
 
 ```
 LayoutInspector.INSTANCE.register(new IViewAttributeCollector() {
@@ -325,3 +326,6 @@ LayoutInspector.INSTANCE.register(new IViewAttributeCollector() {
 ```
 
 该库使用了[对方法进行替换库](https://github.com/niuxiaowei/ReplaceMethod)
+
+**我的公众号**
+![我的微信公众号](https://user-images.githubusercontent.com/3078303/148639094-a57cf897-eec6-4d79-a724-42b36e742b96.jpg)
