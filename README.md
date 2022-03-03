@@ -1,5 +1,8 @@
 ## Android轻量级Layout Inspector工具
 
+[![](https://jitpack.io/v/niuxiaowei/LayoutInspector.svg)](https://jitpack.io/#niuxiaowei/LayoutInspector)
+
+
 #### 效果图
 ![layout inspector工具效果](/images/layoutinspector.gif)
 
