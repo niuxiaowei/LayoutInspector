@@ -25,8 +25,8 @@ class ViewClickInfoCollector : IViewAttributeCollector {
         inspectedView.getTag(TAG_CLICK_INTO)?.let {
             result.add(ViewAttribute("onClickListener位置", it.toString()))
         }
-        result.add(ViewAttribute("是否设置onLongClickListener", if (inspectedView.hasOnLongClickListeners()) "是" else "否"))
         inspectedView.getTag(TAG_LONG_CLICK_INTO)?.let {
+            result.add(ViewAttribute("是否设置onLongClickListener", "是"))
             result.add(ViewAttribute("onLongClickListener位置", it.toString()))
         }
         return result
