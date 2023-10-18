@@ -47,6 +47,10 @@ class DialogInspector(private val dialog: Dialog, activityInspector: ActivityIns
         contentView.addView(menu)
     }
 
+    override fun hasDialogMenu(): Boolean {
+        return true
+    }
+
 
     override fun addTagsForView(view: View) {
         super.addTagsForView(view)

@@ -2,6 +2,7 @@ package com.mi.layoutinspector.inspector
 
 import android.app.Activity
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import com.mi.layoutinspector.Fragments
 import com.mi.layoutinspector.menu.InspectorMenu
@@ -34,6 +35,10 @@ class ActivityInspector(val activity: Activity) : ComponentInspector() {
         }
     }
 
+    override fun viewIsMenu(view: View): Boolean {
+        return InspectorMenu.isMenuView(view)
+    }
+
     fun onResume() {
         if (isInit) {
             return
@@ -42,7 +47,7 @@ class ActivityInspector(val activity: Activity) : ComponentInspector() {
         val contentView = getContentViewForActivity(activity)
         setContentDecorView(contentView, activity.window.decorView)
         createActivityInfo(contentView)
-        menu = InspectorMenu(this).apply { onCreate() }
+        menu = InspectorMenu(this,contentView).apply { onCreate() }
     }
 
     fun onStart() {

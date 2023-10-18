@@ -27,8 +27,9 @@ import java.util.ArrayList
  * @date 2022/1/22.
  */
 class ViewInfosPopupWindow(
-        private val decorView: View,
-        private val onDismissListener: PopupWindow.OnDismissListener?
+    private val decorView: View,
+    private val onDismissListener: PopupWindow.OnDismissListener?,
+    private val isDialogMenu: Boolean = false
 ) {
     private val realPopupWindow: PopupWindow by lazy {
         val context = decorView.context
@@ -61,18 +62,29 @@ class ViewInfosPopupWindow(
     }
 
     private fun getPopupWindowHeight(context: Context): Int {
+        if (isDialogMenu) {
+            return context.resources.getDimension(R.dimen.layout_inspector_popup_height).toInt()
+        }
         return if (screenIsPortrait(context)) {
-            (getScreenHeight() * 0.45).toInt()
+            (decorView.height * 0.45).toInt()
         } else {
-            (getScreenHeight() * 0.9).toInt()
+            (decorView.height * 0.45).toInt()
         }
     }
 
+    private fun dip2px(dp: Float, context: Context):Int {
+        return (dp * context.resources.displayMetrics.density + 0.5f).toInt()
+    }
+
+
     private fun getPopupWindowWidth(context: Context): Int {
+        if (isDialogMenu) {
+            return context.resources.getDimension(R.dimen.layout_inspector_popup_width).toInt()
+        }
         return if (screenIsPortrait(context)) {
-            (getScreenWidth() * 0.95).toInt()
+            (decorView.width * 0.5).toInt()
         } else {
-            (getScreenHeight() * 0.95).toInt()
+            (decorView.height * 0.50).toInt()
         }
     }
 
@@ -136,13 +148,17 @@ class ViewInfosPopupWindow(
 
         realPopupWindow.let {
             val size = getPopupWindowSize(it)
-            val offsets = calculatePopWindowOffsets(inspectedView, size[1], size[0], decorView)
-            it.showAtLocation(
+            if (isDialogMenu) {
+                it.showAsDropDown(decorView)
+            } else {
+                val offsets = calculatePopWindowOffsets(inspectedView, size[1], size[0], decorView)
+                it.showAtLocation(
                     decorView,
                     Gravity.LEFT or Gravity.TOP,
                     offsets[0],
                     offsets[1]
-            )
+                )
+            }
         }
     }
 

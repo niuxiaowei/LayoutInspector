@@ -2,4 +2,7 @@
 <resources>
     <dimen name="li_divider_height">0.5dp</dimen>
     <dimen name="li_more_view_text_size">12dp</dimen>
+
+    <dimen name="layout_inspector_popup_height">1000dp</dimen>
+    <dimen name="layout_inspector_popup_width">500dp</dimen>
 </resources>

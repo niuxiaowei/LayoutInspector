@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.PopupWindow
+import com.mi.layoutinspector.menu.InspectorMenu
 import com.mi.layoutinspector.viewinfos.viewattributes.ComponentInfoCollector
 
 /**
@@ -88,7 +89,7 @@ abstract class ComponentInspector() : IInspector {
                 }
             }
             childViewAndIndexWrappers?.forEach { (childView, index) ->
-                val pageInspector = PageInspector(context, childView, decorView)
+                val pageInspector = PageInspector(context, childView, decorView,hasDialogMenu())
                 addTagsForView(childView)
                 pageInspectors.add(pageInspector)
                 val lp = FrameLayout.LayoutParams(childView.layoutParams)
@@ -105,6 +106,10 @@ abstract class ComponentInspector() : IInspector {
             setTag(ComponentInfoCollector.TAG_ACTIVITY_NAME, activityName)
             setTag(ComponentInfoCollector.TAG_ACTIVITY_LAYOUT_NAME, contentLayoutName)
         }
+    }
+
+    protected open fun hasDialogMenu(): Boolean {
+        return false
     }
 
     protected open fun viewIsMenu(view: View): Boolean {

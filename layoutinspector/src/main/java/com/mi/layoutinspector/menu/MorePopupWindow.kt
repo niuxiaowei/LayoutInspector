@@ -85,9 +85,7 @@ class MorePopupWindow {
 
         realPopupWindow?.let {
             val size = getPopupWindowSize(it)
-            val offsets = calculatePopWindowOffsets(
-                    anchor, size[0], size[1], null, PopupWindowAlignAnchorView.VERTICAL
-            )
+            val offsets = calculatePopWindowOffsets(anchor, size[0], size[1], activityInspector.activity.window.decorView)
             it.showAtLocation(
                     activityInspector.activity.window.decorView,
                     Gravity.LEFT or Gravity.TOP,
@@ -104,7 +102,7 @@ class MorePopupWindow {
     @SuppressLint("SetTextI18n")
     private fun setScreenInfoForView() {
         contentView?.apply {
-            screen_info.text = "屏幕:宽 ${getDimensionWithUnitName(getScreenWidth().toFloat())} 高 ${getDimensionWithUnitName(getScreenHeight().toFloat())}"
+            screen_info.text = "屏幕:宽 ${getDimensionWithUnitName(getScreenWidth1().toFloat())} 高 ${getDimensionWithUnitName(getScreenHeight1().toFloat())}"
         }
     }
 

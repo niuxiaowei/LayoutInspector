@@ -24,39 +24,34 @@ fun calculatePopWindowOffsets(
     anchorView: View,
     popupHeight: Int,
     popupWidth: Int,
-    decorView: View?,
-    alignModeInLandscape: PopupWindowAlignAnchorView? = PopupWindowAlignAnchorView.HORIZONTAL
+    decorView: View
 ): IntArray {
     val result = IntArray(2)
     val anchorViewLocation = IntArray(2)
-    val decorViewLocation = IntArray(2)
-    anchorView.getLocationOnScreen(anchorViewLocation)
-    decorView?.getLocationOnScreen(decorViewLocation)
-    val anchorHeight = anchorView.height
-    val anchorWidth = anchorView.width
+    anchorView.getLocationInWindow(anchorViewLocation)
 
-    if (screenIsPortrait(anchorView.context) || alignModeInLandscape == PopupWindowAlignAnchorView.VERTICAL) {
-        // 竖屏的时候展示在anchor的上边或下边。判断需要在anchorView向上弹出还是向下弹出显示
-        val isNeedShowUp =
-            getScreenHeight() - anchorViewLocation[1] - anchorHeight < popupHeight
-        result[0] =
-            anchorViewLocation[0] - decorViewLocation[0] + anchorWidth / 2 - popupWidth / 2
-        if (isNeedShowUp) {
-            result[1] = anchorViewLocation[1] - decorViewLocation[1] - popupHeight
-        } else {
-            result[1] = anchorViewLocation[1] - decorViewLocation[1] + anchorHeight
-        }
+    //显示在 anchorView的下面
+    if (anchorViewLocation[1] + anchorView.height + popupHeight <= decorView.height) {
+        result[0] = ((anchorViewLocation[0] + anchorView.width / 2) - popupWidth/2)
+        result[1] = (anchorViewLocation[1] + anchorView.height)
+    } else if (anchorViewLocation[1] >= popupHeight) {
+        //显示在 anchorView的上面
+        result[0] = ((anchorViewLocation[0] + anchorView.width / 2) - popupWidth/2)
+        result[1] = anchorViewLocation[1] - popupHeight
+    } else if (anchorViewLocation[0] >= popupWidth) {
+        //显示在left
+        result[0] = (anchorViewLocation[0] - popupWidth)
+        result[1] = anchorViewLocation[1]
+    } else if (anchorViewLocation[0] + anchorView.width + popupWidth <= decorView.width) {
+        //显示在right
+        result[0] = anchorViewLocation[0] + anchorView.width
+        result[1] = anchorViewLocation[1]
     } else {
-        // 横屏的时候展示在anchor的左边或右边，判断需要左anchorView边还是右边弹出
-        val isNeedShowRight =
-            anchorViewLocation[0] + anchorWidth + popupWidth > getScreenWidth()
-        if (isNeedShowRight) {
-            result[0] = anchorViewLocation[0] - decorViewLocation[0] - popupWidth
-        } else {
-            result[0] = anchorViewLocation[0] - decorViewLocation[0] + anchorWidth
-        }
-        result[1] = anchorViewLocation[1] - decorViewLocation[1]
+        //显示在中间
+        result[0] = ((anchorViewLocation[0] + anchorView.width / 2) - popupWidth/2)
+        result[1] = anchorViewLocation[1]
     }
+
     return result
 }
 

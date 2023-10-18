@@ -67,6 +67,8 @@ class ViewInspector constructor(
                 if (pageInspector.curInspectedView() == inspectedView) {
                     pageInspector.hideViewInfosPopupWindow()
                     setSelecte(false)
+                } else if (pageInspector.curInspectedView() != null) {
+                    hideViewInfosPopupWindown()
                 } else {
                     showViewInfosPopupWindow()
                 }
@@ -86,8 +88,8 @@ class ViewInspector constructor(
     }
 
     override fun hideViewInfosPopupWindown() {
-        pageInspector.hideViewInfosPopupWindow()
         setSelecte(false)
+        pageInspector.hideViewInfosPopupWindow()
     }
 
     override fun showViewInfosPopupWindow() {

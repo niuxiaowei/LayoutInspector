@@ -44,8 +44,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
 
     println("rootdir:${rootDir}")
@@ -55,8 +55,8 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'org.jetbrains:annotations:15.0'
-//    releaseImplementation project(path: '::layoutinspector-no-op')
-//    debugImplementation project(path: ':layoutinspector')
+    releaseImplementation project(path: ':layoutinspector-no-op')
+    debugImplementation project(path: ':layoutinspector')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -66,8 +66,8 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    debugImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector:2.0.2'
-    releaseImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector-no-op:2.0.2'
+//    debugImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector:2.0.2'
+//    releaseImplementation 'com.github.niuxiaowei.LayoutInspector:layoutinspector-no-op:2.0.2'
 }
 
 replaceMethod {

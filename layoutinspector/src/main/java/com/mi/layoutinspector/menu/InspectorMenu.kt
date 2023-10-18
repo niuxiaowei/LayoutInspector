@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
 import android.view.*
+import android.widget.FrameLayout
 import com.mi.layoutinspector.inspector.ActivityInspector
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.utils.distance
@@ -17,23 +18,25 @@ import kotlinx.android.synthetic.main.layoutinspector_view_inspector_ui_menu.vie
  * @author niuxiaowei
  * @date 2022/1/8.
  */
-class InspectorMenu(private val activityInspector: ActivityInspector) {
+class InspectorMenu(private val activityInspector: ActivityInspector, private val contentView: ViewGroup ) {
     private val morePopupWindow: MorePopupWindow = MorePopupWindow()
     private var menuView: View? = null
     private val context: Context = activityInspector.activity
 
     fun onCreate() {
         menuView = createMenuView()
-        createLayoutParam().let {
+        FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            leftMargin = 20
+            topMargin = 200
+        }.let {
             setOnTouchListener(it)
-            activityInspector.activity.windowManager.addView(menuView, it)
+            contentView.addView(menuView,it)
         }
     }
 
-    private fun setOnTouchListener(layoutParam: WindowManager.LayoutParams) {
+    private fun setOnTouchListener(layoutParam: FrameLayout.LayoutParams) {
         ViewTouchListener(
                 layoutParam,
-                activityInspector.activity.windowManager,
                 menuView!!
         ).let {
             menuView?.setOnTouchListener(it)
@@ -42,23 +45,8 @@ class InspectorMenu(private val activityInspector: ActivityInspector) {
         }
     }
 
-    private fun createLayoutParam(): WindowManager.LayoutParams {
-        return WindowManager.LayoutParams().apply {
-            //设置大小 自适应
-            width = WindowManager.LayoutParams.WRAP_CONTENT
-            height = WindowManager.LayoutParams.WRAP_CONTENT
-            flags =
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-            x = 0
-            y = 200
-            gravity = Gravity.LEFT or Gravity.TOP
-            format = PixelFormat.TRANSPARENT
-        }
-    }
-
     private class ViewTouchListener(
-            private val wl: WindowManager.LayoutParams,
-            private val windowManager: WindowManager,
+            private val wl: FrameLayout.LayoutParams,
             private val rootView: View
     ) : View.OnTouchListener {
         private var x = 0
@@ -88,12 +76,12 @@ class InspectorMenu(private val activityInspector: ActivityInspector) {
                     val movedY = nowY - y
                     x = nowX
                     y = nowY
+
                     wl.apply {
-                        x += movedX
-                        y += movedY
+                        leftMargin += movedX
+                        topMargin += movedY
                     }
-                    //更新悬浮球控件位置
-                    windowManager.updateViewLayout(rootView, wl)
+                    rootView.layoutParams = wl
                 }
                 MotionEvent.ACTION_UP -> {
                     val pressDuration = System.currentTimeMillis() - pressStartTime
@@ -127,7 +115,6 @@ class InspectorMenu(private val activityInspector: ActivityInspector) {
             }
         }
         view.more.apply {
-
             setOnClickListener {
                 activityInspector.hideInspectors()
                 view.show.text = "显示"
@@ -139,8 +126,17 @@ class InspectorMenu(private val activityInspector: ActivityInspector) {
             }
         }
 
+        view.setTag(R.layout.layoutinspector_view_inspector_ui_menu,"inspector_menu_view")
+
         menuView = view
         return view
+    }
+
+    companion object{
+        fun isMenuView(view: View):Boolean{
+            val tag = view.getTag(R.layout.layoutinspector_view_inspector_ui_menu)
+            return "inspector_menu_view" == tag
+        }
     }
 
     fun onDestory() {

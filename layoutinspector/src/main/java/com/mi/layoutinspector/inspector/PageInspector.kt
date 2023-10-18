@@ -25,15 +25,11 @@ import com.mi.layoutinspector.viewinfos.ViewInfosPopupWindow
 class PageInspector constructor(
         context: Context,
         private var childOfContentView: View,
-        decorView: View?
+        decorView: View?,
+        isDialogMenu: Boolean = false
 ) : FrameLayout(context), IInspector {
 
-    private val viewInfosPopupWindow =
-            ViewInfosPopupWindow(decorView!!, PopupWindow.OnDismissListener {
-                curInspectedView = null
-                curViewInspector?.setSelecte(false)
-                curViewInspector = null
-            })
+    private val viewInfosPopupWindow = ViewInfosPopupWindow(decorView!!, null, isDialogMenu)
     private var curInspectedView: View? = null
     private var curViewInspector: ViewInspector? = null
     private var offsetY = -1
@@ -71,17 +67,10 @@ class PageInspector constructor(
     }
 
     private fun calOffset() {
-//        if (preScreenOrientation != screenIsPortrait(context)) {
-//            offsetX = -1
-//            offsetY = -1
-//        }
-//        preScreenOrientation = screenIsPortrait(context)
-//        if (offsetY == -1) {
         val location = IntArray(2)
         childOfContentView.getLocationOnScreen(location)
         offsetY = location[1]
         offsetX = location[0]
-//        }
     }
 
     override fun hideInspectors() {
@@ -181,8 +170,10 @@ class PageInspector constructor(
     }
 
     fun hideViewInfosPopupWindow() {
+        curViewInspector?.setSelecte(false)
         curInspectedView = null
         viewInfosPopupWindow.hideViewInfos()
+        curViewInspector = null
     }
 
     fun curInspectedView(): View? {

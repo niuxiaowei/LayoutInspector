@@ -25,3 +25,11 @@ fun getScreenWidth(): Int {
 fun getScreenHeight(): Int {
     return LayoutInspector.getDisplayMetrics().heightPixels
 }
+
+fun getScreenWidth1(): Int {
+    return LayoutInspector.getDisplayMetrics().widthPixels
+}
+
+fun getScreenHeight1(): Int {
+    return LayoutInspector.getDisplayMetrics().heightPixels
+}

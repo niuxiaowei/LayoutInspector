@@ -9,23 +9,23 @@
         android:id="@+id/show"
         android:text="显示"
         android:gravity="center"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
         android:background="@drawable/layoutinspector_shape_circle_trans_white_green"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:textColor="@color/li_black"
-        android:textSize="10dp"
+        android:textSize="32dp"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"/>
+        android:layout_height="wrap_content"/>
 
 
     <TextView
         android:id="@+id/more"
         android:text="更多"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
         android:gravity="center"
         android:background="@drawable/layoutinspector_shape_circle_trans_white_green"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -33,8 +33,8 @@
         app:layout_constraintTop_toBottomOf="@+id/show"
         android:layout_marginTop="20dp"
         android:textColor="@color/li_black"
-        android:textSize="10dp"
+        android:textSize="32dp"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
