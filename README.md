@@ -122,7 +122,7 @@ buildscript {
     }
     dependencies {
         //replacemethod的类，主要对inflate，setOnclickListener等方法进行替换
-        classpath "com.github.niuxiaowei:ReplaceMethod:1.0.0"
+        classpath "com.github.niuxiaowei:ReplaceMethod:1.0.4"
     }
 }
 
