@@ -18,15 +18,15 @@ class RecyclerViewAttributeCollector : IViewAttributeCollector {
         inspectedView: View,
         IViewInspector: IViewInspector
     ): List<ViewAttribute>? {
-        if (inspectedView is RecyclerView) {
-
-            val result = arrayListOf<ViewAttribute>()
-            result.add(ViewAttribute("adapter", inspectedView.adapter.javaClass.simpleName))
-            inspectedView.layoutManager?.let {
-                result.add(ViewAttribute("layoutManager", it.javaClass.simpleName))
-            }
-            return result
-        }
+//        if (inspectedView is RecyclerView) {
+//
+//            val result = arrayListOf<ViewAttribute>()
+//            result.add(ViewAttribute("adapter", inspectedView.adapter.javaClass.simpleName))
+//            inspectedView.layoutManager?.let {
+//                result.add(ViewAttribute("layoutManager", it.javaClass.simpleName))
+//            }
+//            return result
+//        }
         return null
     }
 }

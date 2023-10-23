@@ -15,6 +15,7 @@ import com.mi.layoutinspector.LayoutInspector.isViewGroupShowViewInspector
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.utils.*
 import kotlinx.android.synthetic.main.layoutinspector_popupwindow_more_view.view.*
+import kotlin.math.sign
 
 /**
  * create by niuxiaowei
@@ -71,8 +72,19 @@ class MorePopupWindow {
             }
         }
         contentView?.apply {
-            activity_name.text = "当前Activity: ${activityInspector.activityName}"
-            layout_id.text = "当前Activity的layout：R.layout.${activityInspector.contentLayoutName}"
+            var activityInfos = ""
+            LayoutInspector.activityInspectors().forEach {
+                if (it != activityInspector) {
+                    activityInfos += "Activity: ${it.activityName} \n"
+                    activityInfos += "Activity的layout:R.layout.${it.contentLayoutName} \n"
+                }
+            }
+
+            activityInspector.apply {
+                activityInfos += "当前Activity: ${this.activityName} \n"
+                activityInfos += "当前Activity的layout:R.layout.${this.contentLayoutName} \n"
+            }
+            activity_infos.text = activityInfos
         }
         setDpPxRadioState()
         setResponseCLickState()

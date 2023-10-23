@@ -7,8 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:paddingTop="@dimen/inspector_pop_item_padding_top"
+        android:paddingBottom="@dimen/inspector_pop_item_padding_top"
         android:id="@+id/layout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -18,12 +18,14 @@
             android:gravity="center"
             android:text="@string/li_clickable_text"
             android:textColor="#ffffff"
-            android:paddingTop="1.5dp"
-            android:paddingBottom="1.5dp"
-            android:textSize="4.5dp"
+            android:paddingTop="@dimen/inspector_pop_click_btn_padding_top"
+            android:paddingBottom="@dimen/inspector_pop_click_btn_padding_top"
+            android:paddingLeft="@dimen/inspector_pop_click_btn_padding_left"
+            android:paddingRight="@dimen/inspector_pop_click_btn_padding_left"
+            android:textSize="@dimen/inspector_pop_click_btn_text_size"
             android:background="@drawable/layoutinspector_shape_rec_2_radius_red"
             android:layout_gravity="left|top"
-            android:layout_width="23dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -32,7 +34,7 @@
             android:gravity="center_vertical"
             tools:text="faffed"
             android:textColor="#000000"
-            android:textSize="10dp"
+            android:textSize="@dimen/inspector_pop_text_size"
             android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

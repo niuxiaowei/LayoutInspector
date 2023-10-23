@@ -16,8 +16,8 @@
         android:paddingLeft="10dp">
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/li_more_padding_icon_size"
+            android:layout_height="@dimen/li_more_padding_icon_size"
             android:layout_gravity="center_vertical"
             android:src="@drawable/layoutinspector_left" />
 
@@ -31,8 +31,8 @@
             android:textSize="@dimen/li_more_view_text_size" />
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/li_more_padding_icon_size"
+            android:layout_height="@dimen/li_more_padding_icon_size"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:src="@drawable/layoutinspector_right" />
@@ -47,8 +47,8 @@
             android:textSize="@dimen/li_more_view_text_size" />
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/li_more_padding_icon_size"
+            android:layout_height="@dimen/li_more_padding_icon_size"
             android:layout_gravity="center_vertical"
             android:src="@drawable/layoutinspector_top" />
 
@@ -62,8 +62,8 @@
             android:textSize="@dimen/li_more_view_text_size" />
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/li_more_padding_icon_size"
+            android:layout_height="@dimen/li_more_padding_icon_size"
             android:layout_gravity="center_vertical"
             android:src="@drawable/layoutinspector_bottom" />
 
@@ -127,7 +127,7 @@
         android:paddingBottom="3dp" />
 
     <TextView
-        android:id="@+id/activity_name"
+        android:id="@+id/activity_infos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -145,24 +145,6 @@
         android:paddingTop="3dp"
         android:paddingBottom="3dp" />
 
-    <TextView
-        android:id="@+id/layout_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="4dp"
-        android:textColor="@color/li_black"
-        android:textSize="@dimen/li_more_view_text_size"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_name"
-        tools:text="ff" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/li_divider_height"
-        android:background="@color/li_color_B2B2B2"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp" />
 
     <TextView
         android:id="@+id/fragments"
@@ -216,11 +198,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:focusable="true"
+                android:clickable="true"
                 android:text="dp"
                 android:textSize="@dimen/li_more_view_text_size" />
 
             <RadioButton
                 android:id="@+id/px"
+                android:focusable="true"
+                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="px"
@@ -267,18 +253,21 @@
                 android:id="@+id/yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
                 android:text="是"
-
-                android:textSize="@dimen/li_more_view_text_size" />
+                android:clickable="true"
+                android:textSize="@dimen/li_more_view_text_size"
+                android:focusable="true" />
 
             <RadioButton
                 android:id="@+id/no"
+                android:checked="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="否"
-
-                android:textSize="@dimen/li_more_view_text_size" />
+                android:focusable="true"
+                android:clickable="true"
+                android:textSize="@dimen/li_more_view_text_size"
+                 />
         </RadioGroup>
     </LinearLayout>
 
@@ -323,7 +312,8 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="是"
-
+                android:focusable="true"
+                android:clickable="true"
                 android:textSize="@dimen/li_more_view_text_size" />
 
             <RadioButton
@@ -331,7 +321,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="否"
-
+                android:focusable="true"
+                android:clickable="true"
                 android:textSize="@dimen/li_more_view_text_size" />
         </RadioGroup>
     </LinearLayout>
@@ -377,7 +368,8 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="是"
-
+                android:focusable="true"
+                android:clickable="true"
                 android:textSize="@dimen/li_more_view_text_size" />
 
             <RadioButton
@@ -385,7 +377,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="否"
-
+                android:focusable="true"
+                android:clickable="true"
                 android:textSize="@dimen/li_more_view_text_size" />
         </RadioGroup>
     </LinearLayout>

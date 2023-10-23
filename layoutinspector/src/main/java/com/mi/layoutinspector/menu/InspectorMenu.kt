@@ -3,6 +3,7 @@ package com.mi.layoutinspector.menu
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import com.mi.layoutinspector.inspector.ActivityInspector
@@ -22,16 +23,22 @@ class InspectorMenu(private val activityInspector: ActivityInspector, private va
     private val morePopupWindow: MorePopupWindow = MorePopupWindow()
     private var menuView: View? = null
     private val context: Context = activityInspector.activity
+    private var layoutParam: FrameLayout.LayoutParams? = null
 
     fun onCreate() {
-        menuView = createMenuView()
-        FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-            leftMargin = 20
-            topMargin = 200
-        }.let {
-            setOnTouchListener(it)
-            contentView.addView(menuView,it)
+        if (menuView == null) {
+            menuView = createMenuView()
+            layoutParam = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                leftMargin = 20
+                topMargin = 200
+            }
+            layoutParam?.let { setOnTouchListener(it) }
         }
+        contentView.addView(menuView,layoutParam)
+    }
+
+    fun onDestory() {
+        contentView.removeView(menuView)
     }
 
     private fun setOnTouchListener(layoutParam: FrameLayout.LayoutParams) {
@@ -60,6 +67,7 @@ class InspectorMenu(private val activityInspector: ActivityInspector, private va
         }
 
         override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+            Log.i("inspectormenu","action:"+motionEvent.action+" view:"+view)
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
                     x = motionEvent.rawX.toInt()
@@ -137,9 +145,5 @@ class InspectorMenu(private val activityInspector: ActivityInspector, private va
             val tag = view.getTag(R.layout.layoutinspector_view_inspector_ui_menu)
             return "inspector_menu_view" == tag
         }
-    }
-
-    fun onDestory() {
-        activityInspector.activity.windowManager.removeView(menuView)
     }
 }

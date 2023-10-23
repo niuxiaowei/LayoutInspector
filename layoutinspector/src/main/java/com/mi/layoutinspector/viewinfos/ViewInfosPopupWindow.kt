@@ -1,7 +1,7 @@
 package com.mi.layoutinspector.viewinfos
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -66,14 +66,10 @@ class ViewInfosPopupWindow(
             return context.resources.getDimension(R.dimen.layout_inspector_popup_height).toInt()
         }
         return if (screenIsPortrait(context)) {
-            (decorView.height * 0.45).toInt()
+            (decorView.height * if (isPad(context)) 0.45 else 0.8).toInt()
         } else {
-            (decorView.height * 0.45).toInt()
+            (decorView.height * if (isPad(context)) 0.45 else 0.8).toInt()
         }
-    }
-
-    private fun dip2px(dp: Float, context: Context):Int {
-        return (dp * context.resources.displayMetrics.density + 0.5f).toInt()
     }
 
 
@@ -82,9 +78,9 @@ class ViewInfosPopupWindow(
             return context.resources.getDimension(R.dimen.layout_inspector_popup_width).toInt()
         }
         return if (screenIsPortrait(context)) {
-            (decorView.width * 0.5).toInt()
+            (decorView.width * if (isPad(context)) 0.5 else 0.8).toInt()
         } else {
-            (decorView.height * 0.50).toInt()
+            (decorView.height * if (isPad(context)) 0.5 else 0.8).toInt()
         }
     }
 
@@ -100,7 +96,8 @@ class ViewInfosPopupWindow(
             }
 
             view_attribute_recycler_view.apply {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager =
+                    LinearLayoutManager(context)
                 viewAttributesAdapter = ViewAttributesAdapter()
                 adapter = viewAttributesAdapter
             }
@@ -118,7 +115,8 @@ class ViewInfosPopupWindow(
                 }
             }
             view_hierarchy_recycler_view.apply {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager =
+                    LinearLayoutManager(context)
                 viewHierarchyAdapter = ViewHierarchyAdapter()
                 adapter = viewHierarchyAdapter
 

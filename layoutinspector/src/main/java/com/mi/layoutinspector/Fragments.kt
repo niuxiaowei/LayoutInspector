@@ -1,12 +1,12 @@
 package com.mi.layoutinspector
 
 import android.app.Activity
-import android.arch.lifecycle.ReportFragment
+import androidx.lifecycle.ReportFragment
 import android.content.Context
 import android.os.Build
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 
 /**
  * create by niuxiaowei
@@ -23,9 +23,9 @@ class Fragments(val activity: Activity) {
             supportFragmentLifecycle = object : FragmentManager.FragmentLifecycleCallbacks() {
 
                 override fun onFragmentAttached(
-                        fm: FragmentManager,
-                        f: Fragment,
-                        context: Context
+                    fm: FragmentManager,
+                    f: Fragment,
+                    context: Context
                 ) {
                     if (supportFragments == null) {
                         supportFragments = mutableListOf()

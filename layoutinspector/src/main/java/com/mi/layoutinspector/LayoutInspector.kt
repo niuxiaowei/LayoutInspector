@@ -31,7 +31,7 @@ object LayoutInspector {
     private const val KEY_VIEW_GROUP_SHOW_INSPECTOR = "KEY_VIEW_GROUP_SHOW_INSPECTOR"
 
     //ViewGroup是否显示 view的检测器界面
-    var isViewGroupShowViewInspector = true
+    var isViewGroupShowViewInspector = false
         set(value) {
             field = value
             saveBoolean(KEY_VIEW_GROUP_SHOW_INSPECTOR, value)
@@ -61,6 +61,7 @@ object LayoutInspector {
         viewAttributesCollectors.add(ViewLayoutInfoCollector())
         viewAttributesCollectors.add(ViewClickInfoCollector())
         viewAttributesCollectors.add(ViewSizeCollector())
+        viewAttributesCollectors.add(ImageViewInfoCollector())
         viewAttributesCollectors.add(BaseViewAttributeCollector())
         viewAttributesCollectors.add(BaseViewGroupAttributeCollector())
         viewAttributesCollectors.add(RecyclerViewAttributeCollector())
@@ -84,6 +85,10 @@ object LayoutInspector {
             }
         }
         return null
+    }
+
+    fun activityInspectors():MutableList<ActivityInspector>{
+        return activityInspectors
     }
 
     internal fun init(application: Application) {
@@ -126,7 +131,11 @@ object LayoutInspector {
             }
 
             override fun onActivityResumed(activity: Activity) {
-                findActivityInspector(activity)?.onResume()
+                findActivityInspector(activity)?.apply {
+                    onResume()
+                    activityInspectors.remove(this)
+                    activityInspectors.add(this)
+                }
                 Log.i("LayoutInspector", " onActivityResumed  $activity")
 
             }

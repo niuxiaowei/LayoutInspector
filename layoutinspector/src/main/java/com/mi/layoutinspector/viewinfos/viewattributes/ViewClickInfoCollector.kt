@@ -1,7 +1,7 @@
 package com.mi.layoutinspector.viewinfos.viewattributes
 
 import android.os.Build
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import android.view.View
 import com.mi.layoutinspector.R
 import com.mi.layoutinspector.inspector.IViewInspector

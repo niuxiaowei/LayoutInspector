@@ -49,7 +49,7 @@ class ViewSizeCollector : IViewAttributeCollector {
             result.add(ViewAttribute("bottomMargin", getDimensionWithUnitName(marginLP.bottomMargin.toFloat()), createClickListener(IViewInspector, inspectedView, getDimension(marginLP.bottomMargin.toFloat()).toString(), OptType.MARGIN_BOTTOM)))
         }
 
-
+        result.add(ViewAttribute("visibility",if (inspectedView.visibility == View.GONE) "gone" else if (inspectedView.visibility == View.INVISIBLE) "invisible" else "visible"))
 
         return result
     }

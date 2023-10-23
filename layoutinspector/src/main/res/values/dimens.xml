@@ -2,7 +2,22 @@
 <resources>
     <dimen name="li_divider_height">0.5dp</dimen>
     <dimen name="li_more_view_text_size">12dp</dimen>
+    <dimen name="li_more_padding_icon_size">16dp</dimen>
 
-    <dimen name="layout_inspector_popup_height">1000dp</dimen>
-    <dimen name="layout_inspector_popup_width">500dp</dimen>
+    <dimen name="layout_inspector_popup_height">500dp</dimen>
+    <dimen name="layout_inspector_popup_width">300dp</dimen>
+
+    <dimen name="nemu_text_size">12dp</dimen>
+    <dimen name="nemu_text_padding">15dp</dimen>
+    <dimen name="nemu_text_padding_top">10dp</dimen>
+    <dimen name="menu_text_margin_top">13dp</dimen>
+
+<!--    inspector popupwindow-->
+    <dimen name="inspector_pop_click_btn_padding_left">2dp</dimen>
+    <dimen name="inspector_pop_click_btn_padding_top">2dp</dimen>
+    <dimen name="inspector_pop_click_btn_text_size">7dp</dimen>
+    <dimen name="inspector_pop_text_size">10dp</dimen>
+    <dimen name="inspector_pop_item_padding_top">5dp</dimen>
+
+    <dimen name="inspector_pop_margin_top">10dp</dimen>
 </resources>

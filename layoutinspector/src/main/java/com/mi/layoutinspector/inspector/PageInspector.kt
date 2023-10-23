@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -122,7 +122,7 @@ class PageInspector constructor(
             childCount = it.childCount
             for (index in 0 until childCount) {
                 val child = it.getChildAt(index)
-                if (child != null && child.visibility == View.VISIBLE) {
+                if (child != null && child.visibility != View.GONE) {
                     if (child is ViewGroup) {
                         val innerParent = add(child, parent)
                         collectViewInspectorsForViewGroup(child, innerParent)

@@ -1,10 +1,12 @@
 package com.mi.layoutinspector.utils
 
-import android.os.Build
+import android.content.Context
+import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.view.View
+import android.view.WindowManager
 import com.mi.layoutinspector.LayoutInspector
 import kotlin.math.sqrt
+
 
 /**
  * Copyright (C) 2020, niuxiaowei. All rights reserved.
@@ -64,6 +66,24 @@ fun distance(x1: Int, y1: Int, x2: Int, y2: Int): Float {
     val dy = y1 - y2
     return sqrt(dx * dx + dy * dy.toDouble()).toFloat()
 }
+
+/**
+ * 是否是平板
+ *
+ * @param context 上下文
+ * @return 是平板则返回true，反之返回false
+ */
+fun isPad(context: Context): Boolean {
+    val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val display = wm.defaultDisplay
+    val dm = DisplayMetrics()
+    display.getMetrics(dm)
+    val x = Math.pow((dm.widthPixels / dm.xdpi).toDouble(), 2.0)
+    val y = Math.pow((dm.heightPixels / dm.ydpi).toDouble(), 2.0)
+    val screenInches = Math.sqrt(x + y) // 屏幕尺寸
+    return screenInches >= 7.0
+}
+
 
 
 

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import com.mi.layoutinspector.LayoutInspector
@@ -26,7 +26,7 @@ class ViewInspector constructor(
         val pageInspector: PageInspector,
         var isSetClick4View: Boolean,
         private val parent: IViewInspector?
-) : android.support.v7.widget.AppCompatTextView(context), IViewInspector {
+) : androidx.appcompat.widget.AppCompatTextView(context), IViewInspector {
 
     private var children: MutableList<IViewInspector>? = null
 
@@ -40,7 +40,7 @@ class ViewInspector constructor(
 
     companion object {
         private const val STROKE_WIDTH = 3.0f
-        private const val STROKE_WIDTH_SELECT = 18.0f
+        private const val STROKE_WIDTH_SELECT = 10.0f
         private val COLOR_BORDER: Int = ContextCompat.getColor(getContext(), R.color.li_color_fc2f68)
         private val COLOR_CORNER: Int by lazy { ContextCompat.getColor(getContext(), R.color.li_color_34b1f3) }
         private val COLOR_PADDING: Int by lazy { ContextCompat.getColor(getContext(), R.color.li_color_03A9F4) }

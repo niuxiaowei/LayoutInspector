@@ -47,7 +47,17 @@ class ActivityInspector(val activity: Activity) : ComponentInspector() {
         val contentView = getContentViewForActivity(activity)
         setContentDecorView(contentView, activity.window.decorView)
         createActivityInfo(contentView)
-        menu = InspectorMenu(this,contentView).apply { onCreate() }
+        menu = InspectorMenu(this,contentView)
+    }
+
+    override fun addMenu(contentView: ViewGroup) {
+        super.addMenu(contentView)
+        menu?.onCreate()
+    }
+
+    override fun removeMenu(contentView: ViewGroup) {
+        super.removeMenu(contentView)
+        menu?.onDestory()
     }
 
     fun onStart() {

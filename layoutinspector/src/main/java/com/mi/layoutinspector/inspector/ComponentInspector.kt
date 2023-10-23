@@ -120,6 +120,10 @@ abstract class ComponentInspector() : IInspector {
 
     }
 
+    protected open fun removeMenu(contentView: ViewGroup) {
+
+    }
+
     private fun tryRemoveErrViewInspectors() {
         contentView?.apply {
             var preView: View? = null

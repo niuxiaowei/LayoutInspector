@@ -47,6 +47,10 @@ class DialogInspector(private val dialog: Dialog, activityInspector: ActivityIns
         contentView.addView(menu)
     }
 
+    override fun removeMenu(contentView: ViewGroup) {
+        contentView.removeView(menu)
+    }
+
     override fun hasDialogMenu(): Boolean {
         return true
     }

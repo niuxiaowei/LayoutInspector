@@ -8,4 +8,5 @@
     <item name="tag_key_component_layout_name" type="id" />
     <item name="tag_key_click" type="id" />
     <item name="tag_key_long_click" type="id" />
+    <item name="tag_key_iv_setImageResource" type="id"/>
 </resources>
